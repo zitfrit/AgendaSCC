@@ -39,6 +39,7 @@ public class MainView extends javax.swing.JFrame {
         tabbedPaneContactos.setIconAt(0, icon);    */  
         initComponents();
         getContentPane().setBackground(Color.white);
+        
     }
 
     /**
@@ -99,11 +100,11 @@ public class MainView extends javax.swing.JFrame {
         jXPanel1.setLayout(jXPanel1Layout);
         jXPanel1Layout.setHorizontalGroup(
             jXPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 837, Short.MAX_VALUE)
+            .addGap(0, 672, Short.MAX_VALUE)
         );
         jXPanel1Layout.setVerticalGroup(
             jXPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 656, Short.MAX_VALUE)
+            .addGap(0, 489, Short.MAX_VALUE)
         );
 
         tabbedPaneContactos.addTab("", new javax.swing.ImageIcon(getClass().getResource("/agendascc/RESOURCES/ICOTODOS.png")), jXPanel1); // NOI18N
@@ -112,11 +113,11 @@ public class MainView extends javax.swing.JFrame {
         jXPanel2.setLayout(jXPanel2Layout);
         jXPanel2Layout.setHorizontalGroup(
             jXPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 837, Short.MAX_VALUE)
+            .addGap(0, 672, Short.MAX_VALUE)
         );
         jXPanel2Layout.setVerticalGroup(
             jXPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 656, Short.MAX_VALUE)
+            .addGap(0, 489, Short.MAX_VALUE)
         );
 
         tabbedPaneContactos.addTab("CLIENTES", jXPanel2);
@@ -125,11 +126,11 @@ public class MainView extends javax.swing.JFrame {
         jXPanel3.setLayout(jXPanel3Layout);
         jXPanel3Layout.setHorizontalGroup(
             jXPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 837, Short.MAX_VALUE)
+            .addGap(0, 672, Short.MAX_VALUE)
         );
         jXPanel3Layout.setVerticalGroup(
             jXPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 656, Short.MAX_VALUE)
+            .addGap(0, 489, Short.MAX_VALUE)
         );
 
         tabbedPaneContactos.addTab("EMPLEADOS", jXPanel3);
@@ -138,11 +139,11 @@ public class MainView extends javax.swing.JFrame {
         jXPanel4.setLayout(jXPanel4Layout);
         jXPanel4Layout.setHorizontalGroup(
             jXPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 837, Short.MAX_VALUE)
+            .addGap(0, 672, Short.MAX_VALUE)
         );
         jXPanel4Layout.setVerticalGroup(
             jXPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 656, Short.MAX_VALUE)
+            .addGap(0, 489, Short.MAX_VALUE)
         );
 
         tabbedPaneContactos.addTab("PERSONALES", jXPanel4);
@@ -151,11 +152,11 @@ public class MainView extends javax.swing.JFrame {
         jXPanel5.setLayout(jXPanel5Layout);
         jXPanel5Layout.setHorizontalGroup(
             jXPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 837, Short.MAX_VALUE)
+            .addGap(0, 672, Short.MAX_VALUE)
         );
         jXPanel5Layout.setVerticalGroup(
             jXPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 656, Short.MAX_VALUE)
+            .addGap(0, 489, Short.MAX_VALUE)
         );
 
         tabbedPaneContactos.addTab("GENERAL", jXPanel5);
@@ -164,11 +165,11 @@ public class MainView extends javax.swing.JFrame {
         jXPanel6.setLayout(jXPanel6Layout);
         jXPanel6Layout.setHorizontalGroup(
             jXPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 837, Short.MAX_VALUE)
+            .addGap(0, 672, Short.MAX_VALUE)
         );
         jXPanel6Layout.setVerticalGroup(
             jXPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 656, Short.MAX_VALUE)
+            .addGap(0, 489, Short.MAX_VALUE)
         );
 
         tabbedPaneContactos.addTab("PROVEEDORES", jXPanel6);
@@ -177,11 +178,11 @@ public class MainView extends javax.swing.JFrame {
         jXPanel7.setLayout(jXPanel7Layout);
         jXPanel7Layout.setHorizontalGroup(
             jXPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 837, Short.MAX_VALUE)
+            .addGap(0, 672, Short.MAX_VALUE)
         );
         jXPanel7Layout.setVerticalGroup(
             jXPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 656, Short.MAX_VALUE)
+            .addGap(0, 489, Short.MAX_VALUE)
         );
 
         tabbedPaneContactos.addTab("SERVICIOS TEC.", jXPanel7);
@@ -200,14 +201,14 @@ public class MainView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(toolBarBotones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jXStatusBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(tabbedPaneContactos)
+            .addComponent(tabbedPaneContactos, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(toolBarBotones, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tabbedPaneContactos)
+                .addComponent(tabbedPaneContactos, javax.swing.GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jXStatusBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
