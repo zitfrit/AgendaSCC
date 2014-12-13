@@ -15,11 +15,13 @@ import agendascc.DATA.*;
  */
 public class ContactosPanel extends JXPanel {
     private ObservableList<Contacto> oContactosList=null;
+    private ObservableList<Telefono> oTelefono=null;
     /**
      * Creates new form ContactosPanel
      */
     public ContactosPanel() {
-        initComponents();
+        
+        initComponents();        
     }
 
     /**
