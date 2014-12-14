@@ -8,6 +8,7 @@ package agendascc.UI;
 import javafx.collections.ObservableList;
 import org.jdesktop.swingx.JXPanel;
 import agendascc.DATA.*;
+import java.util.List;
 
 /**
  *
@@ -15,7 +16,8 @@ import agendascc.DATA.*;
  */
 public class ContactosPanel extends JXPanel {
     private ObservableList<Contacto> oContactosList=null;
-    private ObservableList<Telefono> oTelefono=null;
+    private ObservableList<Telefono> oTelefonosList=null;
+    private Contacto contactoActual=null;
     /**
      * Creates new form ContactosPanel
      */
@@ -23,6 +25,47 @@ public class ContactosPanel extends JXPanel {
         
         initComponents();        
     }
+    
+    public ContactosPanel(List<Contacto> contact)
+    {
+        super();
+        oContactosList.addAll(contact);
+    }
+    
+    public ObservableList<Contacto> getOContactosList(){
+        return this.oContactosList;
+    }
+    public void setOContactosList(ObservableList<Contacto> listaContactos){
+        this.oContactosList.clear();
+        this.oContactosList.addAll(listaContactos);
+    }
+    public void setOContactosList(List<Contacto> listaContactos){
+        this.oContactosList.clear();
+        this.oContactosList.addAll(listaContactos);
+    }
+    
+    public ObservableList<Telefono> getOTelefonosList(){
+        return this.oTelefonosList;
+    }
+    
+    public void setOTelefonosList(ObservableList<Telefono> listaTelefonos){
+        this.oTelefonosList.clear();
+        this.oTelefonosList.addAll(listaTelefonos);
+    }
+    
+    public void setOTelefonosList(List<Telefono> listaTelefonos){
+        this.oTelefonosList.clear();
+        this.oTelefonosList.addAll(listaTelefonos);
+    }
+    
+    public Contacto getContactoActual(){
+        return contactoActual;
+    }
+    
+    public void setContactoActual(Contacto current){
+        this.contactoActual=current;
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -33,19 +76,42 @@ public class ContactosPanel extends JXPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jXImageView1 = new org.jdesktop.swingx.JXImageView();
+
+        setBackground(new java.awt.Color(255, 255, 255));
+        setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
+
+        javax.swing.GroupLayout jXImageView1Layout = new javax.swing.GroupLayout(jXImageView1);
+        jXImageView1.setLayout(jXImageView1Layout);
+        jXImageView1Layout.setHorizontalGroup(
+            jXImageView1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jXImageView1Layout.setVerticalGroup(
+            jXImageView1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jXImageView1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(560, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jXImageView1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(376, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.jdesktop.swingx.JXImageView jXImageView1;
     // End of variables declaration//GEN-END:variables
 }
