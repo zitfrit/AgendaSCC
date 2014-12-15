@@ -44,7 +44,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Contacto.findByMunicipio", query = "SELECT c FROM Contacto c WHERE c.municipio = :municipio"),
     @NamedQuery(name = "Contacto.findByEstado", query = "SELECT c FROM Contacto c WHERE c.estado = :estado"),
     @NamedQuery(name = "Contacto.findByPais", query = "SELECT c FROM Contacto c WHERE c.pais = :pais"),
-    @NamedQuery(name = "Contacto.findByComentarios", query = "SELECT c FROM Contacto c WHERE c.comentarios = :comentarios")})
+    @NamedQuery(name = "Contacto.findByComentarios", query = "SELECT c FROM Contacto c WHERE c.comentarios = :comentarios"),
+    @NamedQuery(name = "Contacto.findByEmail", query = "SELECT c FROM Contacto c WHERE c.email = :email"),
+    @NamedQuery(name = "Contacto.findByImagen", query = "SELECT c FROM Contacto c WHERE c.imagen = :imagen")})
+
 public class Contacto implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -85,6 +88,12 @@ public class Contacto implements Serializable {
     private String pais;
     @Column(name = "comentarios", length = 50)
     private String comentarios;
+    @Basic(optional = false)
+    @Column(name = "email", nullable = false, length = 55)
+    private String email;
+    @Basic(optional = false)
+    @Column(name = "imagen", nullable = false, length = 45)
+    private String imagen;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "contacto")
     private List<Telefono> telefonoList;
 
@@ -210,6 +219,22 @@ public class Contacto implements Serializable {
 
     public void setComentarios(String comentarios) {
         this.comentarios = comentarios;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     @XmlTransient
