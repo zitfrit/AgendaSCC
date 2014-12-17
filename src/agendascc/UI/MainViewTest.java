@@ -6,13 +6,9 @@
 package agendascc.UI;
 
 import agendascc.AgendaSCC;
-import agendascc.DATA.Contacto;
 import java.awt.Color;
-import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import org.jdesktop.observablecollections.ObservableCollections;
-import org.jdesktop.observablecollections.ObservableList;
 
 
 /**
@@ -20,7 +16,7 @@ import org.jdesktop.observablecollections.ObservableList;
  * @author JTF
  */
 public class MainViewTest extends javax.swing.JFrame {
-    ObservableList<Contacto> lista;
+
     /**
      * Creates new form MainView
      */
@@ -43,9 +39,6 @@ public class MainViewTest extends javax.swing.JFrame {
         tabbedPaneContactos.setIconAt(0, icon);    */  
         initComponents();
         getContentPane().setBackground(Color.white);
-       // contactosPanel2.setOContactosList(lista);
-        //contactosPanel2.setOContactosList(org.jdesktop.observablecollections.ObservableCollections.observableList(list1));
-        
         
     }
 
@@ -58,10 +51,7 @@ public class MainViewTest extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        entityManager1 = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("AgendaSCCPU").createEntityManager();
-        query1 = java.beans.Beans.isDesignTime() ? null : entityManager1.createQuery("SELECT C FROM Contacto C");
-        list1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() :query1.getResultList();
-        lista= ObservableCollections.observableList((List<Contacto>) query1.getResultList());
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         toolBarBotones = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -74,7 +64,7 @@ public class MainViewTest extends javax.swing.JFrame {
         jXPanel5 = new org.jdesktop.swingx.JXPanel();
         jXPanel6 = new org.jdesktop.swingx.JXPanel();
         jXPanel7 = new org.jdesktop.swingx.JXPanel();
-        contactosPanel2 = new agendascc.UI.ContactosPanel(lista);
+        contactosPanel2 = new agendascc.UI.ContactosPanel();
         menuBarPrincipal = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -231,7 +221,7 @@ public class MainViewTest extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private agendascc.UI.ContactosPanel contactosPanel2;
-    private javax.persistence.EntityManager entityManager1;
+    private javax.swing.Box.Filler filler3;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JMenu jMenu1;
@@ -244,9 +234,7 @@ public class MainViewTest extends javax.swing.JFrame {
     private org.jdesktop.swingx.JXPanel jXPanel6;
     private org.jdesktop.swingx.JXPanel jXPanel7;
     private org.jdesktop.swingx.JXStatusBar jXStatusBar1;
-    private java.util.List<Contacto> list1;
     private javax.swing.JMenuBar menuBarPrincipal;
-    private javax.persistence.Query query1;
     private javax.swing.JTabbedPane tabbedPaneContactos;
     private javax.swing.JToolBar toolBarBotones;
     // End of variables declaration//GEN-END:variables
