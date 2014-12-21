@@ -51,7 +51,7 @@ public class MainViewTest extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        entityManager1 = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("AgendaSCCPU").createEntityManager();
         toolBarBotones = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -64,7 +64,7 @@ public class MainViewTest extends javax.swing.JFrame {
         jXPanel5 = new org.jdesktop.swingx.JXPanel();
         jXPanel6 = new org.jdesktop.swingx.JXPanel();
         jXPanel7 = new org.jdesktop.swingx.JXPanel();
-        contactosPanel2 = new agendascc.UI.ContactosPanel();
+        contactosPanel2 = new agendascc.UI.ContactosPanel(entityManager1,"cliente");
         menuBarPrincipal = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -101,7 +101,7 @@ public class MainViewTest extends javax.swing.JFrame {
         jXPanel1.setLayout(jXPanel1Layout);
         jXPanel1Layout.setHorizontalGroup(
             jXPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 672, Short.MAX_VALUE)
+            .addGap(0, 687, Short.MAX_VALUE)
         );
         jXPanel1Layout.setVerticalGroup(
             jXPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,7 +114,7 @@ public class MainViewTest extends javax.swing.JFrame {
         jXPanel2.setLayout(jXPanel2Layout);
         jXPanel2Layout.setHorizontalGroup(
             jXPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 672, Short.MAX_VALUE)
+            .addGap(0, 687, Short.MAX_VALUE)
         );
         jXPanel2Layout.setVerticalGroup(
             jXPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,7 +127,7 @@ public class MainViewTest extends javax.swing.JFrame {
         jXPanel3.setLayout(jXPanel3Layout);
         jXPanel3Layout.setHorizontalGroup(
             jXPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 672, Short.MAX_VALUE)
+            .addGap(0, 687, Short.MAX_VALUE)
         );
         jXPanel3Layout.setVerticalGroup(
             jXPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,7 +140,7 @@ public class MainViewTest extends javax.swing.JFrame {
         jXPanel4.setLayout(jXPanel4Layout);
         jXPanel4Layout.setHorizontalGroup(
             jXPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 672, Short.MAX_VALUE)
+            .addGap(0, 687, Short.MAX_VALUE)
         );
         jXPanel4Layout.setVerticalGroup(
             jXPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,7 +153,7 @@ public class MainViewTest extends javax.swing.JFrame {
         jXPanel5.setLayout(jXPanel5Layout);
         jXPanel5Layout.setHorizontalGroup(
             jXPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 672, Short.MAX_VALUE)
+            .addGap(0, 687, Short.MAX_VALUE)
         );
         jXPanel5Layout.setVerticalGroup(
             jXPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,7 +166,7 @@ public class MainViewTest extends javax.swing.JFrame {
         jXPanel6.setLayout(jXPanel6Layout);
         jXPanel6Layout.setHorizontalGroup(
             jXPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 672, Short.MAX_VALUE)
+            .addGap(0, 687, Short.MAX_VALUE)
         );
         jXPanel6Layout.setVerticalGroup(
             jXPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,14 +179,24 @@ public class MainViewTest extends javax.swing.JFrame {
         jXPanel7.setLayout(jXPanel7Layout);
         jXPanel7Layout.setHorizontalGroup(
             jXPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(contactosPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
+            .addGap(0, 687, Short.MAX_VALUE)
+            .addGroup(jXPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jXPanel7Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(contactosPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         jXPanel7Layout.setVerticalGroup(
             jXPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(contactosPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 495, Short.MAX_VALUE)
+            .addGroup(jXPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jXPanel7Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(contactosPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
-        tabbedPaneContactos.addTab("SERVICIOS TEC.", jXPanel7);
+        tabbedPaneContactos.addTab("tab7", jXPanel7);
 
         jMenu1.setText("File");
         menuBarPrincipal.add(jMenu1);
@@ -221,7 +231,7 @@ public class MainViewTest extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private agendascc.UI.ContactosPanel contactosPanel2;
-    private javax.swing.Box.Filler filler3;
+    private javax.persistence.EntityManager entityManager1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JMenu jMenu1;

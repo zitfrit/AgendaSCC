@@ -8,7 +8,14 @@ package agendascc.UI;
 import javafx.collections.ObservableList;
 import org.jdesktop.swingx.JXPanel;
 import agendascc.DATA.*;
+import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
+import javafx.collections.FXCollections;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -17,19 +24,34 @@ import java.util.List;
 public class ContactosPanel extends JXPanel {
     private ObservableList<Contacto> oContactosList=null;
     private ObservableList<Telefono> oTelefonosList=null;
-    private Contacto contactoActual=null;
+   // private Contacto contactoActual;
+    private EntityManager em;
+    private String tipoContacto;
+    private Query queryContactos;
+    private Query queryTelefonos;
+    
     /**
      * Creates new form ContactosPanel
      */
-    public ContactosPanel() {
-        
-        initComponents();        
-    }
-    
-    public ContactosPanel(List<Contacto> contact)
+  /*  public ContactosPanel()
     {
         super();
-        oContactosList.addAll(contact);
+        initComponents();
+        
+    }*/
+    public ContactosPanel(EntityManager eManager, String tipo)
+    {
+        super();
+        Object o;
+        //contactoActual=new Contacto();
+        em=eManager;
+        tipoContacto=tipo;
+        queryContactos=em.createQuery("SELECT c FROM Contacto c");
+        oContactosList= FXCollections.observableList((List<Contacto>) queryContactos.getResultList());
+        initComponents();
+        //contactoActual.
+        
+
     }
     
     public ObservableList<Contacto> getOContactosList(){
@@ -59,11 +81,16 @@ public class ContactosPanel extends JXPanel {
     }
     
     public Contacto getContactoActual(){
-        return contactoActual;
+        return this.contactoActual;
     }
     
     public void setContactoActual(Contacto current){
         this.contactoActual=current;
+        //System.out.println("contacto actual:"+contactoActual.getNombre());
+    }
+    
+    public String getTipoContacto(){
+        return this.tipoContacto;
     }
     
 
@@ -75,7 +102,9 @@ public class ContactosPanel extends JXPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
+        contactoActual = new agendascc.DATA.Contacto();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jXTable1 = new org.jdesktop.swingx.JXTable();
@@ -114,19 +143,46 @@ public class ContactosPanel extends JXPanel {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/agendascc/RESOURCES/grupo.png"))); // NOI18N
         jLabel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TODOS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
 
-        jXTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        jXTable1.setColumnControlVisible(true);
         jXTable1.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
+        jXTable1.setShowVerticalLines(false);
+
+        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${OContactosList}");
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, jXTable1);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idContacto}"));
+        columnBinding.setColumnName("Id Contacto");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nombre}"));
+        columnBinding.setColumnName("Nombre");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${pseudonimo}"));
+        columnBinding.setColumnName("Pseudonimo");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${direccion}"));
+        columnBinding.setColumnName("Direccion");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${direccionReferencias}"));
+        columnBinding.setColumnName("Direccion Referencias");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${colonia}"));
+        columnBinding.setColumnName("Colonia");
+        columnBinding.setColumnClass(String.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
         jScrollPane1.setViewportView(jXTable1);
+        jXTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                contactoActual=oContactosList.get((Integer)jXTable1.getModel().getValueAt(jXTable1.convertRowIndexToModel(jXTable1.getSelectedRow()), 0)-1);
+                // contactoActual=new Contacto(contactoActual.getIdContacto(), contactoActual.getTipo(), contactoActual.getNombre(), contactoActual.getDireccion(), contactoActual.getColonia(), contactoActual.getCodigoPostal(), contactoActual.getLocalidad(), contactoActual.getMunicipio(), contactoActual.getEstado(), contactoActual.getPais());
+            }
+        });
+        jXTable1.getColumnExt (jXTable1.getColumnModel().getColumn(0).getIdentifier()).setVisible(false);
+        if (jXTable1.getColumnModel().getColumnCount() > 0) {
+            jXTable1.getColumnModel().getColumn(0).setResizable(false);
+            jXTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
+        }
 
         jXTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -146,31 +202,51 @@ public class ContactosPanel extends JXPanel {
 
         labelNombre.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         labelNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelNombre.setText("NOMBRE:");
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactoActual, org.jdesktop.beansbinding.ELProperty.create("${nombre}"), labelNombre, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
 
         labelPseudonimo.setFont(new java.awt.Font("Calibri", 2, 16)); // NOI18N
         labelPseudonimo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelPseudonimo.setText("PSEUDONIMO:");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.pseudonimo}"), labelPseudonimo, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
 
         jLabel2.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jLabel2.setText("Direccion:");
 
         jTextField1.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jTextField1.setText("");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactoActual, org.jdesktop.beansbinding.ELProperty.create("${direccion}"), jTextField1, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
 
         jTextField2.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.direccionReferencias}"), jTextField2, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
 
         jLabel3.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jLabel3.setText("Colonia:");
 
         jTextField3.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
 
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.colonia}"), jTextField3, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
         jLabel4.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jLabel4.setText("C.P.:");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.codigoPostal}"), jTextField4, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
 
         jLabel5.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jLabel5.setText("Localidad:");
 
         jTextField5.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.localidad}"), jTextField5, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
 
         jLabel6.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jLabel6.setText("Comentarios:");
@@ -178,6 +254,10 @@ public class ContactosPanel extends JXPanel {
         jTextArea1.setColumns(20);
         jTextArea1.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jTextArea1.setRows(5);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.comentarios}"), jTextArea1, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
         jScrollPane3.setViewportView(jTextArea1);
 
         jLabel7.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -185,20 +265,32 @@ public class ContactosPanel extends JXPanel {
 
         jTextField6.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
 
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.municipio}"), jTextField6, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
         jLabel8.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jLabel8.setText("Estado:");
 
         jTextField7.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.pais}"), jTextField7, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
 
         jLabel9.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jLabel9.setText("Pais:");
 
         jTextField8.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
 
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.pais}"), jTextField8, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
         jLabel10.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jLabel10.setText("Correo:");
 
         jTextField9.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactoActual, org.jdesktop.beansbinding.ELProperty.create("${email}"), jTextField9, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -335,10 +427,12 @@ public class ContactosPanel extends JXPanel {
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel3, jLabel4, jLabel5});
 
+        bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private agendascc.DATA.Contacto contactoActual;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.JLabel jLabel1;
@@ -369,5 +463,6 @@ public class ContactosPanel extends JXPanel {
     private org.jdesktop.swingx.JXTable jXTable2;
     private javax.swing.JLabel labelNombre;
     private javax.swing.JLabel labelPseudonimo;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }
