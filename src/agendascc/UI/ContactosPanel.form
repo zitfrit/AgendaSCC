@@ -228,9 +228,9 @@
         <Component class="org.jdesktop.swingx.JXTable" name="jXTable1">
           <Properties>
             <Property name="columnControlVisible" type="boolean" value="true"/>
-            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" preCode="jXTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {&#xa;            @Override&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                contactoActual=oContactosList.get((Integer)jXTable1.getModel().getValueAt(jXTable1.convertRowIndexToModel(jXTable1.getSelectedRow()), 0)-1);&#xa;               // contactoActual=new Contacto(contactoActual.getIdContacto(), contactoActual.getTipo(), contactoActual.getNombre(), contactoActual.getDireccion(), contactoActual.getColonia(), contactoActual.getCodigoPostal(), contactoActual.getLocalidad(), contactoActual.getMunicipio(), contactoActual.getEstado(), contactoActual.getPais());&#xa;            }&#xa;        });&#xa;jXTable1.getColumnExt (jXTable1.getColumnModel().getColumn(0).getIdentifier()).setVisible(false);">
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" preCode="jXTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {&#xa;            @Override&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                //setContactoActual(oContactosList.get((Integer)jXTable1.getModel().getValueAt(jXTable1.convertRowIndexToModel(jXTable1.getSelectedRow()), 0)-1));&#xa;               // contactoActual=new Contacto(contactoActual.getIdContacto(), contactoActual.getTipo(), contactoActual.getNombre(), contactoActual.getDireccion(), contactoActual.getColonia(), contactoActual.getCodigoPostal(), contactoActual.getLocalidad(), contactoActual.getMunicipio(), contactoActual.getEstado(), contactoActual.getPais());&#xa;               &#xa;               //jXTable1.getSelectionModel().getLeadSelectionIndex();&#xa;               setContactoActual(contactoController.findContacto((Integer)jXTable1.getModel().getValueAt(jXTable1.convertRowIndexToModel(jXTable1.getSelectedRow()),0 )));&#xa;            }&#xa;        });&#xa;jXTable1.getColumnExt (jXTable1.getColumnModel().getColumn(0).getIdentifier()).setVisible(false);">
               <TableColumnModel selectionModel="0">
-                <Column maxWidth="-1" minWidth="-1" prefWidth="0" resizable="false">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -275,7 +275,6 @@
               <Subbinding sourcePath="${idContacto}">
                 <BindingParameter name="NAME" value="Id Contacto"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${nombre}">
                 <BindingParameter name="NAME" value="Nombre"/>
@@ -311,13 +310,29 @@
       <SubComponents>
         <Component class="org.jdesktop.swingx.JXTable" name="jXTable2">
           <Properties>
-            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="4" rowCount="4">
-                <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                <Column editable="true" title="Title 4" type="java.lang.Object"/>
-              </Table>
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+              <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+              </TableColumnModel>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Calibri" size="11" style="0"/>
@@ -328,7 +343,30 @@
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[300, 360]"/>
             </Property>
+            <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+            </Property>
           </Properties>
+          <BindingProperties>
+            <BindingProperty name="elements" source="jXTable1" sourcePath="${selectedElement.telefonoList}" target="jXTable2" targetPath="elements" updateStrategy="0" immediately="true">
+              <Subbinding sourcePath="${tipo}">
+                <BindingParameter name="NAME" value="Tipo"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${telefonoPK.telefono}">
+                <BindingParameter name="NAME" value="Numero"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${lada}">
+                <BindingParameter name="NAME" value="Lada"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${extencion}">
+                <BindingParameter name="NAME" value="Extension"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+              </Subbinding>
+            </BindingProperty>
+          </BindingProperties>
         </Component>
       </SubComponents>
     </Container>
@@ -340,7 +378,7 @@
         <Property name="horizontalAlignment" type="int" value="0"/>
       </Properties>
       <BindingProperties>
-        <BindingProperty name="text" source="contactoActual" sourcePath="${nombre}" target="labelNombre" targetPath="text" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="text" source="jXTable1" sourcePath="${selectedElement.nombre}" target="labelNombre" targetPath="text" updateStrategy="0" immediately="false"/>
       </BindingProperties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelPseudonimo">
@@ -351,7 +389,7 @@
         <Property name="horizontalAlignment" type="int" value="0"/>
       </Properties>
       <BindingProperties>
-        <BindingProperty name="text" source="Form" sourcePath="${contactoActual.pseudonimo}" target="labelPseudonimo" targetPath="text" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="text" source="jXTable1" sourcePath="${selectedElement.pseudonimo}" target="labelPseudonimo" targetPath="text" updateStrategy="0" immediately="false"/>
       </BindingProperties>
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator1">
@@ -369,10 +407,9 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Calibri" size="12" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value=""/>
       </Properties>
       <BindingProperties>
-        <BindingProperty name="text" source="contactoActual" sourcePath="${direccion}" target="jTextField1" targetPath="text" updateStrategy="0" immediately="false">
+        <BindingProperty name="text" source="jXTable1" sourcePath="${selectedElement.direccion}" target="jTextField1" targetPath="text" updateStrategy="0" immediately="false">
           <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
         </BindingProperty>
       </BindingProperties>
@@ -384,7 +421,7 @@
         </Property>
       </Properties>
       <BindingProperties>
-        <BindingProperty name="text" source="Form" sourcePath="${contactoActual.direccionReferencias}" target="jTextField2" targetPath="text" updateStrategy="0" immediately="false">
+        <BindingProperty name="text" source="jXTable1" sourcePath="${selectedElement.direccionReferencias}" target="jTextField2" targetPath="text" updateStrategy="0" immediately="false">
           <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
         </BindingProperty>
       </BindingProperties>
@@ -404,7 +441,7 @@
         </Property>
       </Properties>
       <BindingProperties>
-        <BindingProperty name="text" source="Form" sourcePath="${contactoActual.colonia}" target="jTextField3" targetPath="text" updateStrategy="0" immediately="false">
+        <BindingProperty name="text" source="jXTable1" sourcePath="${selectedElement.colonia}" target="jTextField3" targetPath="text" updateStrategy="0" immediately="false">
           <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
         </BindingProperty>
       </BindingProperties>
@@ -419,7 +456,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField4">
       <BindingProperties>
-        <BindingProperty name="text" source="Form" sourcePath="${contactoActual.codigoPostal}" target="jTextField4" targetPath="text" updateStrategy="0" immediately="false">
+        <BindingProperty name="text" source="jXTable1" sourcePath="${selectedElement.codigoPostal}" target="jTextField4" targetPath="text" updateStrategy="0" immediately="false">
           <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
         </BindingProperty>
       </BindingProperties>
@@ -439,7 +476,7 @@
         </Property>
       </Properties>
       <BindingProperties>
-        <BindingProperty name="text" source="Form" sourcePath="${contactoActual.localidad}" target="jTextField5" targetPath="text" updateStrategy="0" immediately="false">
+        <BindingProperty name="text" source="jXTable1" sourcePath="${selectedElement.localidad}" target="jTextField5" targetPath="text" updateStrategy="0" immediately="false">
           <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
         </BindingProperty>
       </BindingProperties>
@@ -468,7 +505,7 @@
             <Property name="rows" type="int" value="5"/>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="text" source="Form" sourcePath="${contactoActual.comentarios}" target="jTextArea1" targetPath="text" updateStrategy="0" immediately="false">
+            <BindingProperty name="text" source="jXTable1" sourcePath="${selectedElement.comentarios}" target="jTextArea1" targetPath="text" updateStrategy="0" immediately="false">
               <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
             </BindingProperty>
           </BindingProperties>
@@ -490,7 +527,7 @@
         </Property>
       </Properties>
       <BindingProperties>
-        <BindingProperty name="text" source="Form" sourcePath="${contactoActual.municipio}" target="jTextField6" targetPath="text" updateStrategy="0" immediately="false">
+        <BindingProperty name="text" source="jXTable1" sourcePath="${selectedElement.municipio}" target="jTextField6" targetPath="text" updateStrategy="0" immediately="false">
           <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
         </BindingProperty>
       </BindingProperties>
@@ -510,7 +547,7 @@
         </Property>
       </Properties>
       <BindingProperties>
-        <BindingProperty name="text" source="Form" sourcePath="${contactoActual.pais}" target="jTextField7" targetPath="text" updateStrategy="0" immediately="false">
+        <BindingProperty name="text" source="jXTable1" sourcePath="${selectedElement.estado}" target="jTextField7" targetPath="text" updateStrategy="0" immediately="false">
           <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
         </BindingProperty>
       </BindingProperties>
@@ -530,7 +567,7 @@
         </Property>
       </Properties>
       <BindingProperties>
-        <BindingProperty name="text" source="Form" sourcePath="${contactoActual.pais}" target="jTextField8" targetPath="text" updateStrategy="0" immediately="false">
+        <BindingProperty name="text" source="jXTable1" sourcePath="${selectedElement.pais}" target="jTextField8" targetPath="text" updateStrategy="0" immediately="false">
           <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
         </BindingProperty>
       </BindingProperties>
@@ -550,7 +587,7 @@
         </Property>
       </Properties>
       <BindingProperties>
-        <BindingProperty name="text" source="contactoActual" sourcePath="${email}" target="jTextField9" targetPath="text" updateStrategy="0" immediately="false">
+        <BindingProperty name="text" source="jXTable1" sourcePath="${selectedElement.email}" target="jTextField9" targetPath="text" updateStrategy="0" immediately="false">
           <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
         </BindingProperty>
       </BindingProperties>
