@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
-  <NonVisualComponents>
-    <Component class="agendascc.DATA.Contacto" name="contactoActual">
-    </Component>
-  </NonVisualComponents>
   <Properties>
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -228,7 +224,7 @@
         <Component class="org.jdesktop.swingx.JXTable" name="jXTable1">
           <Properties>
             <Property name="columnControlVisible" type="boolean" value="true"/>
-            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" preCode="jXTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {&#xa;            @Override&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                //setContactoActual(oContactosList.get((Integer)jXTable1.getModel().getValueAt(jXTable1.convertRowIndexToModel(jXTable1.getSelectedRow()), 0)-1));&#xa;               // contactoActual=new Contacto(contactoActual.getIdContacto(), contactoActual.getTipo(), contactoActual.getNombre(), contactoActual.getDireccion(), contactoActual.getColonia(), contactoActual.getCodigoPostal(), contactoActual.getLocalidad(), contactoActual.getMunicipio(), contactoActual.getEstado(), contactoActual.getPais());&#xa;               &#xa;               //jXTable1.getSelectionModel().getLeadSelectionIndex();&#xa;               setContactoActual(contactoController.findContacto((Integer)jXTable1.getModel().getValueAt(jXTable1.convertRowIndexToModel(jXTable1.getSelectedRow()),0 )));&#xa;            }&#xa;        });&#xa;jXTable1.getColumnExt (jXTable1.getColumnModel().getColumn(0).getIdentifier()).setVisible(false);">
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" preCode="jXTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {&#xa;            @Override&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                //setContactoActual(oContactosList.get((Integer)jXTable1.getModel().getValueAt(jXTable1.convertRowIndexToModel(jXTable1.getSelectedRow()), 0)-1));&#xa;               // contactoActual=new Contacto(contactoActual.getIdContacto(), contactoActual.getTipo(), contactoActual.getNombre(), contactoActual.getDireccion(), contactoActual.getColonia(), contactoActual.getCodigoPostal(), contactoActual.getLocalidad(), contactoActual.getMunicipio(), contactoActual.getEstado(), contactoActual.getPais());&#xa;               &#xa;               //jXTable1.getSelectionModel().getLeadSelectionIndex();&#xa;               setContactoActual(contactoController.findContacto((Integer)jXTable1.getModel().getValueAt(jXTable1.convertRowIndexToModel(jXTable1.getSelectedRow()),0 )));&#xa;            }&#xa;        });&#xa;jXTable1.getColumnExt (jXTable1.getColumnModel().getColumn(0).getIdentifier()).setVisible(false);&#xa;jXTable1.packAll();">
               <TableColumnModel selectionModel="0">
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>

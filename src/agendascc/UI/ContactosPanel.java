@@ -5,17 +5,22 @@
  */
 package agendascc.UI;
 
+import agendascc.AgendaSCC;
 import javafx.collections.ObservableList;
 import org.jdesktop.swingx.JXPanel;
 import agendascc.DATA.*;
+import java.beans.PropertyVetoException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.eclipse.persistence.internal.jpa.EntityManagerImpl;
 
 /**
  *
@@ -24,22 +29,27 @@ import javax.swing.event.ListSelectionListener;
 public class ContactosPanel extends JXPanel {
     private ObservableList<Contacto> oContactosList=null;
     private ObservableList<Telefono> oTelefonosList=null;
-   // private Contacto contactoActual;
+    private Contacto contactoActual;
+    public static final String PROP_CONTACTOACTUAL = "contactoActual";
     private EntityManager em;
     private String tipoContacto;
     private Query queryContactos;
     private Query queryTelefonos;
     private ContactoJpaController contactoController;
+    private transient final java.beans.PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
+   // private transient final java.beans.VetoableChangeSupport vetoableChangeSupport = new java.beans.VetoableChangeSupport(this);
     
     /**
      * Creates new form ContactosPanel
      */
-  /*  public ContactosPanel()
+    public ContactosPanel()
     {
         super();
+        em=null;
+        tipoContacto="cliente";
         initComponents();
         
-    }*/
+    }
     public ContactosPanel(EntityManager eManager, String tipo)
     {
         super();
@@ -87,11 +97,33 @@ public class ContactosPanel extends JXPanel {
         return this.contactoActual;
     }
     
-    public void setContactoActual(Contacto current){
-        this.contactoActual=current;
-        //System.out.println("contacto actual:"+contactoActual.getNombre());
+     public void setContactoActual(Contacto contactoActual) /*throws java.beans.PropertyVetoException*/ {
+        Contacto oldContactoActual = this.getContactoActual();
+       // vetoableChangeSupport.fireVetoableChange(PROP_CONTACTOACTUAL, oldContactoActual, contactoActual);
+        this.contactoActual = contactoActual;
+        propertyChangeSupport.firePropertyChange(PROP_CONTACTOACTUAL, oldContactoActual, contactoActual);
+    }
+
+    public void addPropertyChangeListener(java.beans.PropertyChangeListener listener )
+    {
+        propertyChangeSupport.addPropertyChangeListener( listener );
+    }
+
+    public void removePropertyChangeListener(java.beans.PropertyChangeListener listener )
+    {
+        propertyChangeSupport.removePropertyChangeListener( listener );
     }
     
+   /* public void addVetoableChangeListener(java.beans.VetoableChangeListener listener )
+    {
+        vetoableChangeSupport.addVetoableChangeListener( listener );
+    }
+
+    public void removeVetoableChangeListener(java.beans.VetoableChangeListener listener )
+    {
+        vetoableChangeSupport.removeVetoableChangeListener( listener );
+    }
+    */
     public String getTipoContacto(){
         return this.tipoContacto;
     }
@@ -109,7 +141,6 @@ public class ContactosPanel extends JXPanel {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        contactoActual = new agendascc.DATA.Contacto();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jXTable1 = new org.jdesktop.swingx.JXTable();
@@ -186,6 +217,7 @@ public class ContactosPanel extends JXPanel {
             }
         });
         jXTable1.getColumnExt (jXTable1.getColumnModel().getColumn(0).getIdentifier()).setVisible(false);
+        jXTable1.packAll();
 
         jXTable2.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         jXTable2.setMinimumSize(new java.awt.Dimension(300, 360));
@@ -440,7 +472,6 @@ public class ContactosPanel extends JXPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private agendascc.DATA.Contacto contactoActual;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.JLabel jLabel1;
