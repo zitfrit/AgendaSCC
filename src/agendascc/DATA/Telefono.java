@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Telefono.findByTelefono", query = "SELECT t FROM Telefono t WHERE t.telefonoPK.telefono = :telefono"),
     @NamedQuery(name = "Telefono.findByTipo", query = "SELECT t FROM Telefono t WHERE t.tipo = :tipo"),
     @NamedQuery(name = "Telefono.findByLada", query = "SELECT t FROM Telefono t WHERE t.lada = :lada"),
-    @NamedQuery(name = "Telefono.findByExtencion", query = "SELECT t FROM Telefono t WHERE t.extencion = :extencion")})
+    @NamedQuery(name = "Telefono.findByExtension", query = "SELECT t FROM Telefono t WHERE t.extension = :extension")})
 public class Telefono implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -40,8 +40,8 @@ public class Telefono implements Serializable {
     private String tipo;
     @Column(name = "lada", length = 11)
     private String lada;
-    @Column(name = "extencion", length = 5)
-    private String extencion;
+    @Column(name = "extension", length = 5)
+    private String extension;
     @JoinColumn(name = "id_contacto", referencedColumnName = "id_contacto", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Contacto contacto;
@@ -86,12 +86,12 @@ public class Telefono implements Serializable {
         this.lada = lada;
     }
 
-    public String getExtencion() {
-        return extencion;
+    public String getExtension() {
+        return extension;
     }
 
-    public void setExtencion(String extencion) {
-        this.extencion = extencion;
+    public void setExtension(String extension) {
+        this.extension = extension;
     }
 
     public Contacto getContacto() {

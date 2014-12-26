@@ -234,7 +234,7 @@ public class ContactosPanel extends JXPanel {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${lada}"));
         columnBinding.setColumnName("Lada");
         columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${extencion}"));
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${extension}"));
         columnBinding.setColumnName("Extension");
         columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
