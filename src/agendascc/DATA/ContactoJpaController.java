@@ -7,6 +7,7 @@ package agendascc.DATA;
 
 import agendascc.DATA.exceptions.IllegalOrphanException;
 import agendascc.DATA.exceptions.NonexistentEntityException;
+import java.beans.PropertyVetoException;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -14,6 +15,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -34,7 +37,11 @@ public class ContactoJpaController implements Serializable {
 
     public void create(Contacto contacto) {
         if (contacto.getTelefonoList() == null) {
-            contacto.setTelefonoList(new ArrayList<Telefono>());
+            try {
+                contacto.setTelefonoList(new ArrayList<Telefono>());
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ContactoJpaController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         EntityManager em = null;
         try {
@@ -57,6 +64,8 @@ public class ContactoJpaController implements Serializable {
                 }
             }
             em.getTransaction().commit();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ContactoJpaController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (em != null) {
                 em.close();

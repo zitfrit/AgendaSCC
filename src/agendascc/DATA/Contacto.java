@@ -6,6 +6,7 @@
 package agendascc.DATA;
 
 import java.beans.PropertyChangeSupport;
+import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeSupport;
 import java.io.Serializable;
 import java.util.List;
@@ -51,6 +52,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Contacto.findByImagen", query = "SELECT c FROM Contacto c WHERE c.imagen = :imagen")})
 
 public class Contacto implements Serializable {
+
     private static final long serialVersionUID = 1L;
     public static final String PROP_SERIALVERSIONUID = "PROP_SERIALVERSIONUID";
     public static final String PROP_IDCONTACTO = "PROP_IDCONTACTO";
@@ -69,6 +71,25 @@ public class Contacto implements Serializable {
     public static final String PROP_EMAIL = "PROP_EMAIL";
     public static final String PROP_IMAGEN = "PROP_IMAGEN";
     public static final String PROP_TELEFONOLIST = "PROP_TELEFONOLIST";
+    public static final String PROP_SERIALVERSIONUID_1 = "PROP_SERIALVERSIONUID_1";
+    public static final String PROP_IDCONTACTO_1 = "PROP_IDCONTACTO_1";
+    public static final String PROP_TIPO_1 = "PROP_TIPO_1";
+    public static final String PROP_NOMBRE_1 = "PROP_NOMBRE_1";
+    public static final String PROP_PSEUDONIMO_1 = "PROP_PSEUDONIMO_1";
+    public static final String PROP_DIRECCION_1 = "PROP_DIRECCION_1";
+    public static final String PROP_DIRECCIONREFERENCIAS_1 = "PROP_DIRECCIONREFERENCIAS_1";
+    public static final String PROP_COLONIA_1 = "PROP_COLONIA_1";
+    public static final String PROP_CODIGOPOSTAL_1 = "PROP_CODIGOPOSTAL_1";
+    public static final String PROP_LOCALIDAD_1 = "PROP_LOCALIDAD_1";
+    public static final String PROP_MUNICIPIO_1 = "PROP_MUNICIPIO_1";
+    public static final String PROP_ESTADO_1 = "PROP_ESTADO_1";
+    public static final String PROP_PAIS_1 = "PROP_PAIS_1";
+    public static final String PROP_COMENTARIOS_1 = "PROP_COMENTARIOS_1";
+    public static final String PROP_EMAIL_1 = "PROP_EMAIL_1";
+    public static final String PROP_IMAGEN_1 = "PROP_IMAGEN_1";
+    public static final String PROP_TELEFONOLIST_1 = "PROP_TELEFONOLIST_1";
+    public static final String PROP_PROPERTYCHANGESUPPORT = "PROP_PROPERTYCHANGESUPPORT";
+    public static final String PROP_VETOABLECHANGESUPPORT = "PROP_VETOABLECHANGESUPPORT";
 
     /**
      * @return the serialVersionUID
@@ -144,136 +165,293 @@ public class Contacto implements Serializable {
         this.estado = estado;
         this.pais = pais;
     }
-
+    /**
+     * @return the idContacto
+     */
     public Integer getIdContacto() {
         return idContacto;
     }
 
-    public void setIdContacto(Integer idContacto) {
+    /**
+     * @param idContacto the idContacto to set
+     */
+    public void setIdContacto(Integer idContacto) throws PropertyVetoException {
+        java.lang.Integer oldIdContacto = this.idContacto;
+        vetoableChangeSupport.fireVetoableChange(PROP_IDCONTACTO_1, oldIdContacto, idContacto);
         this.idContacto = idContacto;
+        propertyChangeSupport.firePropertyChange(PROP_IDCONTACTO_1, oldIdContacto, idContacto);
     }
 
+    /**
+     * @return the tipo
+     */
     public String getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    /**
+     * @param tipo the tipo to set
+     */
+    public void setTipo(String tipo) throws PropertyVetoException {
+        java.lang.String oldTipo = this.tipo;
+        vetoableChangeSupport.fireVetoableChange(PROP_TIPO_1, oldTipo, tipo);
         this.tipo = tipo;
+        propertyChangeSupport.firePropertyChange(PROP_TIPO_1, oldTipo, tipo);
     }
 
+    /**
+     * @return the nombre
+     */
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    /**
+     * @param nombre the nombre to set
+     */
+    public void setNombre(String nombre) throws PropertyVetoException {
+        java.lang.String oldNombre = this.nombre;
+        vetoableChangeSupport.fireVetoableChange(PROP_NOMBRE_1, oldNombre, nombre);
         this.nombre = nombre;
+        propertyChangeSupport.firePropertyChange(PROP_NOMBRE_1, oldNombre, nombre);
     }
 
+    /**
+     * @return the pseudonimo
+     */
     public String getPseudonimo() {
         return pseudonimo;
     }
 
-    public void setPseudonimo(String pseudonimo) {
+    /**
+     * @param pseudonimo the pseudonimo to set
+     */
+    public void setPseudonimo(String pseudonimo) throws PropertyVetoException {
+        java.lang.String oldPseudonimo = this.pseudonimo;
+        vetoableChangeSupport.fireVetoableChange(PROP_PSEUDONIMO_1, oldPseudonimo, pseudonimo);
         this.pseudonimo = pseudonimo;
+        propertyChangeSupport.firePropertyChange(PROP_PSEUDONIMO_1, oldPseudonimo, pseudonimo);
     }
 
+    /**
+     * @return the direccion
+     */
     public String getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(String direccion) {
+    /**
+     * @param direccion the direccion to set
+     */
+    public void setDireccion(String direccion) throws PropertyVetoException {
+        java.lang.String oldDireccion = this.direccion;
+        vetoableChangeSupport.fireVetoableChange(PROP_DIRECCION_1, oldDireccion, direccion);
         this.direccion = direccion;
+        propertyChangeSupport.firePropertyChange(PROP_DIRECCION_1, oldDireccion, direccion);
     }
 
+    /**
+     * @return the direccionReferencias
+     */
     public String getDireccionReferencias() {
         return direccionReferencias;
     }
 
-    public void setDireccionReferencias(String direccionReferencias) {
+    /**
+     * @param direccionReferencias the direccionReferencias to set
+     */
+    public void setDireccionReferencias(String direccionReferencias) throws PropertyVetoException {
+        java.lang.String oldDireccionReferencias = this.direccionReferencias;
+        vetoableChangeSupport.fireVetoableChange(PROP_DIRECCIONREFERENCIAS_1, oldDireccionReferencias, direccionReferencias);
         this.direccionReferencias = direccionReferencias;
+        propertyChangeSupport.firePropertyChange(PROP_DIRECCIONREFERENCIAS_1, oldDireccionReferencias, direccionReferencias);
     }
 
+    /**
+     * @return the colonia
+     */
     public String getColonia() {
         return colonia;
     }
 
-    public void setColonia(String colonia) {
+    /**
+     * @param colonia the colonia to set
+     */
+    public void setColonia(String colonia) throws PropertyVetoException {
+        java.lang.String oldColonia = this.colonia;
+        vetoableChangeSupport.fireVetoableChange(PROP_COLONIA_1, oldColonia, colonia);
         this.colonia = colonia;
+        propertyChangeSupport.firePropertyChange(PROP_COLONIA_1, oldColonia, colonia);
     }
 
+    /**
+     * @return the codigoPostal
+     */
     public String getCodigoPostal() {
         return codigoPostal;
     }
 
-    public void setCodigoPostal(String codigoPostal) {
+    /**
+     * @param codigoPostal the codigoPostal to set
+     */
+    public void setCodigoPostal(String codigoPostal) throws PropertyVetoException {
+        java.lang.String oldCodigoPostal = this.codigoPostal;
+        vetoableChangeSupport.fireVetoableChange(PROP_CODIGOPOSTAL_1, oldCodigoPostal, codigoPostal);
         this.codigoPostal = codigoPostal;
+        propertyChangeSupport.firePropertyChange(PROP_CODIGOPOSTAL_1, oldCodigoPostal, codigoPostal);
     }
 
+    /**
+     * @return the localidad
+     */
     public String getLocalidad() {
         return localidad;
     }
 
-    public void setLocalidad(String localidad) {
+    /**
+     * @param localidad the localidad to set
+     */
+    public void setLocalidad(String localidad) throws PropertyVetoException {
+        java.lang.String oldLocalidad = this.localidad;
+        vetoableChangeSupport.fireVetoableChange(PROP_LOCALIDAD_1, oldLocalidad, localidad);
         this.localidad = localidad;
+        propertyChangeSupport.firePropertyChange(PROP_LOCALIDAD_1, oldLocalidad, localidad);
     }
 
+    /**
+     * @return the municipio
+     */
     public String getMunicipio() {
         return municipio;
     }
 
-    public void setMunicipio(String municipio) {
+    /**
+     * @param municipio the municipio to set
+     */
+    public void setMunicipio(String municipio) throws PropertyVetoException {
+        java.lang.String oldMunicipio = this.municipio;
+        vetoableChangeSupport.fireVetoableChange(PROP_MUNICIPIO_1, oldMunicipio, municipio);
         this.municipio = municipio;
+        propertyChangeSupport.firePropertyChange(PROP_MUNICIPIO_1, oldMunicipio, municipio);
     }
 
+    /**
+     * @return the estado
+     */
     public String getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    /**
+     * @param estado the estado to set
+     */
+    public void setEstado(String estado) throws PropertyVetoException {
+        java.lang.String oldEstado = this.estado;
+        vetoableChangeSupport.fireVetoableChange(PROP_ESTADO_1, oldEstado, estado);
         this.estado = estado;
+        propertyChangeSupport.firePropertyChange(PROP_ESTADO_1, oldEstado, estado);
     }
 
+    /**
+     * @return the pais
+     */
     public String getPais() {
         return pais;
     }
 
-    public void setPais(String pais) {
+    /**
+     * @param pais the pais to set
+     */
+    public void setPais(String pais) throws PropertyVetoException {
+        java.lang.String oldPais = this.pais;
+        vetoableChangeSupport.fireVetoableChange(PROP_PAIS_1, oldPais, pais);
         this.pais = pais;
+        propertyChangeSupport.firePropertyChange(PROP_PAIS_1, oldPais, pais);
     }
 
+    /**
+     * @return the comentarios
+     */
     public String getComentarios() {
         return comentarios;
     }
 
-    public void setComentarios(String comentarios) {
+    /**
+     * @param comentarios the comentarios to set
+     */
+    public void setComentarios(String comentarios) throws PropertyVetoException {
+        java.lang.String oldComentarios = this.comentarios;
+        vetoableChangeSupport.fireVetoableChange(PROP_COMENTARIOS_1, oldComentarios, comentarios);
         this.comentarios = comentarios;
+        propertyChangeSupport.firePropertyChange(PROP_COMENTARIOS_1, oldComentarios, comentarios);
     }
-    
+
+    /**
+     * @return the email
+     */
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) throws PropertyVetoException {
+        java.lang.String oldEmail = this.email;
+        vetoableChangeSupport.fireVetoableChange(PROP_EMAIL_1, oldEmail, email);
         this.email = email;
+        propertyChangeSupport.firePropertyChange(PROP_EMAIL_1, oldEmail, email);
     }
 
+    /**
+     * @return the imagen
+     */
     public String getImagen() {
         return imagen;
     }
 
-    public void setImagen(String imagen) {
+    /**
+     * @param imagen the imagen to set
+     */
+    public void setImagen(String imagen) throws PropertyVetoException {
+        java.lang.String oldImagen = this.imagen;
+        vetoableChangeSupport.fireVetoableChange(PROP_IMAGEN_1, oldImagen, imagen);
         this.imagen = imagen;
+        propertyChangeSupport.firePropertyChange(PROP_IMAGEN_1, oldImagen, imagen);
     }
 
+    /**
+     * @return the telefonoList
+     */
     @XmlTransient
     public List<Telefono> getTelefonoList() {
         return telefonoList;
     }
 
-    public void setTelefonoList(List<Telefono> telefonoList) {
+    /**
+     * @param telefonoList the telefonoList to set
+     */
+    public void setTelefonoList(List<Telefono> telefonoList) throws PropertyVetoException {
+        java.util.List<agendascc.DATA.Telefono> oldTelefonoList = this.telefonoList;
+        vetoableChangeSupport.fireVetoableChange(PROP_TELEFONOLIST_1, oldTelefonoList, telefonoList);
         this.telefonoList = telefonoList;
+        propertyChangeSupport.firePropertyChange(PROP_TELEFONOLIST_1, oldTelefonoList, telefonoList);
     }
 
+    /**
+     * @return the propertyChangeSupport
+     */
+    public PropertyChangeSupport getPropertyChangeSupport() {
+        return propertyChangeSupport;
+    }
+
+    /**
+     * @return the vetoableChangeSupport
+     */
+    public VetoableChangeSupport getVetoableChangeSupport() {
+        return vetoableChangeSupport;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -299,4 +477,20 @@ public class Contacto implements Serializable {
         return "agendascc.DATA.Contacto[ idContacto=" + getIdContacto() + " ]";
     }
     
+    public void addPropertyChangeListener(java.beans.PropertyChangeListener listener )
+    {
+        propertyChangeSupport.addPropertyChangeListener( listener );
+    }
+
+    public void removePropertyChangeListener(java.beans.PropertyChangeListener listener )
+    {
+        propertyChangeSupport.removePropertyChangeListener( listener );
+    }
+    
 }
+
+
+ //  @XmlTransient
+ /*     public List<Telefono> getTelefonoList() {
+        return telefonoList;
+    }*/
