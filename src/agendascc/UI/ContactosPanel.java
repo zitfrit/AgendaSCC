@@ -37,14 +37,15 @@ import org.jdesktop.swingx.JXTable;
  * @author JTF
  */
 public class ContactosPanel extends JXPanel {
-    private ObservableList<Contacto> oContactosList=null;
-    private ObservableList<Telefono> oTelefonosList=null;
+   // private ObservableList<Contacto> oContactosList=null;
+   // private ObservableList<Telefono> oTelefonosList=null;
     private Contacto contactoActual;
     public static final String PROP_CONTACTOACTUAL = "contactoActual";
+    public static final String PROP_OCONTACTOSLIST = "oContactosList";
     private EntityManager em;
     private String tipoContacto;
-    private Query queryContactos;
-    private Query queryTelefonos;
+//    private Query queryContactos;
+//    private Query queryTelefonos;
     private ContactoJpaController contactoController;
     private transient final java.beans.PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
    // private transient final java.beans.VetoableChangeSupport vetoableChangeSupport = new java.beans.VetoableChangeSupport(this);
@@ -69,11 +70,12 @@ public class ContactosPanel extends JXPanel {
         Object o;
         //contactoActual=new Contacto();
         em=eManager;
-        contactoController=new ContactoJpaController(em.getEntityManagerFactory());
+        mainEntityManager=eManager;
+        contactoController=new ContactoJpaController(mainEntityManager.getEntityManagerFactory());
         tipoContacto=tipo;
-        queryContactos=em.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo");
+       /* queryContactos=em.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo");
         queryContactos.setParameter("tipo", tipo);
-        oContactosList= FXCollections.observableList((List<Contacto>) queryContactos.getResultList());
+        oContactosList= ((List<Contacto>) queryContactos.getResultList());*/
         initComponents();
         listaEditable.add(direccionTF);
         listaEditable.add(referenciasDireccionTF);
@@ -92,19 +94,38 @@ public class ContactosPanel extends JXPanel {
 
     }
     
-    public ObservableList<Contacto> getOContactosList(){
+/*    public ObservableList<Contacto> getOContactosList(){
         return this.oContactosList;
     }
-    public void setOContactosList(ObservableList<Contacto> listaContactos){
-        this.oContactosList.clear();
-        this.oContactosList.addAll(listaContactos);
+ */
+    public List<Contacto> getOContactosList()
+    {
+        return this.oContactosList;
     }
+ /*   public void setOContactosList(ObservableList<Contacto> listaContactos){
+        ObservableList<Contacto> oList=(ObservableList<Contacto>) FXCollections.observableList(getOContactosList().subList(0,getOContactosList().size()));
+        //this.oContactosList=listaContactos;
+        this.oContactosList.clear();
+        //this.oContactosList=null;
+       // this.oContactosList=listaContactos;
+       // this.oContactosList.clear();
+        this.oContactosList.addAll(listaContactos);
+        //this.oContactosList.addAll(listaContactos);
+        //this.oContactosList.setAll(listaContactos);
+        //this.oContactosList.addAll(listaContactos);
+        propertyChangeSupport.firePropertyChange(PROP_OCONTACTOSLIST, oList, this.oContactosList);
+    }
+    */
     public void setOContactosList(List<Contacto> listaContactos){
         this.oContactosList.clear();
         this.oContactosList.addAll(listaContactos);
     }
     
-    public ObservableList<Telefono> getOTelefonosList(){
+  /*  public ObservableList<Telefono> getOTelefonosList(){
+        return this.oTelefonosList;
+    }
+    */
+    public List<Telefono> getOTelefonosList(){
         return this.oTelefonosList;
     }
     
@@ -166,6 +187,12 @@ public class ContactosPanel extends JXPanel {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
+        queryContactos = mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo");
+        queryContactos.setParameter("tipo", getTipoContacto());
+        queryTelefonos = em.createQuery("SELECT C FROM Telefono C");
+        mainEntityManager = em;
+        oContactosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryContactos.getResultList());
+        oTelefonosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTelefonos.getResultList());
         jPanel1 = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         labelPseudonimo = new javax.swing.JLabel();
@@ -206,13 +233,13 @@ public class ContactosPanel extends JXPanel {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        labelPseudonimo.setFont(new java.awt.Font("Calibri", 2, 16)); // NOI18N
+        labelPseudonimo.setFont(new java.awt.Font("Calibri", 2, 20)); // NOI18N
         labelPseudonimo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.pseudonimo}"), labelPseudonimo, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        labelNombre.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        labelNombre.setFont(new java.awt.Font("Calibri", 1, 22)); // NOI18N
         labelNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nombre}"), labelNombre, org.jdesktop.beansbinding.BeanProperty.create("text"));
@@ -223,7 +250,7 @@ public class ContactosPanel extends JXPanel {
         labelImagen.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TODOS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
 
         telefonosTabla.setEditable(false);
-        telefonosTabla.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
+        telefonosTabla.setFont(new java.awt.Font("Calibri", 1, 13)); // NOI18N
         telefonosTabla.setMinimumSize(new java.awt.Dimension(300, 360));
         telefonosTabla.setPreferredSize(new java.awt.Dimension(300, 360));
 
@@ -308,8 +335,9 @@ public class ContactosPanel extends JXPanel {
         labelDireccion.setText("Direccion:");
 
         comentariosTA.setColumns(20);
-        comentariosTA.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        comentariosTA.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         comentariosTA.setRows(5);
+        comentariosTA.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         comentariosTA.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.comentarios}"), comentariosTA, org.jdesktop.beansbinding.BeanProperty.create("text"));
@@ -317,7 +345,8 @@ public class ContactosPanel extends JXPanel {
 
         jScrollPane3.setViewportView(comentariosTA);
 
-        paisTF.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        paisTF.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        paisTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         paisTF.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.pais}"), paisTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
@@ -326,30 +355,36 @@ public class ContactosPanel extends JXPanel {
         labelColonia.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         labelColonia.setText("Colonia:");
 
+        codigoPostalTF.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        codigoPostalTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         codigoPostalTF.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.codigoPostal}"), codigoPostalTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        emailTF.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        emailTF.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        emailTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         emailTF.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.email}"), emailTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        referenciasDireccionTF.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        referenciasDireccionTF.setFont(new java.awt.Font("Calibri", 1, 13)); // NOI18N
+        referenciasDireccionTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         referenciasDireccionTF.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.direccionReferencias}"), referenciasDireccionTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        coloniaTF.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        coloniaTF.setFont(new java.awt.Font("Calibri", 1, 13)); // NOI18N
+        coloniaTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         coloniaTF.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.colonia}"), coloniaTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        localidadTF.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        localidadTF.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        localidadTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         localidadTF.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.localidad}"), localidadTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
@@ -358,16 +393,18 @@ public class ContactosPanel extends JXPanel {
         labelEstado.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         labelEstado.setText("Estado:");
 
-        direccionTF.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        direccionTF.setFont(new java.awt.Font("Calibri", 1, 13)); // NOI18N
+        direccionTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         direccionTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.direccion}"), direccionTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.direccion}"), direccionTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         labelComentarios.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         labelComentarios.setText("Comentarios:");
 
-        estadoTF.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        estadoTF.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        estadoTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         estadoTF.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.estado}"), estadoTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
@@ -376,7 +413,8 @@ public class ContactosPanel extends JXPanel {
         labelPais.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         labelPais.setText("Pais:");
 
-        municipioTF.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        municipioTF.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        municipioTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         municipioTF.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.municipio}"), municipioTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
@@ -524,7 +562,7 @@ public class ContactosPanel extends JXPanel {
 
         contactosTabla.setColumnControlVisible(true);
         contactosTabla.setEditable(false);
-        contactosTabla.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
+        contactosTabla.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         contactosTabla.setShowVerticalLines(false);
 
         eLProperty = org.jdesktop.beansbinding.ELProperty.create("${OContactosList}");
@@ -557,7 +595,8 @@ public class ContactosPanel extends JXPanel {
                 // contactoActual=new Contacto(contactoActual.getIdContacto(), contactoActual.getTipo(), contactoActual.getNombre(), contactoActual.getDireccion(), contactoActual.getColonia(), contactoActual.getCodigoPostal(), contactoActual.getLocalidad(), contactoActual.getMunicipio(), contactoActual.getEstado(), contactoActual.getPais());
 
                 //jXTable1.getSelectionModel().getLeadSelectionIndex();
-                setContactoActual(contactoController.findContacto((Integer)contactosTabla.getModel().getValueAt(contactosTabla.convertRowIndexToModel(contactosTabla.getSelectedRow()),0 )));
+                setContactoActual(contactoController.findContacto((Integer)contactosTabla.getModel().getValueAt(contactosTabla.convertRowIndexToModel(contactosTabla.getSelectedRow()),0)));
+                telefonosTabla.packAll();
             }
         });
         contactosTabla.getColumnExt (contactosTabla.getColumnModel().getColumn(0).getIdentifier()).setVisible(false);
@@ -596,6 +635,8 @@ public class ContactosPanel extends JXPanel {
     }//GEN-LAST:event_editarJBActionPerformed
 
     private void cancelarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarJBActionPerformed
+        updateListaContactos();
+        //contactosTabla.revalidate();
         cancelarEdicion();
     }//GEN-LAST:event_cancelarJBActionPerformed
 
@@ -603,6 +644,7 @@ public class ContactosPanel extends JXPanel {
         editarJB.setEnabled(true);
         cancelarJB.setEnabled(false);
         guardarJB.setEnabled(false);
+        setOContactosList(getOContactosList());
     }//GEN-LAST:event_guardarJBActionPerformed
 
 
@@ -638,8 +680,13 @@ public class ContactosPanel extends JXPanel {
     private javax.swing.JLabel labelPais;
     private javax.swing.JLabel labelPseudonimo;
     private javax.swing.JTextField localidadTF;
+    private javax.persistence.EntityManager mainEntityManager;
     private javax.swing.JTextField municipioTF;
+    private java.util.List<Contacto> oContactosList;
+    private java.util.List<Telefono> oTelefonosList;
     private javax.swing.JTextField paisTF;
+    private javax.persistence.Query queryContactos;
+    private javax.persistence.Query queryTelefonos;
     private javax.swing.JTextField referenciasDireccionTF;
     private org.jdesktop.swingx.JXTable telefonosTabla;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
@@ -677,6 +724,14 @@ public class ContactosPanel extends JXPanel {
         }
     }
     private void guardarEdicionContacto(){
+        
+    }
+    private void updateListaContactos(){
+        
+        queryContactos=mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo");
+        queryContactos.setParameter("tipo", "trabajador");
+
+        setOContactosList(((List<Contacto>) queryContactos.getResultList()));
         
     }
 }
