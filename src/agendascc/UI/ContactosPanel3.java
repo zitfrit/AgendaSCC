@@ -36,40 +36,104 @@ import org.jdesktop.swingx.JXTable;
  *
  * @author JTF
  */
-public class ContactosPanel extends JXPanel {
+public class ContactosPanel3 extends JXPanel {
+   // private ObservableList<Contacto> oContactosList=null;
+   // private ObservableList<Telefono> oTelefonosList=null;
     private Contacto contactoActual;
     public static final String PROP_CONTACTOACTUAL = "contactoActual";
     public static final String PROP_OCONTACTOSLIST = "oContactosList";
-    public static final String PROP_OTELEFONOSLIST = "oTelefonosList";
+    private EntityManager em;
     private String tipoContacto;
+//    private Query queryContactos;
+//    private Query queryTelefonos;
     private ContactoJpaController contactoController;
     private transient final java.beans.PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
    // private transient final java.beans.VetoableChangeSupport vetoableChangeSupport = new java.beans.VetoableChangeSupport(this);
-
-    public ContactosPanel()
+    ArrayList<JComponent> listaEditable;
+    
+    /**
+     * Creates new form ContactosPanel
+     */
+    public ContactosPanel3()
     {
         super();
-        tipoContacto="*";
-        contactoController=new ContactoJpaController(mainEntityManager.getEntityManagerFactory());
+        em=null;
+        tipoContacto="cliente";
+        listaEditable= new ArrayList<JComponent>();
         initComponents();
         
     }
+    public ContactosPanel3(EntityManager eManager, String tipo)
+    {
+        super();
+        listaEditable= new ArrayList<JComponent>();
+        Object o;
+        //contactoActual=new Contacto();
+        em=eManager;
+        mainEntityManager=eManager;
+        contactoController=new ContactoJpaController(mainEntityManager.getEntityManagerFactory());
+        tipoContacto=tipo;
+       /* queryContactos=em.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo");
+        queryContactos.setParameter("tipo", tipo);
+        oContactosList= ((List<Contacto>) queryContactos.getResultList());*/
+        initComponents();
+        listaEditable.add(direccionTF);
+        listaEditable.add(referenciasDireccionTF);
+        listaEditable.add(coloniaTF);
+        listaEditable.add(codigoPostalTF);
+        listaEditable.add(comentariosTA);
+        listaEditable.add(emailTF);
+        listaEditable.add(paisTF);
+        listaEditable.add(localidadTF);
+        listaEditable.add(municipioTF);
+        listaEditable.add(estadoTF);
+        listaEditable.add(contactosTabla);
+        listaEditable.add(telefonosTabla);
+        //contactoActual.
+        
 
+    }
+    
+/*    public ObservableList<Contacto> getOContactosList(){
+        return this.oContactosList;
+    }
+ */
     public List<Contacto> getOContactosList()
     {
         return this.oContactosList;
     }
-
+ /*   public void setOContactosList(ObservableList<Contacto> listaContactos){
+        ObservableList<Contacto> oList=(ObservableList<Contacto>) FXCollections.observableList(getOContactosList().subList(0,getOContactosList().size()));
+        //this.oContactosList=listaContactos;
+        this.oContactosList.clear();
+        //this.oContactosList=null;
+       // this.oContactosList=listaContactos;
+       // this.oContactosList.clear();
+        this.oContactosList.addAll(listaContactos);
+        //this.oContactosList.addAll(listaContactos);
+        //this.oContactosList.setAll(listaContactos);
+        //this.oContactosList.addAll(listaContactos);
+        propertyChangeSupport.firePropertyChange(PROP_OCONTACTOSLIST, oList, this.oContactosList);
+    }
+    */
     public void setOContactosList(List<Contacto> listaContactos){
         this.oContactosList.clear();
         this.oContactosList.addAll(listaContactos);
     }
-
+    
+  /*  public ObservableList<Telefono> getOTelefonosList(){
+        return this.oTelefonosList;
+    }
+    */
     public List<Telefono> getOTelefonosList(){
         return this.oTelefonosList;
     }
     
- 
+    public void setOTelefonosList(ObservableList<Telefono> listaTelefonos){
+        this.oTelefonosList.clear();
+        this.oTelefonosList.addAll(listaTelefonos);
+    }
+    
     public void setOTelefonosList(List<Telefono> listaTelefonos){
         this.oTelefonosList.clear();
         this.oTelefonosList.addAll(listaTelefonos);
@@ -79,11 +143,11 @@ public class ContactosPanel extends JXPanel {
         return this.contactoActual;
     }
     
-     public void setContactoActual(Contacto contactoNuevo) /*throws java.beans.PropertyVetoException*/ {
-        Contacto oldContactoActual = this.contactoActual;
+     public void setContactoActual(Contacto contactoActual) /*throws java.beans.PropertyVetoException*/ {
+        Contacto oldContactoActual = this.getContactoActual();
        // vetoableChangeSupport.fireVetoableChange(PROP_CONTACTOACTUAL, oldContactoActual, contactoActual);
-        this.contactoActual = contactoNuevo;
-        propertyChangeSupport.firePropertyChange(PROP_CONTACTOACTUAL, oldContactoActual, this.contactoActual);
+        this.contactoActual = contactoActual;
+        propertyChangeSupport.firePropertyChange(PROP_CONTACTOACTUAL, oldContactoActual, contactoActual);
     }
 
     public void addPropertyChangeListener(java.beans.PropertyChangeListener listener )
@@ -123,9 +187,10 @@ public class ContactosPanel extends JXPanel {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        queryContactos = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT c FROM Contacto c ");
-        queryTelefonos = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT C FROM Telefono C");
-        mainEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("AgendaSCCPU").createEntityManager();
+        queryContactos = mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo");
+        queryContactos.setParameter("tipo", getTipoContacto());
+        queryTelefonos = em.createQuery("SELECT C FROM Telefono C");
+        mainEntityManager = em;
         oContactosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryContactos.getResultList());
         oTelefonosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTelefonos.getResultList());
         jPanel1 = new javax.swing.JPanel();
@@ -332,7 +397,7 @@ public class ContactosPanel extends JXPanel {
         direccionTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         direccionTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.direccion}"), direccionTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.direccion}"), direccionTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         labelComentarios.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -628,18 +693,35 @@ public class ContactosPanel extends JXPanel {
     // End of variables declaration//GEN-END:variables
 
     private void editarContacto(){
+        for(JComponent jc:listaEditable)
+        {
+            if(jc.getClass().equals(JXTable.class))
+                ((JXTable)jc).setEditable(true);
+            else
+                jc.setEnabled(true);
+        }
         guardarJB.setEnabled(true);
         cancelarJB.setEnabled(true);
         editarJB.setEnabled(false);
     }
     private void cancelarEdicion(){
-      
+        for(JComponent jc:listaEditable)
+        {   
+            if(jc.getClass().equals(JXTable.class))
+                ((JXTable)jc).setEditable(false);
+            else
+                jc.setEnabled(false);
+        }
         guardarJB.setEnabled(false);
         cancelarJB.setEnabled(false);
         editarJB.setEnabled(true);
     }
     private void limparCamposContacto(){
-
+        for(JComponent jc:listaEditable)
+        {
+            if(jc instanceof JTextComponent)
+                ((JTextComponent)jc).setText("");
+        }
     }
     private void guardarEdicionContacto(){
         
@@ -650,33 +732,6 @@ public class ContactosPanel extends JXPanel {
         queryContactos.setParameter("tipo", "trabajador");
 
         setOContactosList(((List<Contacto>) queryContactos.getResultList()));
-    }
-    private void enableFields(){
-        direccionTF.setEnabled(true);
-        referenciasDireccionTF.setEnabled(true);
-        coloniaTF.setEnabled(true);
-        codigoPostalTF.setEnabled(true);
-        comentariosTA.setEnabled(true);
-        emailTF.setEnabled(true);
-        paisTF.setEnabled(true);
-        localidadTF.setEnabled(true);
-        municipioTF.setEnabled(true);
-        estadoTF.setEnabled(true);
-        contactosTabla.setEditable(true);
-        telefonosTabla.setEditable(true);
-    }
-    private void disableFields(){
-        direccionTF.setEnabled(false);
-        referenciasDireccionTF.setEnabled(false);
-        coloniaTF.setEnabled(false);
-        codigoPostalTF.setEnabled(false);
-        comentariosTA.setEnabled(false);
-        emailTF.setEnabled(false);
-        paisTF.setEnabled(false);
-        localidadTF.setEnabled(false);
-        municipioTF.setEnabled(false);
-        estadoTF.setEnabled(false);
-        contactosTabla.setEditable(false);
-        telefonosTabla.setEditable(false);
+        
     }
 }

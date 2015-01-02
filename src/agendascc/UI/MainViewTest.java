@@ -39,6 +39,7 @@ public class MainViewTest extends javax.swing.JFrame {
         tabbedPaneContactos.setIconAt(0, icon);    */  
         initComponents();
         getContentPane().setBackground(Color.white);
+        tabbedPaneContactos.add(new ContactosPanel3(entityManager1, "cliente"), tabbedPaneContactos.getTabCount());
         
     }
 
@@ -159,6 +160,8 @@ public class MainViewTest extends javax.swing.JFrame {
         );
 
         tabbedPaneContactos.addTab("GENERAL", jXPanel5);
+
+        jXPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jXPanel6Layout = new javax.swing.GroupLayout(jXPanel6);
         jXPanel6.setLayout(jXPanel6Layout);

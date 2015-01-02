@@ -627,7 +627,7 @@
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="text" source="Form" sourcePath="${contactoActual.direccion}" target="direccionTF" targetPath="text" updateStrategy="0" immediately="false">
+            <BindingProperty name="text" source="contactosTabla" sourcePath="${selectedElement.direccion}" target="direccionTF" targetPath="text" updateStrategy="0" immediately="false">
               <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
             </BindingProperty>
           </BindingProperties>
