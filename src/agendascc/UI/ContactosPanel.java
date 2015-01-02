@@ -37,67 +37,24 @@ import org.jdesktop.swingx.JXTable;
  * @author JTF
  */
 public class ContactosPanel extends JXPanel {
-   // private ObservableList<Contacto> oContactosList=null;
-   // private ObservableList<Telefono> oTelefonosList=null;
     private Contacto contactoActual;
     public static final String PROP_CONTACTOACTUAL = "contactoActual";
     public static final String PROP_OCONTACTOSLIST = "oContactosList";
-    private EntityManager em;
+    public static final String PROP_OTELEFONOSLIST = "oTelefonosList";
     private String tipoContacto;
-//    private Query queryContactos;
-//    private Query queryTelefonos;
     private ContactoJpaController contactoController;
     private transient final java.beans.PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
    // private transient final java.beans.VetoableChangeSupport vetoableChangeSupport = new java.beans.VetoableChangeSupport(this);
-    ArrayList<JComponent> listaEditable;
-    
-    /**
-     * Creates new form ContactosPanel
-     */
+
     public ContactosPanel()
     {
         super();
-        em=null;
-        tipoContacto="cliente";
-        listaEditable= new ArrayList<JComponent>();
-        initComponents();
-        
-    }
-    public ContactosPanel(EntityManager eManager, String tipo)
-    {
-        super();
-        listaEditable= new ArrayList<JComponent>();
-        Object o;
-        //contactoActual=new Contacto();
-        em=eManager;
-        mainEntityManager=eManager;
+        tipoContacto="*";
         contactoController=new ContactoJpaController(mainEntityManager.getEntityManagerFactory());
-        tipoContacto=tipo;
-       /* queryContactos=em.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo");
-        queryContactos.setParameter("tipo", tipo);
-        oContactosList= ((List<Contacto>) queryContactos.getResultList());*/
         initComponents();
-        listaEditable.add(direccionTF);
-        listaEditable.add(referenciasDireccionTF);
-        listaEditable.add(coloniaTF);
-        listaEditable.add(codigoPostalTF);
-        listaEditable.add(comentariosTA);
-        listaEditable.add(emailTF);
-        listaEditable.add(paisTF);
-        listaEditable.add(localidadTF);
-        listaEditable.add(municipioTF);
-        listaEditable.add(estadoTF);
-        listaEditable.add(contactosTabla);
-        listaEditable.add(telefonosTabla);
-        //contactoActual.
         
+    }
 
-    }
-    
-/*    public ObservableList<Contacto> getOContactosList(){
-        return this.oContactosList;
-    }
- */
     public List<Contacto> getOContactosList()
     {
         return this.oContactosList;
@@ -187,10 +144,9 @@ public class ContactosPanel extends JXPanel {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        queryContactos = mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo");
-        queryContactos.setParameter("tipo", getTipoContacto());
-        queryTelefonos = em.createQuery("SELECT C FROM Telefono C");
-        mainEntityManager = em;
+        queryContactos = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT c FROM Contacto c ");
+        queryTelefonos = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT C FROM Telefono C");
+        mainEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("AgendaSCCPU").createEntityManager();
         oContactosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryContactos.getResultList());
         oTelefonosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTelefonos.getResultList());
         jPanel1 = new javax.swing.JPanel();
@@ -693,35 +649,18 @@ public class ContactosPanel extends JXPanel {
     // End of variables declaration//GEN-END:variables
 
     private void editarContacto(){
-        for(JComponent jc:listaEditable)
-        {
-            if(jc.getClass().equals(JXTable.class))
-                ((JXTable)jc).setEditable(true);
-            else
-                jc.setEnabled(true);
-        }
         guardarJB.setEnabled(true);
         cancelarJB.setEnabled(true);
         editarJB.setEnabled(false);
     }
     private void cancelarEdicion(){
-        for(JComponent jc:listaEditable)
-        {   
-            if(jc.getClass().equals(JXTable.class))
-                ((JXTable)jc).setEditable(false);
-            else
-                jc.setEnabled(false);
-        }
+      
         guardarJB.setEnabled(false);
         cancelarJB.setEnabled(false);
         editarJB.setEnabled(true);
     }
     private void limparCamposContacto(){
-        for(JComponent jc:listaEditable)
-        {
-            if(jc instanceof JTextComponent)
-                ((JTextComponent)jc).setText("");
-        }
+
     }
     private void guardarEdicionContacto(){
         
@@ -732,6 +671,33 @@ public class ContactosPanel extends JXPanel {
         queryContactos.setParameter("tipo", "trabajador");
 
         setOContactosList(((List<Contacto>) queryContactos.getResultList()));
-        
+    }
+    private void enableFields(){
+        direccionTF.setEnabled(true);
+        referenciasDireccionTF.setEnabled(true);
+        coloniaTF.setEnabled(true);
+        codigoPostalTF.setEnabled(true);
+        comentariosTA.setEnabled(true);
+        emailTF.setEnabled(true);
+        paisTF.setEnabled(true);
+        localidadTF.setEnabled(true);
+        municipioTF.setEnabled(true);
+        estadoTF.setEnabled(true);
+        contactosTabla.setEditable(true);
+        telefonosTabla.setEditable(true);
+    }
+    private void disableFields(){
+        direccionTF.setEnabled(false);
+        referenciasDireccionTF.setEnabled(false);
+        coloniaTF.setEnabled(false);
+        codigoPostalTF.setEnabled(false);
+        comentariosTA.setEnabled(false);
+        emailTF.setEnabled(false);
+        paisTF.setEnabled(false);
+        localidadTF.setEnabled(false);
+        municipioTF.setEnabled(false);
+        estadoTF.setEnabled(false);
+        contactosTabla.setEditable(false);
+        telefonosTabla.setEditable(false);
     }
 }

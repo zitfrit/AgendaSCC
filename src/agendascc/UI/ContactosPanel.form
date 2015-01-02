@@ -4,15 +4,11 @@
   <NonVisualComponents>
     <Component class="javax.persistence.Query" name="queryContactos">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT c FROM Contacto c WHERE c.tipo LIKE cliente"/>
+        <Property name="query" type="java.lang.String" value="SELECT c FROM Contacto c "/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="mainEntityManager"/>
         </Property>
       </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="mainEntityManager.createQuery(&quot;SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo&quot;)"/>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="queryContactos.setParameter(&quot;tipo&quot;, getTipoContacto());"/>
-      </AuxValues>
     </Component>
     <Component class="javax.persistence.Query" name="queryTelefonos">
       <Properties>
@@ -21,17 +17,11 @@
           <ComponentRef name="mainEntityManager"/>
         </Property>
       </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="em.createQuery(&quot;SELECT C FROM Telefono C&quot;)"/>
-      </AuxValues>
     </Component>
     <Component class="javax.persistence.EntityManager" name="mainEntityManager">
       <Properties>
         <Property name="persistenceUnit" type="java.lang.String" value="AgendaSCCPU"/>
       </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="em"/>
-      </AuxValues>
     </Component>
     <Component class="java.util.List" name="oContactosList">
       <Properties>
