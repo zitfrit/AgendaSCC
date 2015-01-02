@@ -5,6 +5,8 @@
  */
 package agendascc.DATA;
 
+import java.beans.PropertyChangeSupport;
+import java.beans.VetoableChangeSupport;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -50,6 +52,30 @@ import javax.xml.bind.annotation.XmlTransient;
 
 public class Contacto implements Serializable {
     private static final long serialVersionUID = 1L;
+    public static final String PROP_SERIALVERSIONUID = "PROP_SERIALVERSIONUID";
+    public static final String PROP_IDCONTACTO = "PROP_IDCONTACTO";
+    public static final String PROP_TIPO = "PROP_TIPO";
+    public static final String PROP_NOMBRE = "PROP_NOMBRE";
+    public static final String PROP_PSEUDONIMO = "PROP_PSEUDONIMO";
+    public static final String PROP_DIRECCION = "PROP_DIRECCION";
+    public static final String PROP_DIRECCIONREFERENCIAS = "PROP_DIRECCIONREFERENCIAS";
+    public static final String PROP_COLONIA = "PROP_COLONIA";
+    public static final String PROP_CODIGOPOSTAL = "PROP_CODIGOPOSTAL";
+    public static final String PROP_LOCALIDAD = "PROP_LOCALIDAD";
+    public static final String PROP_MUNICIPIO = "PROP_MUNICIPIO";
+    public static final String PROP_ESTADO = "PROP_ESTADO";
+    public static final String PROP_PAIS = "PROP_PAIS";
+    public static final String PROP_COMENTARIOS = "PROP_COMENTARIOS";
+    public static final String PROP_EMAIL = "PROP_EMAIL";
+    public static final String PROP_IMAGEN = "PROP_IMAGEN";
+    public static final String PROP_TELEFONOLIST = "PROP_TELEFONOLIST";
+
+    /**
+     * @return the serialVersionUID
+     */
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -96,6 +122,8 @@ public class Contacto implements Serializable {
     private String imagen;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "contacto")
     private List<Telefono> telefonoList;
+    private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
+    private final transient VetoableChangeSupport vetoableChangeSupport = new java.beans.VetoableChangeSupport(this);
 
     public Contacto() {
     }
@@ -249,7 +277,7 @@ public class Contacto implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idContacto != null ? idContacto.hashCode() : 0);
+        hash += (getIdContacto() != null ? getIdContacto().hashCode() : 0);
         return hash;
     }
 
@@ -260,7 +288,7 @@ public class Contacto implements Serializable {
             return false;
         }
         Contacto other = (Contacto) object;
-        if ((this.idContacto == null && other.idContacto != null) || (this.idContacto != null && !this.idContacto.equals(other.idContacto))) {
+        if ((this.getIdContacto() == null && other.getIdContacto() != null) || (this.getIdContacto() != null && !this.idContacto.equals(other.idContacto))) {
             return false;
         }
         return true;
@@ -268,7 +296,7 @@ public class Contacto implements Serializable {
 
     @Override
     public String toString() {
-        return "agendascc.DATA.Contacto[ idContacto=" + idContacto + " ]";
+        return "agendascc.DATA.Contacto[ idContacto=" + getIdContacto() + " ]";
     }
     
 }
