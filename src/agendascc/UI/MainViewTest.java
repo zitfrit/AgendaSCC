@@ -39,7 +39,7 @@ public class MainViewTest extends javax.swing.JFrame {
         tabbedPaneContactos.setIconAt(0, icon);    */  
         initComponents();
         getContentPane().setBackground(Color.white);
-        tabbedPaneContactos.add(new ContactosPanel3(entityManager1, "cliente"), tabbedPaneContactos.getTabCount());
+        tabbedPaneContactos.add(new ContactosPanel(), tabbedPaneContactos.getTabCount());
         
     }
 

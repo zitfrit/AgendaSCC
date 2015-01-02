@@ -5,32 +5,11 @@
  */
 package agendascc.UI;
 
-import agendascc.AgendaSCC;
-import javafx.collections.ObservableList;
 import org.jdesktop.swingx.JXPanel;
 import agendascc.DATA.*;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-import java.beans.PropertyVetoException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Observable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.collections.FXCollections;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.swing.JComponent;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.text.JTextComponent;
-import jdk.nashorn.internal.objects.NativeArray;
-import org.eclipse.persistence.internal.jpa.EntityManagerImpl;
-import org.jdesktop.swingx.JXTable;
 
 /**
  *
@@ -49,10 +28,9 @@ public class ContactosPanel extends JXPanel {
     public ContactosPanel()
     {
         super();
-        tipoContacto="*";
-        contactoController=new ContactoJpaController(mainEntityManager.getEntityManagerFactory());
+        tipoContacto="%";
         initComponents();
-        
+        //contactoController=new ContactoJpaController(mainEntityManager.getEntityManagerFactory());
     }
 
     public List<Contacto> getOContactosList()
@@ -123,9 +101,11 @@ public class ContactosPanel extends JXPanel {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        queryContactos = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT c FROM Contacto c ");
-        queryTelefonos = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT C FROM Telefono C");
         mainEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("AgendaSCCPU").createEntityManager();
+        contactoController=new ContactoJpaController(mainEntityManager.getEntityManagerFactory());
+        queryContactos = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo").setParameter("tipo", tipoContacto);
+        //mainEntityManager.setProperty("tipo", tipoContacto);
+        queryTelefonos = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT C FROM Telefono C");
         oContactosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryContactos.getResultList());
         oTelefonosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTelefonos.getResultList());
         jPanel1 = new javax.swing.JPanel();
@@ -570,16 +550,15 @@ public class ContactosPanel extends JXPanel {
     }//GEN-LAST:event_editarJBActionPerformed
 
     private void cancelarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarJBActionPerformed
-        updateListaContactos();
-        //contactosTabla.revalidate();
         cancelarEdicion();
     }//GEN-LAST:event_cancelarJBActionPerformed
 
     private void guardarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarJBActionPerformed
+        disableFields();
         editarJB.setEnabled(true);
         cancelarJB.setEnabled(false);
         guardarJB.setEnabled(false);
-        setOContactosList(getOContactosList());
+       // setOContactosList(getOContactosList());
     }//GEN-LAST:event_guardarJBActionPerformed
 
 
@@ -628,12 +607,13 @@ public class ContactosPanel extends JXPanel {
     // End of variables declaration//GEN-END:variables
 
     private void editarContacto(){
+        enableFields();
         guardarJB.setEnabled(true);
         cancelarJB.setEnabled(true);
         editarJB.setEnabled(false);
     }
     private void cancelarEdicion(){
-      
+        disableFields();
         guardarJB.setEnabled(false);
         cancelarJB.setEnabled(false);
         editarJB.setEnabled(true);

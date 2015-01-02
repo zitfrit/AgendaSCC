@@ -2,13 +2,25 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
+    <Component class="javax.persistence.EntityManager" name="mainEntityManager">
+      <Properties>
+        <Property name="persistenceUnit" type="java.lang.String" value="AgendaSCCPU"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="contactoController=new ContactoJpaController(mainEntityManager.getEntityManagerFactory());"/>
+      </AuxValues>
+    </Component>
     <Component class="javax.persistence.Query" name="queryContactos">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT c FROM Contacto c "/>
+        <Property name="query" type="java.lang.String" value="SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="mainEntityManager"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery(&quot;SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo&quot;).setParameter(&quot;tipo&quot;, tipoContacto)"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="//mainEntityManager.setProperty(&quot;tipo&quot;, tipoContacto);"/>
+      </AuxValues>
     </Component>
     <Component class="javax.persistence.Query" name="queryTelefonos">
       <Properties>
@@ -16,11 +28,6 @@
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="mainEntityManager"/>
         </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.persistence.EntityManager" name="mainEntityManager">
-      <Properties>
-        <Property name="persistenceUnit" type="java.lang.String" value="AgendaSCCPU"/>
       </Properties>
     </Component>
     <Component class="java.util.List" name="oContactosList">
