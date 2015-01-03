@@ -7,8 +7,12 @@ package agendascc.UI;
 
 import agendascc.AgendaSCC;
 import java.awt.Color;
+import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import org.jdesktop.swingx.JXPanel;
 
 
 /**
@@ -59,7 +63,9 @@ public class MainViewTest extends javax.swing.JFrame {
         jXStatusBar1 = new org.jdesktop.swingx.JXStatusBar();
         tabbedPaneContactos = new javax.swing.JTabbedPane();
         jXPanel1 = new org.jdesktop.swingx.JXPanel();
+        contactosPanel1 = new agendascc.UI.ContactosPanel();
         jXPanel2 = new org.jdesktop.swingx.JXPanel();
+        contactosPanel2 = new agendascc.UI.ContactosPanel();
         jXPanel3 = new org.jdesktop.swingx.JXPanel();
         jXPanel4 = new org.jdesktop.swingx.JXPanel();
         jXPanel5 = new org.jdesktop.swingx.JXPanel();
@@ -95,29 +101,48 @@ public class MainViewTest extends javax.swing.JFrame {
         tabbedPaneContactos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CONTACTOS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         tabbedPaneContactos.setTabPlacement(javax.swing.JTabbedPane.LEFT);
         tabbedPaneContactos.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        tabbedPaneContactos.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tabbedPaneContactosStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jXPanel1Layout = new javax.swing.GroupLayout(jXPanel1);
         jXPanel1.setLayout(jXPanel1Layout);
         jXPanel1Layout.setHorizontalGroup(
             jXPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 687, Short.MAX_VALUE)
+            .addGroup(jXPanel1Layout.createSequentialGroup()
+                .addComponent(contactosPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
         jXPanel1Layout.setVerticalGroup(
             jXPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 495, Short.MAX_VALUE)
+            .addGroup(jXPanel1Layout.createSequentialGroup()
+                .addComponent(contactosPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         tabbedPaneContactos.addTab("", new javax.swing.ImageIcon(getClass().getResource("/agendascc/RESOURCES/ICOTODOS.png")), jXPanel1); // NOI18N
+
+        try {
+            contactosPanel2.setTipoContacto("cliente");
+        } catch (java.beans.PropertyVetoException e1) {
+            e1.printStackTrace();
+        }
 
         javax.swing.GroupLayout jXPanel2Layout = new javax.swing.GroupLayout(jXPanel2);
         jXPanel2.setLayout(jXPanel2Layout);
         jXPanel2Layout.setHorizontalGroup(
             jXPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 687, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(contactosPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jXPanel2Layout.setVerticalGroup(
             jXPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 495, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(contactosPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         tabbedPaneContactos.addTab("CLIENTES", jXPanel2);
@@ -126,11 +151,11 @@ public class MainViewTest extends javax.swing.JFrame {
         jXPanel3.setLayout(jXPanel3Layout);
         jXPanel3Layout.setHorizontalGroup(
             jXPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 687, Short.MAX_VALUE)
+            .addGap(0, 716, Short.MAX_VALUE)
         );
         jXPanel3Layout.setVerticalGroup(
             jXPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 495, Short.MAX_VALUE)
+            .addGap(0, 538, Short.MAX_VALUE)
         );
 
         tabbedPaneContactos.addTab("EMPLEADOS", jXPanel3);
@@ -139,11 +164,11 @@ public class MainViewTest extends javax.swing.JFrame {
         jXPanel4.setLayout(jXPanel4Layout);
         jXPanel4Layout.setHorizontalGroup(
             jXPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 687, Short.MAX_VALUE)
+            .addGap(0, 716, Short.MAX_VALUE)
         );
         jXPanel4Layout.setVerticalGroup(
             jXPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 495, Short.MAX_VALUE)
+            .addGap(0, 538, Short.MAX_VALUE)
         );
 
         tabbedPaneContactos.addTab("PERSONALES", jXPanel4);
@@ -152,11 +177,11 @@ public class MainViewTest extends javax.swing.JFrame {
         jXPanel5.setLayout(jXPanel5Layout);
         jXPanel5Layout.setHorizontalGroup(
             jXPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 687, Short.MAX_VALUE)
+            .addGap(0, 716, Short.MAX_VALUE)
         );
         jXPanel5Layout.setVerticalGroup(
             jXPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 495, Short.MAX_VALUE)
+            .addGap(0, 538, Short.MAX_VALUE)
         );
 
         tabbedPaneContactos.addTab("GENERAL", jXPanel5);
@@ -167,11 +192,11 @@ public class MainViewTest extends javax.swing.JFrame {
         jXPanel6.setLayout(jXPanel6Layout);
         jXPanel6Layout.setHorizontalGroup(
             jXPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 687, Short.MAX_VALUE)
+            .addGap(0, 716, Short.MAX_VALUE)
         );
         jXPanel6Layout.setVerticalGroup(
             jXPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 495, Short.MAX_VALUE)
+            .addGap(0, 538, Short.MAX_VALUE)
         );
 
         tabbedPaneContactos.addTab("PROVEEDORES", jXPanel6);
@@ -188,7 +213,7 @@ public class MainViewTest extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(toolBarBotones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(toolBarBotones, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addComponent(jXStatusBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(tabbedPaneContactos)
         );
@@ -206,8 +231,20 @@ public class MainViewTest extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tabbedPaneContactosStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneContactosStateChanged
+        if(tabbedPaneContactos.getSelectedIndex()==1)
+            try {
+                ((ContactosPanel)((JXPanel)tabbedPaneContactos.getSelectedComponent()).getComponent(0)).setTipoContacto("cliente");
+                System.out.println(((ContactosPanel)((JXPanel)tabbedPaneContactos.getSelectedComponent()).getComponent(0)).getTipoContacto());
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainViewTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_tabbedPaneContactosStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private agendascc.UI.ContactosPanel contactosPanel1;
+    private agendascc.UI.ContactosPanel contactosPanel2;
     private javax.persistence.EntityManager entityManager1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

@@ -7,7 +7,7 @@
         <Property name="persistenceUnit" type="java.lang.String" value="AgendaSCCPU"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="contactoController=new ContactoJpaController(mainEntityManager.getEntityManagerFactory());"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="contactoController = java.beans.Beans.isDesignTime() ? null : new ContactoJpaController(mainEntityManager.getEntityManagerFactory());"/>
       </AuxValues>
     </Component>
     <Component class="javax.persistence.Query" name="queryContactos">

@@ -7,7 +7,12 @@ package agendascc.UI;
 
 import org.jdesktop.swingx.JXPanel;
 import agendascc.DATA.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -20,10 +25,11 @@ public class ContactosPanel extends JXPanel {
     public static final String PROP_CONTACTOACTUAL = "contactoActual";
     public static final String PROP_OCONTACTOSLIST = "oContactosList";
     public static final String PROP_OTELEFONOSLIST = "oTelefonosList";
+    public static final String PROP_TIPOCONTACTO = "tipoContacto";
     private String tipoContacto;
     private ContactoJpaController contactoController;
     private transient final java.beans.PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
-   // private transient final java.beans.VetoableChangeSupport vetoableChangeSupport = new java.beans.VetoableChangeSupport(this);
+    private transient final java.beans.VetoableChangeSupport vetoableChangeSupport = new java.beans.VetoableChangeSupport(this);
 
     public ContactosPanel()
     {
@@ -31,6 +37,16 @@ public class ContactosPanel extends JXPanel {
         tipoContacto="%";
         initComponents();
         //contactoController=new ContactoJpaController(mainEntityManager.getEntityManagerFactory());
+        addPropertyChangeListener(PROP_TIPOCONTACTO, new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                queryContactos=mainEntityManager.createQuery("SELECT C FROM Contacto C WHERE C.tipo LIKE :tipo");
+                queryContactos.setParameter("tipo", getTipoContacto());
+                setOContactosList(queryContactos.getResultList());
+            }
+        });
+        
     }
 
     public List<Contacto> getOContactosList()
@@ -57,9 +73,13 @@ public class ContactosPanel extends JXPanel {
         return this.contactoActual;
     }
     
-     public void setContactoActual(Contacto contactoNuevo) /*throws java.beans.PropertyVetoException*/ {
+     public void setContactoActual(Contacto contactoNuevo){ //throws PropertyVetoException /*throws java.beans.PropertyVetoException*/ {
         Contacto oldContactoActual = this.contactoActual;
-       // vetoableChangeSupport.fireVetoableChange(PROP_CONTACTOACTUAL, oldContactoActual, contactoActual);
+        try {
+            vetoableChangeSupport.fireVetoableChange(PROP_CONTACTOACTUAL, oldContactoActual, contactoActual);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.contactoActual = contactoNuevo;
         propertyChangeSupport.firePropertyChange(PROP_CONTACTOACTUAL, oldContactoActual, this.contactoActual);
     }
@@ -87,7 +107,13 @@ public class ContactosPanel extends JXPanel {
     public String getTipoContacto(){
         return this.tipoContacto;
     }
-    
+    public void setTipoContacto(String tipo) throws PropertyVetoException{
+        String oldType = this.tipoContacto;
+        vetoableChangeSupport.fireVetoableChange(PROP_TIPOCONTACTO, oldType, this.tipoContacto);
+        this.tipoContacto = tipo;
+        propertyChangeSupport.firePropertyChange(PROP_TIPOCONTACTO, oldType, this.tipoContacto);
+    }
+
     
     
 
@@ -102,7 +128,7 @@ public class ContactosPanel extends JXPanel {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         mainEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("AgendaSCCPU").createEntityManager();
-        contactoController=new ContactoJpaController(mainEntityManager.getEntityManagerFactory());
+        contactoController = java.beans.Beans.isDesignTime() ? null : new ContactoJpaController(mainEntityManager.getEntityManagerFactory());
         queryContactos = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo").setParameter("tipo", tipoContacto);
         //mainEntityManager.setProperty("tipo", tipoContacto);
         queryTelefonos = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT C FROM Telefono C");
