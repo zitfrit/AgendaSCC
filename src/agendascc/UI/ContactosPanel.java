@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.jdesktop.observablecollections.ObservableCollections;
 
 /**
  *
@@ -36,14 +37,19 @@ public class ContactosPanel extends JXPanel {
         super();
         tipoContacto="%";
         initComponents();
+
         //contactoController=new ContactoJpaController(mainEntityManager.getEntityManagerFactory());
-        addPropertyChangeListener(PROP_TIPOCONTACTO, new PropertyChangeListener() {
+        propertyChangeSupport.addPropertyChangeListener(PROP_TIPOCONTACTO, new PropertyChangeListener() {
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 queryContactos=mainEntityManager.createQuery("SELECT C FROM Contacto C WHERE C.tipo LIKE :tipo");
                 queryContactos.setParameter("tipo", getTipoContacto());
                 setOContactosList(queryContactos.getResultList());
+                //bindingGroup.unbind();
+                //bindingGroup.bind();
+                System.out.println("YA BOTA EL EVENTO el tipo ha cambiado de ["+evt.getOldValue()+"] a ["+evt.getNewValue()+"]");
+                //contactosTabla.updateUI();
             }
         });
         
@@ -55,8 +61,16 @@ public class ContactosPanel extends JXPanel {
     }
 
     public void setOContactosList(List<Contacto> listaContactos){
-        this.oContactosList.clear();
-        this.oContactosList.addAll(listaContactos);
+        //this.oContactosList.clear();
+        //this.oContactosList.addAll(ObservableCollections.observableList(listaContactos));
+        List<Contacto> oldList=this.oContactosList;
+        try {
+            vetoableChangeSupport.fireVetoableChange(PROP_OCONTACTOSLIST, oldList, listaContactos);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.oContactosList=ObservableCollections.observableList(listaContactos);
+        propertyChangeSupport.firePropertyChange(PROP_OCONTACTOSLIST, oldList, this.oContactosList);
     }
 
     public List<Telefono> getOTelefonosList(){
@@ -65,8 +79,16 @@ public class ContactosPanel extends JXPanel {
     
  
     public void setOTelefonosList(List<Telefono> listaTelefonos){
-        this.oTelefonosList.clear();
-        this.oTelefonosList.addAll(listaTelefonos);
+       // this.oTelefonosList.clear();
+       // this.oTelefonosList.addAll(ObservableCollections.observableList(listaTelefonos));
+        List<Telefono> oldList=this.oTelefonosList;
+        try {
+            vetoableChangeSupport.fireVetoableChange(PROP_OTELEFONOSLIST, oldList, listaTelefonos);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.oTelefonosList=ObservableCollections.observableList(listaTelefonos);
+        propertyChangeSupport.firePropertyChange(PROP_OTELEFONOSLIST, oldList, this.oTelefonosList);
     }
     
     public Contacto getContactoActual(){
@@ -107,11 +129,23 @@ public class ContactosPanel extends JXPanel {
     public String getTipoContacto(){
         return this.tipoContacto;
     }
-    public void setTipoContacto(String tipo) throws PropertyVetoException{
+    public void setTipoContacto(String tipo){
         String oldType = this.tipoContacto;
-        vetoableChangeSupport.fireVetoableChange(PROP_TIPOCONTACTO, oldType, this.tipoContacto);
+        try {
+            vetoableChangeSupport.fireVetoableChange(PROP_TIPOCONTACTO, oldType, tipo);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.tipoContacto = tipo;
-        propertyChangeSupport.firePropertyChange(PROP_TIPOCONTACTO, oldType, this.tipoContacto);
+        propertyChangeSupport.firePropertyChange(PROP_TIPOCONTACTO, oldType, tipo);
+        //System.out.println("el tipo ha cambiado de ["+oldType+"] a ["+this.tipoContacto+"]");
+        //queryContactos=mainEntityManager.createQuery("SELECT C FROM Contacto C WHERE C.tipo LIKE :tipo");
+        //queryContactos.setParameter("tipo", getTipoContacto());
+        //setOContactosList(queryContactos.getResultList());
+       // bindingGroup.unbind();
+       // bindingGroup.bind();
+       // System.out.println("el tipo ha cambiado de ["+oldType+"] a ["+this.tipoContacto+"]");
+        //contactosTabla.updateUI();
     }
 
     
@@ -506,8 +540,7 @@ public class ContactosPanel extends JXPanel {
         contactosTabla.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         contactosTabla.setShowVerticalLines(false);
 
-        eLProperty = org.jdesktop.beansbinding.ELProperty.create("${OContactosList}");
-        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, contactosTabla);
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, oContactosList, contactosTabla, "oContactosList");
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idContacto}"));
         columnBinding.setColumnName("Id Contacto");
         columnBinding.setColumnClass(Integer.class);
@@ -526,6 +559,7 @@ public class ContactosPanel extends JXPanel {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${colonia}"));
         columnBinding.setColumnName("Colonia");
         columnBinding.setColumnClass(String.class);
+        jTableBinding.setSourceNullValue(oContactosList);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(contactosTabla);

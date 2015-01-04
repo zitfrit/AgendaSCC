@@ -96,6 +96,11 @@ public class MainViewTest extends javax.swing.JFrame {
         jButton2.setFocusable(false);
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton2.setIconTextGap(1);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         toolBarBotones.add(jButton2);
 
         tabbedPaneContactos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CONTACTOS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
@@ -124,6 +129,7 @@ public class MainViewTest extends javax.swing.JFrame {
 
         tabbedPaneContactos.addTab("", new javax.swing.ImageIcon(getClass().getResource("/agendascc/RESOURCES/ICOTODOS.png")), jXPanel1); // NOI18N
 
+        contactosPanel2.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
         try {
             contactosPanel2.setTipoContacto("cliente");
         } catch (java.beans.PropertyVetoException e1) {
@@ -240,6 +246,15 @@ public class MainViewTest extends javax.swing.JFrame {
             Logger.getLogger(MainViewTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_tabbedPaneContactosStateChanged
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            ((ContactosPanel)((JXPanel)tabbedPaneContactos.getSelectedComponent()).getComponent(0)).setTipoContacto("general"); // TODO add your handling code here:
+            System.out.println(((ContactosPanel)((JXPanel)tabbedPaneContactos.getSelectedComponent()).getComponent(0)).getTipoContacto());
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainViewTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

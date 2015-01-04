@@ -103,6 +103,9 @@
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="iconTextGap" type="int" value="1"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -191,6 +194,7 @@
           <SubComponents>
             <Component class="agendascc.UI.ContactosPanel" name="contactosPanel2">
               <Properties>
+                <Property name="debugGraphicsOptions" type="int" value="-1"/>
                 <Property name="tipoContacto" type="java.lang.String" value="cliente"/>
               </Properties>
             </Component>
