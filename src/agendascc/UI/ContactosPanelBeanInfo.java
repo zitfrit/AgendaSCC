@@ -168,6 +168,10 @@ public class ContactosPanelBeanInfo extends SimpleBeanInfo {
             properties[PROPERTY_componentPopupMenu] = new PropertyDescriptor ( "componentPopupMenu", agendascc.UI.ContactosPanel.class, "getComponentPopupMenu", "setComponentPopupMenu" ); // NOI18N
             properties[PROPERTY_components] = new PropertyDescriptor ( "components", agendascc.UI.ContactosPanel.class, "getComponents", null ); // NOI18N
             properties[PROPERTY_contactoActual] = new PropertyDescriptor ( "contactoActual", agendascc.UI.ContactosPanel.class, "getContactoActual", "setContactoActual" ); // NOI18N
+            properties[PROPERTY_contactoActual].setExpert ( true );
+            properties[PROPERTY_contactoActual].setPreferred ( true );
+            properties[PROPERTY_contactoActual].setBound ( true );
+            properties[PROPERTY_contactoActual].setConstrained ( true );
             properties[PROPERTY_containerListeners] = new PropertyDescriptor ( "containerListeners", agendascc.UI.ContactosPanel.class, "getContainerListeners", null ); // NOI18N
             properties[PROPERTY_cursor] = new PropertyDescriptor ( "cursor", agendascc.UI.ContactosPanel.class, "getCursor", "setCursor" ); // NOI18N
             properties[PROPERTY_cursorSet] = new PropertyDescriptor ( "cursorSet", agendascc.UI.ContactosPanel.class, "isCursorSet", null ); // NOI18N

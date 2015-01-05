@@ -52,7 +52,46 @@ public class ContactosPanel extends JXPanel {
                 //contactosTabla.updateUI();
             }
         });
-        
+        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${OContactosList}");
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this ,eLProperty, contactosTabla, "oContactosList");
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idContacto}"));
+        columnBinding.setColumnName("Id Contacto");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nombre}"));
+        columnBinding.setColumnName("Nombre");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${pseudonimo}"));
+        columnBinding.setColumnName("Pseudonimo");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${direccion}"));
+        columnBinding.setColumnName("Direccion");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${direccionReferencias}"));
+        columnBinding.setColumnName("Direccion Referencias");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${colonia}"));
+        columnBinding.setColumnName("Colonia");
+        columnBinding.setColumnClass(String.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+
+        jScrollPane1.setViewportView(contactosTabla);
+        contactosTabla.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+                    @Override
+                    public void valueChanged(ListSelectionEvent e) {
+                        //setContactoActual(oContactosList.get((Integer)contactosTabla.getModel().getValueAt(contactosTabla.convertRowIndexToModel(contactosTabla.getSelectedRow()), 0)-1));
+                       // contactoActual=new Contacto(contactoActual.getIdContacto(), contactoActual.getTipo(), contactoActual.getNombre(), contactoActual.getDireccion(), contactoActual.getColonia(), contactoActual.getCodigoPostal(), contactoActual.getLocalidad(), contactoActual.getMunicipio(), contactoActual.getEstado(), contactoActual.getPais());
+
+                       //jXTable1.getSelectionModel().getLeadSelectionIndex();
+                        if(!contactosTabla.getSelectionModel().isSelectionEmpty())
+                        {
+                            setContactoActual(contactoController.findContacto((Integer)contactosTabla.getModel().getValueAt(contactosTabla.convertRowIndexToModel(contactosTabla.getSelectedRow()),0)));
+                            telefonosTabla.packAll();
+                        }
+                    }
+                });
+        contactosTabla.getColumnExt (contactosTabla.getColumnModel().getColumn(0).getIdentifier()).setVisible(false);
+        contactosTabla.packAll();
     }
 
     public List<Contacto> getOContactosList()
@@ -65,12 +104,13 @@ public class ContactosPanel extends JXPanel {
         //this.oContactosList.addAll(ObservableCollections.observableList(listaContactos));
         List<Contacto> oldList=this.oContactosList;
         try {
-            vetoableChangeSupport.fireVetoableChange(PROP_OCONTACTOSLIST, oldList, listaContactos);
+            vetoableChangeSupport.fireVetoableChange("OContactosList", oldList, listaContactos);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.oContactosList=ObservableCollections.observableList(listaContactos);
-        propertyChangeSupport.firePropertyChange(PROP_OCONTACTOSLIST, oldList, this.oContactosList);
+        
+        propertyChangeSupport.firePropertyChange("OContactosList", oldList, listaContactos);
     }
 
     public List<Telefono> getOTelefonosList(){
@@ -129,13 +169,9 @@ public class ContactosPanel extends JXPanel {
     public String getTipoContacto(){
         return this.tipoContacto;
     }
-    public void setTipoContacto(String tipo){
+    public void setTipoContacto(String tipo) throws PropertyVetoException{
         String oldType = this.tipoContacto;
-        try {
-            vetoableChangeSupport.fireVetoableChange(PROP_TIPOCONTACTO, oldType, tipo);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        vetoableChangeSupport.fireVetoableChange(PROP_TIPOCONTACTO, oldType, tipo);
         this.tipoContacto = tipo;
         propertyChangeSupport.firePropertyChange(PROP_TIPOCONTACTO, oldType, tipo);
         //System.out.println("el tipo ha cambiado de ["+oldType+"] a ["+this.tipoContacto+"]");
@@ -175,8 +211,6 @@ public class ContactosPanel extends JXPanel {
         labelImagen = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         telefonosTabla = new org.jdesktop.swingx.JXTable();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jXTable3 = new org.jdesktop.swingx.JXTable();
         jPanel2 = new javax.swing.JPanel();
         labelLocalidad = new javax.swing.JLabel();
         labelMunicipio = new javax.swing.JLabel();
@@ -246,24 +280,6 @@ public class ContactosPanel extends JXPanel {
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane2.setViewportView(telefonosTabla);
-
-        jXTable3.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
-        jXTable3.setMinimumSize(new java.awt.Dimension(300, 360));
-        jXTable3.setPreferredSize(new java.awt.Dimension(300, 360));
-
-        eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.telefonoList}");
-        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, eLProperty, jXTable3);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tipo}"));
-        columnBinding.setColumnName("Tipo");
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${telefonoPK.telefono}"));
-        columnBinding.setColumnName("Telefono PK.telefono");
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${lada}"));
-        columnBinding.setColumnName("Lada");
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${extencion}"));
-        columnBinding.setColumnName("Extencion");
-        bindingGroup.addBinding(jTableBinding);
-        jTableBinding.bind();
-        jScrollPane4.setViewportView(jXTable3);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -539,43 +555,7 @@ public class ContactosPanel extends JXPanel {
         contactosTabla.setEditable(false);
         contactosTabla.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         contactosTabla.setShowVerticalLines(false);
-
-        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, oContactosList, contactosTabla, "oContactosList");
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idContacto}"));
-        columnBinding.setColumnName("Id Contacto");
-        columnBinding.setColumnClass(Integer.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nombre}"));
-        columnBinding.setColumnName("Nombre");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${pseudonimo}"));
-        columnBinding.setColumnName("Pseudonimo");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${direccion}"));
-        columnBinding.setColumnName("Direccion");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${direccionReferencias}"));
-        columnBinding.setColumnName("Direccion Referencias");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${colonia}"));
-        columnBinding.setColumnName("Colonia");
-        columnBinding.setColumnClass(String.class);
-        jTableBinding.setSourceNullValue(oContactosList);
-        bindingGroup.addBinding(jTableBinding);
-        jTableBinding.bind();
         jScrollPane1.setViewportView(contactosTabla);
-        contactosTabla.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                //setContactoActual(oContactosList.get((Integer)contactosTabla.getModel().getValueAt(contactosTabla.convertRowIndexToModel(contactosTabla.getSelectedRow()), 0)-1));
-                // contactoActual=new Contacto(contactoActual.getIdContacto(), contactoActual.getTipo(), contactoActual.getNombre(), contactoActual.getDireccion(), contactoActual.getColonia(), contactoActual.getCodigoPostal(), contactoActual.getLocalidad(), contactoActual.getMunicipio(), contactoActual.getEstado(), contactoActual.getPais());
-
-                //jXTable1.getSelectionModel().getLeadSelectionIndex();
-                setContactoActual(contactoController.findContacto((Integer)contactosTabla.getModel().getValueAt(contactosTabla.convertRowIndexToModel(contactosTabla.getSelectedRow()),0)));
-                telefonosTabla.packAll();
-            }
-        });
-        contactosTabla.getColumnExt (contactosTabla.getColumnModel().getColumn(0).getIdentifier()).setVisible(false);
-        contactosTabla.packAll();
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -638,9 +618,7 @@ public class ContactosPanel extends JXPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
-    private org.jdesktop.swingx.JXTable jXTable3;
     private javax.swing.JLabel labelCPostal;
     private javax.swing.JLabel labelColonia;
     private javax.swing.JLabel labelComentarios;
