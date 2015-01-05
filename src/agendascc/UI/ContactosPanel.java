@@ -10,11 +10,14 @@ import agendascc.DATA.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import org.jdesktop.observablecollections.ObservableCollections;
 
 /**
@@ -24,13 +27,14 @@ import org.jdesktop.observablecollections.ObservableCollections;
 public class ContactosPanel extends JXPanel {
     private Contacto contactoActual;
     public static final String PROP_CONTACTOACTUAL = "contactoActual";
-    public static final String PROP_OCONTACTOSLIST = "oContactosList";
-    public static final String PROP_OTELEFONOSLIST = "oTelefonosList";
+    public static final String PROP_OCONTACTOSLIST = "OContactosList";
+    public static final String PROP_OTELEFONOSLIST = "OTelefonosList";
     public static final String PROP_TIPOCONTACTO = "tipoContacto";
     private String tipoContacto;
     private ContactoJpaController contactoController;
     private transient final java.beans.PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
     private transient final java.beans.VetoableChangeSupport vetoableChangeSupport = new java.beans.VetoableChangeSupport(this);
+    private Contacto unEditedContacto;
 
     public ContactosPanel()
     {
@@ -104,13 +108,13 @@ public class ContactosPanel extends JXPanel {
         //this.oContactosList.addAll(ObservableCollections.observableList(listaContactos));
         List<Contacto> oldList=this.oContactosList;
         try {
-            vetoableChangeSupport.fireVetoableChange("OContactosList", oldList, listaContactos);
+            vetoableChangeSupport.fireVetoableChange(PROP_OCONTACTOSLIST, oldList, listaContactos);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.oContactosList=ObservableCollections.observableList(listaContactos);
         
-        propertyChangeSupport.firePropertyChange("OContactosList", oldList, listaContactos);
+        propertyChangeSupport.firePropertyChange(PROP_OCONTACTOSLIST, oldList, listaContactos);
     }
 
     public List<Telefono> getOTelefonosList(){
@@ -206,11 +210,11 @@ public class ContactosPanel extends JXPanel {
         oTelefonosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTelefonos.getResultList());
         jPanel1 = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
-        labelPseudonimo = new javax.swing.JLabel();
-        labelNombre = new javax.swing.JLabel();
         labelImagen = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         telefonosTabla = new org.jdesktop.swingx.JXTable();
+        pseudonimoTF = new javax.swing.JTextField();
+        nombreTF = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         labelLocalidad = new javax.swing.JLabel();
         labelMunicipio = new javax.swing.JLabel();
@@ -242,18 +246,6 @@ public class ContactosPanel extends JXPanel {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        labelPseudonimo.setFont(new java.awt.Font("Calibri", 2, 20)); // NOI18N
-        labelPseudonimo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.pseudonimo}"), labelPseudonimo, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        bindingGroup.addBinding(binding);
-
-        labelNombre.setFont(new java.awt.Font("Calibri", 1, 22)); // NOI18N
-        labelNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nombre}"), labelNombre, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        bindingGroup.addBinding(binding);
-
         labelImagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/agendascc/RESOURCES/grupo.png"))); // NOI18N
         labelImagen.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TODOS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
@@ -281,6 +273,24 @@ public class ContactosPanel extends JXPanel {
         jTableBinding.bind();
         jScrollPane2.setViewportView(telefonosTabla);
 
+        pseudonimoTF.setFont(new java.awt.Font("Calibri", 2, 20)); // NOI18N
+        pseudonimoTF.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        pseudonimoTF.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        pseudonimoTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        pseudonimoTF.setEnabled(false);
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.pseudonimo}"), pseudonimoTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        nombreTF.setFont(new java.awt.Font("Calibri", 1, 22)); // NOI18N
+        nombreTF.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        nombreTF.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        nombreTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        nombreTF.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.nombre}"), nombreTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -290,11 +300,11 @@ public class ContactosPanel extends JXPanel {
                 .addComponent(labelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelPseudonimo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSeparator1)
-                    .addComponent(labelNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                    .addComponent(pseudonimoTF)
+                    .addComponent(nombreTF))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -304,12 +314,12 @@ public class ContactosPanel extends JXPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(labelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(nombreTF, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(labelPseudonimo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(pseudonimoTF))
                         .addComponent(labelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -371,7 +381,7 @@ public class ContactosPanel extends JXPanel {
         coloniaTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         coloniaTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.colonia}"), coloniaTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.colonia}"), coloniaTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         localidadTF.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
@@ -388,7 +398,7 @@ public class ContactosPanel extends JXPanel {
         direccionTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         direccionTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.direccion}"), direccionTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.direccion}"), direccionTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         labelComentarios.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -594,6 +604,7 @@ public class ContactosPanel extends JXPanel {
     }//GEN-LAST:event_cancelarJBActionPerformed
 
     private void guardarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarJBActionPerformed
+        
         disableFields();
         editarJB.setEnabled(true);
         cancelarJB.setEnabled(false);
@@ -628,15 +639,15 @@ public class ContactosPanel extends JXPanel {
     private javax.swing.JLabel labelImagen;
     private javax.swing.JLabel labelLocalidad;
     private javax.swing.JLabel labelMunicipio;
-    private javax.swing.JLabel labelNombre;
     private javax.swing.JLabel labelPais;
-    private javax.swing.JLabel labelPseudonimo;
     private javax.swing.JTextField localidadTF;
     private javax.persistence.EntityManager mainEntityManager;
     private javax.swing.JTextField municipioTF;
+    private javax.swing.JTextField nombreTF;
     private java.util.List<Contacto> oContactosList;
     private java.util.List<Telefono> oTelefonosList;
     private javax.swing.JTextField paisTF;
+    private javax.swing.JTextField pseudonimoTF;
     private javax.persistence.Query queryContactos;
     private javax.persistence.Query queryTelefonos;
     private javax.swing.JTextField referenciasDireccionTF;
@@ -645,16 +656,30 @@ public class ContactosPanel extends JXPanel {
     // End of variables declaration//GEN-END:variables
 
     private void editarContacto(){
+        unEditedContacto=new Contacto(contactoActual);
         enableFields();
         guardarJB.setEnabled(true);
         cancelarJB.setEnabled(true);
         editarJB.setEnabled(false);
+        
+        
+                
     }
+    /** SOSPECHO QUE EL PROBLEMA ESTA EN EL METODO DE CLONACION Y EL METODO EQUALS, AL CLONAR EL MISMO ID DEL CONTACTO EL METODO EQUALS VERIFICA QUE SI SON IGUALES COMPARANDO LOS ID **/
+    /** HACER UN METODO EN LA CLASE CONTACTO QUE SOLO HAGA UNA COPIA FIEL DE TODOS LOS CAMPOS PARA ALMACENAR LOS CAMBIOS EN LOS TEXFIELDS TEMPORALMENTE Y AL CANCELAR ASIGNAR LOS DATOS**/
+    /** ANTERIORES A LAS MODIFICACIONES DE NUEVO AL CONTACTO ACTUAL. ES DECIR NO SE CLONA UN OBJETO, SE CREA UNO NUEVO CON INDICE DIFERENTE USANDO CONTACTPJPACONTROLLER Y COPIANDO LAS PROPIEDADES**/
     private void cancelarEdicion(){
+        int index=oContactosList.indexOf(contactoActual);
+        contactoActual=unEditedContacto;
+        //oContactosList.remove(index);
+       // propertyChangeSupport.firePropertyChange(PROP_CONTACTOACTUAL, oContactosList.remove(index), contactoActual);
+        oContactosList.add(index, unEditedContacto);
         disableFields();
         guardarJB.setEnabled(false);
         cancelarJB.setEnabled(false);
         editarJB.setEnabled(true);
+        
+        
     }
     private void limparCamposContacto(){
 
@@ -670,6 +695,8 @@ public class ContactosPanel extends JXPanel {
         setOContactosList(((List<Contacto>) queryContactos.getResultList()));
     }
     private void enableFields(){
+        nombreTF.setEnabled(true);
+        pseudonimoTF.setEnabled(true);
         direccionTF.setEnabled(true);
         referenciasDireccionTF.setEnabled(true);
         coloniaTF.setEnabled(true);
@@ -680,10 +707,12 @@ public class ContactosPanel extends JXPanel {
         localidadTF.setEnabled(true);
         municipioTF.setEnabled(true);
         estadoTF.setEnabled(true);
-        contactosTabla.setEditable(true);
+        contactosTabla.setEnabled(false);
         telefonosTabla.setEditable(true);
     }
     private void disableFields(){
+        nombreTF.setEnabled(false);
+        pseudonimoTF.setEnabled(false);
         direccionTF.setEnabled(false);
         referenciasDireccionTF.setEnabled(false);
         coloniaTF.setEnabled(false);
@@ -694,7 +723,8 @@ public class ContactosPanel extends JXPanel {
         localidadTF.setEnabled(false);
         municipioTF.setEnabled(false);
         estadoTF.setEnabled(false);
-        contactosTabla.setEditable(false);
+        //contactosTabla.setEditable(false);
+        contactosTabla.setEnabled(true);
         telefonosTabla.setEditable(false);
     }
 }
