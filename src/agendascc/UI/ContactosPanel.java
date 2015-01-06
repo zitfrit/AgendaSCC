@@ -41,6 +41,7 @@ public class ContactosPanel extends JXPanel {
         super();
         tipoContacto="%";
         initComponents();
+        
 
         //contactoController=new ContactoJpaController(mainEntityManager.getEntityManagerFactory());
         propertyChangeSupport.addPropertyChangeListener(PROP_TIPOCONTACTO, new PropertyChangeListener() {
@@ -204,7 +205,8 @@ public class ContactosPanel extends JXPanel {
         mainEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("AgendaSCCPU").createEntityManager();
         contactoController = java.beans.Beans.isDesignTime() ? null : new ContactoJpaController(mainEntityManager.getEntityManagerFactory());
         queryContactos = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo").setParameter("tipo", tipoContacto);
-        //mainEntityManager.setProperty("tipo", tipoContacto);
+        if (java.beans.Beans.isDesignTime())
+        queryContactos.setParameter("tipo", tipoContacto);
         queryTelefonos = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT C FROM Telefono C");
         oContactosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryContactos.getResultList());
         oTelefonosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTelefonos.getResultList());
@@ -656,7 +658,11 @@ public class ContactosPanel extends JXPanel {
     // End of variables declaration//GEN-END:variables
 
     private void editarContacto(){
-        unEditedContacto=new Contacto(contactoActual);
+        try {
+            unEditedContacto=contactoActual.makeContactoDummy();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         enableFields();
         guardarJB.setEnabled(true);
         cancelarJB.setEnabled(true);
@@ -669,11 +675,14 @@ public class ContactosPanel extends JXPanel {
     /** HACER UN METODO EN LA CLASE CONTACTO QUE SOLO HAGA UNA COPIA FIEL DE TODOS LOS CAMPOS PARA ALMACENAR LOS CAMBIOS EN LOS TEXFIELDS TEMPORALMENTE Y AL CANCELAR ASIGNAR LOS DATOS**/
     /** ANTERIORES A LAS MODIFICACIONES DE NUEVO AL CONTACTO ACTUAL. ES DECIR NO SE CLONA UN OBJETO, SE CREA UNO NUEVO CON INDICE DIFERENTE USANDO CONTACTPJPACONTROLLER Y COPIANDO LAS PROPIEDADES**/
     private void cancelarEdicion(){
-        int index=oContactosList.indexOf(contactoActual);
-        contactoActual=unEditedContacto;
-        //oContactosList.remove(index);
-       // propertyChangeSupport.firePropertyChange(PROP_CONTACTOACTUAL, oContactosList.remove(index), contactoActual);
-        oContactosList.add(index, unEditedContacto);
+        Contacto old=getContactoActual();;
+        try {
+            
+            contactoActual.copyFromDummy(unEditedContacto);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        propertyChangeSupport.firePropertyChange(PROP_CONTACTOACTUAL, old, unEditedContacto);
         disableFields();
         guardarJB.setEnabled(false);
         cancelarJB.setEnabled(false);

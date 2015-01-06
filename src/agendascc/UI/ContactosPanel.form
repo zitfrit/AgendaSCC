@@ -19,7 +19,7 @@
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery(&quot;SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo&quot;).setParameter(&quot;tipo&quot;, tipoContacto)"/>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="//mainEntityManager.setProperty(&quot;tipo&quot;, tipoContacto);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="if (java.beans.Beans.isDesignTime())&#xa;    queryContactos.setParameter(&quot;tipo&quot;, tipoContacto);"/>
       </AuxValues>
     </Component>
     <Component class="javax.persistence.Query" name="queryTelefonos">

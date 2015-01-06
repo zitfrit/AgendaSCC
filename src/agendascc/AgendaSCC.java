@@ -6,6 +6,7 @@
 package agendascc;
 
 import agendascc.UI.MainViewTest;
+import agendascc.UI.Tries;
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 import java.awt.Font;
 import javax.swing.UIManager;
@@ -45,7 +46,7 @@ public class AgendaSCC {
         catch(Exception e){    }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainViewTest().setVisible(true);
+                new Tries().setVisible(true);
             }
         });
         // TODO code application logic here

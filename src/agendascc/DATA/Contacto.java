@@ -178,6 +178,46 @@ public class Contacto implements Serializable {
     public Integer getIdContacto() {
         return idContacto;
     }
+    
+    public Contacto makeContactoDummy() throws PropertyVetoException{
+        Contacto dummy=new Contacto();
+        dummy.setIdContacto(0);
+        dummy.setTipo(this.tipo);
+        dummy.setNombre(this.nombre);
+        dummy.setPseudonimo(this.pseudonimo);
+        dummy.setDireccion(this.direccion);
+        dummy.setDireccionReferencias(this.direccionReferencias);
+        dummy.setColonia(this.colonia);
+        dummy.setCodigoPostal(this.codigoPostal);
+        dummy.setLocalidad(this.localidad);
+        dummy.setMunicipio(this.municipio);
+        dummy.setEstado(this.estado);
+        dummy.setPais(this.pais);
+        dummy.setComentarios(this.comentarios);
+        dummy.setEmail(this.email);
+        dummy.setImagen(this.imagen);
+        dummy.setTelefonoList(this.telefonoList);
+        return dummy;
+    }
+    
+    public void copyFromDummy(Contacto c) throws PropertyVetoException{
+        //this.setIdContacto(0);
+        this.setTipo(c.tipo);
+        this.setNombre(c.nombre);
+        this.setPseudonimo(c.pseudonimo);
+        this.setDireccion(c.direccion);
+        this.setDireccionReferencias(c.direccionReferencias);
+        this.setColonia(c.colonia);
+        this.setCodigoPostal(c.codigoPostal);
+        this.setLocalidad(c.localidad);
+        this.setMunicipio(c.municipio);
+        this.setEstado(c.estado);
+        this.setPais(c.pais);
+        this.setComentarios(c.comentarios);
+        this.setEmail(c.email);
+        this.setImagen(c.imagen);
+        this.setTelefonoList(c.telefonoList);
+    }
 
     /**
      * @param idContacto the idContacto to set
