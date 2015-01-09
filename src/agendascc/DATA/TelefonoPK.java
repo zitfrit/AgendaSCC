@@ -131,14 +131,14 @@ public class TelefonoPK implements Serializable {
      * @return the propertyChangeSupport
      */
     public PropertyChangeSupport getPropertyChangeSupport() {
-        return propertyChangeSupport;
+        return this.propertyChangeSupport;
     }
 
     /**
      * @return the vetoableChangeSupport
      */
     public VetoableChangeSupport getVetoableChangeSupport() {
-        return vetoableChangeSupport;
+        return this.vetoableChangeSupport;
     }
     
 }

@@ -257,13 +257,13 @@ public class ContactosPanel extends JXPanel {
         telefonosTabla.setMinimumSize(new java.awt.Dimension(300, 360));
         telefonosTabla.setPreferredSize(new java.awt.Dimension(300, 360));
 
-        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.telefonoList}");
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, eLProperty, telefonosTabla);
+        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${contactoActual.telefonoList}");
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, telefonosTabla);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tipo}"));
         columnBinding.setColumnName("Tipo");
         columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${telefonoPK.telefono}"));
-        columnBinding.setColumnName("Numero");
+        columnBinding.setColumnName("Telefono PK");
         columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${lada}"));
         columnBinding.setColumnName("Lada");
@@ -343,7 +343,7 @@ public class ContactosPanel extends JXPanel {
         comentariosTA.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         comentariosTA.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.comentarios}"), comentariosTA, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.comentarios}"), comentariosTA, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         jScrollPane3.setViewportView(comentariosTA);
@@ -352,7 +352,7 @@ public class ContactosPanel extends JXPanel {
         paisTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         paisTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.pais}"), paisTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.pais}"), paisTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         labelColonia.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -362,21 +362,21 @@ public class ContactosPanel extends JXPanel {
         codigoPostalTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         codigoPostalTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.codigoPostal}"), codigoPostalTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.codigoPostal}"), codigoPostalTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         emailTF.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         emailTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         emailTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.email}"), emailTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.email}"), emailTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         referenciasDireccionTF.setFont(new java.awt.Font("Calibri", 1, 13)); // NOI18N
         referenciasDireccionTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         referenciasDireccionTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.direccionReferencias}"), referenciasDireccionTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.direccionReferencias}"), referenciasDireccionTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         coloniaTF.setFont(new java.awt.Font("Calibri", 1, 13)); // NOI18N
@@ -390,7 +390,7 @@ public class ContactosPanel extends JXPanel {
         localidadTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         localidadTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.localidad}"), localidadTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.localidad}"), localidadTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         labelEstado.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -410,7 +410,7 @@ public class ContactosPanel extends JXPanel {
         estadoTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         estadoTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.estado}"), estadoTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.estado}"), estadoTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         labelPais.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -420,7 +420,7 @@ public class ContactosPanel extends JXPanel {
         municipioTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         municipioTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.municipio}"), municipioTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.municipio}"), municipioTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         labelCorreo.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -606,6 +606,18 @@ public class ContactosPanel extends JXPanel {
     }//GEN-LAST:event_cancelarJBActionPerformed
 
     private void guardarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarJBActionPerformed
+        try {
+            mainEntityManager.getTransaction().begin();
+            mainEntityManager.merge(contactoActual);
+            //mainEntityManager.merge(contactoActual.getTelefonoList());
+            mainEntityManager.getTransaction().commit();
+        } catch (RuntimeException e) {
+            if(mainEntityManager.getTransaction().isActive())
+                mainEntityManager.getTransaction().rollback();
+        }finally{
+            if(mainEntityManager.getTransaction().isActive())
+                mainEntityManager.getTransaction().commit();
+        }
         
         disableFields();
         editarJB.setEnabled(true);
