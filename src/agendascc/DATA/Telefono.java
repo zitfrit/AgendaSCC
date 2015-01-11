@@ -36,12 +36,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Telefono.findByExtension", query = "SELECT t FROM Telefono t WHERE t.extension = :extension")})
 public class Telefono implements Serializable {
     private static final long serialVersionUID = 1L;
-    public static final String PROP_SERIALVERSIONUID = "PROP_SERIALVERSIONUID";
-    public static final String PROP_TELEFONOPK = "PROP_TELEFONOPK";
-    public static final String PROP_TIPO = "PROP_TIPO";
-    public static final String PROP_LADA = "PROP_LADA";
-    public static final String PROP_EXTENSION = "PROP_EXTENSION";
-    public static final String PROP_CONTACTO = "PROP_CONTACTO";
+    public static final String PROP_SERIALVERSIONUID = "serialVersionUID";
+    public static final String PROP_TELEFONOPK = "telefonoPK";
+    public static final String PROP_TIPO = "tipo";
+    public static final String PROP_LADA = "lada";
+    public static final String PROP_EXTENSION = "extension";
+    public static final String PROP_CONTACTO = "contacto";
 
     /**
      * @return the serialVersionUID

@@ -54,25 +54,25 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Contacto implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    public static final String PROP_SERIALVERSIONUID = "PROP_SERIALVERSIONUID";
-    public static final String PROP_IDCONTACTO = "PROP_IDCONTACTO";
-    public static final String PROP_TIPO = "PROP_TIPO";
-    public static final String PROP_NOMBRE = "PROP_NOMBRE";
-    public static final String PROP_PSEUDONIMO = "PROP_PSEUDONIMO";
-    public static final String PROP_DIRECCION = "PROP_DIRECCION";
-    public static final String PROP_DIRECCIONREFERENCIAS = "PROP_DIRECCIONREFERENCIAS";
-    public static final String PROP_COLONIA = "PROP_COLONIA";
-    public static final String PROP_CODIGOPOSTAL = "PROP_CODIGOPOSTAL";
-    public static final String PROP_LOCALIDAD = "PROP_LOCALIDAD";
-    public static final String PROP_MUNICIPIO = "PROP_MUNICIPIO";
-    public static final String PROP_ESTADO = "PROP_ESTADO";
-    public static final String PROP_PAIS = "PROP_PAIS";
-    public static final String PROP_COMENTARIOS = "PROP_COMENTARIOS";
-    public static final String PROP_EMAIL = "PROP_EMAIL";
-    public static final String PROP_IMAGEN = "PROP_IMAGEN";
-    public static final String PROP_TELEFONOLIST = "PROP_TELEFONOLIST";
-    public static final String PROP_PROPERTYCHANGESUPPORT = "PROP_PROPERTYCHANGESUPPORT";
-    public static final String PROP_VETOABLECHANGESUPPORT = "PROP_VETOABLECHANGESUPPORT";
+    public static final String PROP_SERIALVERSIONUID = "serialVersionUID";
+    public static final String PROP_IDCONTACTO = "idContacto";
+    public static final String PROP_TIPO = "tipo";
+    public static final String PROP_NOMBRE = "nombre";
+    public static final String PROP_PSEUDONIMO = "pseudonimo";
+    public static final String PROP_DIRECCION = "direccion";
+    public static final String PROP_DIRECCIONREFERENCIAS = "direccionReferencias";
+    public static final String PROP_COLONIA = "colonia";
+    public static final String PROP_CODIGOPOSTAL = "codigoPostal";
+    public static final String PROP_LOCALIDAD = "localidad";
+    public static final String PROP_MUNICIPIO = "municipio";
+    public static final String PROP_ESTADO = "estado";
+    public static final String PROP_PAIS = "pais";
+    public static final String PROP_COMENTARIOS = "comentarios";
+    public static final String PROP_EMAIL = "email";
+    public static final String PROP_IMAGEN = "imagen";
+    public static final String PROP_TELEFONOLIST = "telefonoList";
+    public static final String PROP_PROPERTYCHANGESUPPORT = "propertyChangeSupport";
+    public static final String PROP_VETOABLECHANGESUPPORT = "vetoableChangeSupport";
 
     /**
      * @return the serialVersionUID

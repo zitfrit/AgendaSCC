@@ -19,8 +19,8 @@ import javax.persistence.Embeddable;
  */
 @Embeddable
 public class TelefonoPK implements Serializable {
-    private static final String PROP_IDCONTACTO = "PROP_IDCONTACTO";
-    private static final String PROP_TELEFONO = "PROP_TELEFONO";
+    private static final String PROP_IDCONTACTO = "idContacto";
+    private static final String PROP_TELEFONO = "telefono";
 
     /**
      * @return the PROP_IDCONTACTO
