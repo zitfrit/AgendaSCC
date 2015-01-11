@@ -19,16 +19,15 @@ import javax.persistence.Embeddable;
  */
 @Embeddable
 public class TelefonoPK implements Serializable {
+    public static final String PROP_SERIALVERSIONUID = "serialVersionUID";
     private static final String PROP_IDCONTACTO = "idContacto";
     private static final String PROP_TELEFONO = "telefono";
-
     /**
      * @return the PROP_IDCONTACTO
      */
     public static String getPROP_IDCONTACTO() {
         return PROP_IDCONTACTO;
     }
-
     /**
      * @return the PROP_TELEFONO
      */
@@ -40,6 +39,8 @@ public class TelefonoPK implements Serializable {
     private int idContacto;
     @Basic(optional = false)
     @Column(name = "telefono", nullable = false, length = 11)
+    
+    private static final long serialVersionUID = 1L;
     private String telefono;
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
     private final transient VetoableChangeSupport vetoableChangeSupport = new java.beans.VetoableChangeSupport(this);
