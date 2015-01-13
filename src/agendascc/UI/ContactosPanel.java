@@ -27,21 +27,24 @@ public class ContactosPanel extends JXPanel {
     public static final String PROP_OCONTACTOSLIST = "OContactosList";
     public static final String PROP_OTELEFONOSLIST = "OTelefonosList";
     public static final String PROP_TIPOCONTACTO = "tipoContacto";
-    public static final String PROP_TELEFONOEDITADO = "telefonoEditado";
+    public static final String PROP_TELEFONOPKEDITADO = "telefonoEditado";
     private String tipoContacto;
     private ContactoJpaController contactoController;
     private transient final java.beans.PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
     private transient final java.beans.VetoableChangeSupport vetoableChangeSupport = new java.beans.VetoableChangeSupport(this);
     private Contacto unEditedContacto;
-    private TelefonoPK telefonoEditado;
+    private TelefonoPK telefonoPKEditado;
+    
+    private Telefono telefonoEditado;
 
+    public static final String PROP_TELEFONOEDITADO = "telefonoEditado";
 
     /**
      * Get the value of telefonoEditado
      *
      * @return the value of telefonoEditado
      */
-    public TelefonoPK getTelefonoEditado() {
+    public Telefono getTelefonoEditado() {
         return telefonoEditado;
     }
 
@@ -51,11 +54,35 @@ public class ContactosPanel extends JXPanel {
      * @param telefonoEditado new value of telefonoEditado
      * @throws java.beans.PropertyVetoException
      */
-    public void setTelefonoEditado(TelefonoPK telefonoEditado) throws PropertyVetoException {
-        TelefonoPK oldTelefonoEditado = this.telefonoEditado;
+    public void setTelefonoEditado(Telefono telefonoEditado) throws PropertyVetoException {
+        Telefono oldTelefonoEditado = this.telefonoEditado;
         vetoableChangeSupport.fireVetoableChange(PROP_TELEFONOEDITADO, oldTelefonoEditado, telefonoEditado);
         this.telefonoEditado = telefonoEditado;
         propertyChangeSupport.firePropertyChange(PROP_TELEFONOEDITADO, oldTelefonoEditado, telefonoEditado);
+    }
+
+
+
+    /**
+     * Get the value of telefonoPKEditado
+     *
+     * @return the value of telefonoPKEditado
+     */
+    public TelefonoPK getTelefonoPKEditado() {
+        return telefonoPKEditado;
+    }
+
+    /**
+     * Set the value of telefonoPKEditado
+     *
+     * @param telefonoPKEditado new value of telefonoPKEditado
+     * @throws java.beans.PropertyVetoException
+     */
+    public void setTelefonoPKEditado(TelefonoPK telefonoPKEditado) throws PropertyVetoException {
+        TelefonoPK oldTelefonoEditado = this.telefonoPKEditado;
+        vetoableChangeSupport.fireVetoableChange(PROP_TELEFONOPKEDITADO, oldTelefonoEditado, telefonoPKEditado);
+        this.telefonoPKEditado = telefonoPKEditado;
+        propertyChangeSupport.firePropertyChange(PROP_TELEFONOPKEDITADO, oldTelefonoEditado, telefonoPKEditado);
     }
 
     public ContactosPanel()

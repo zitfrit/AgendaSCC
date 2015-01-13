@@ -86,12 +86,12 @@ public class TelefonoPK implements Serializable {
     
     public void addPropertyChangeListener(java.beans.PropertyChangeListener listener )
     {
-        getPropertyChangeSupport().addPropertyChangeListener( listener );
+        this.propertyChangeSupport.addPropertyChangeListener( listener );
     }
 
     public void removePropertyChangeListener(java.beans.PropertyChangeListener listener )
     {
-        getPropertyChangeSupport().removePropertyChangeListener( listener );
+        this.propertyChangeSupport.removePropertyChangeListener( listener );
     }
 
     /**
@@ -106,9 +106,9 @@ public class TelefonoPK implements Serializable {
      */
     public void setIdContacto(int idContacto) throws PropertyVetoException {
         int oldIdContacto = this.idContacto;
-        getVetoableChangeSupport().fireVetoableChange(getPROP_IDCONTACTO(), oldIdContacto, idContacto);
+        this.vetoableChangeSupport.fireVetoableChange(getPROP_IDCONTACTO(), oldIdContacto, idContacto);
         this.idContacto = idContacto;
-        getPropertyChangeSupport().firePropertyChange(getPROP_IDCONTACTO(), oldIdContacto, idContacto);
+       this.propertyChangeSupport.firePropertyChange(getPROP_IDCONTACTO(), oldIdContacto, idContacto);
     }
 
     /**
@@ -123,9 +123,9 @@ public class TelefonoPK implements Serializable {
      */
     public void setTelefono(String telefono) throws PropertyVetoException {
         java.lang.String oldTelefono = this.telefono;
-        getVetoableChangeSupport().fireVetoableChange(getPROP_TELEFONO(), oldTelefono, telefono);
+        this.vetoableChangeSupport.fireVetoableChange(getPROP_TELEFONO(), oldTelefono, telefono);
         this.telefono = telefono;
-        getPropertyChangeSupport().firePropertyChange(getPROP_TELEFONO(), oldTelefono, telefono);
+        this.propertyChangeSupport.firePropertyChange(getPROP_TELEFONO(), oldTelefono, telefono);
     }
 
     /**

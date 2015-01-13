@@ -190,6 +190,7 @@ public class Telefono implements Serializable {
         vetoableChangeSupport.fireVetoableChange(PROP_CONTACTO, oldContacto, contacto);
         this.contacto = contacto;
         propertyChangeSupport.firePropertyChange(PROP_CONTACTO, oldContacto, contacto);
+        
     }
     
     public void addPropertyChangeListener(java.beans.PropertyChangeListener listener )
