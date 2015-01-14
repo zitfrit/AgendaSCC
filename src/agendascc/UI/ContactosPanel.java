@@ -15,6 +15,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import org.jdesktop.observablecollections.ObservableCollections;
 
 /**
@@ -25,65 +27,12 @@ public class ContactosPanel extends JXPanel {
     private Contacto contactoActual;
     public static final String PROP_CONTACTOACTUAL = "contactoActual";
     public static final String PROP_OCONTACTOSLIST = "OContactosList";
-    public static final String PROP_OTELEFONOSLIST = "OTelefonosList";
     public static final String PROP_TIPOCONTACTO = "tipoContacto";
-    public static final String PROP_TELEFONOPKEDITADO = "telefonoEditado";
     private String tipoContacto;
+    private Contacto unEditedContacto;
     private ContactoJpaController contactoController;
     private transient final java.beans.PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
     private transient final java.beans.VetoableChangeSupport vetoableChangeSupport = new java.beans.VetoableChangeSupport(this);
-    private Contacto unEditedContacto;
-    private TelefonoPK telefonoPKEditado;
-    
-    private Telefono telefonoEditado;
-
-    public static final String PROP_TELEFONOEDITADO = "telefonoEditado";
-
-    /**
-     * Get the value of telefonoEditado
-     *
-     * @return the value of telefonoEditado
-     */
-    public Telefono getTelefonoEditado() {
-        return telefonoEditado;
-    }
-
-    /**
-     * Set the value of telefonoEditado
-     *
-     * @param telefonoEditado new value of telefonoEditado
-     * @throws java.beans.PropertyVetoException
-     */
-    public void setTelefonoEditado(Telefono telefonoEditado) throws PropertyVetoException {
-        Telefono oldTelefonoEditado = this.telefonoEditado;
-        vetoableChangeSupport.fireVetoableChange(PROP_TELEFONOEDITADO, oldTelefonoEditado, telefonoEditado);
-        this.telefonoEditado = telefonoEditado;
-        propertyChangeSupport.firePropertyChange(PROP_TELEFONOEDITADO, oldTelefonoEditado, telefonoEditado);
-    }
-
-
-
-    /**
-     * Get the value of telefonoPKEditado
-     *
-     * @return the value of telefonoPKEditado
-     */
-    public TelefonoPK getTelefonoPKEditado() {
-        return telefonoPKEditado;
-    }
-
-    /**
-     * Set the value of telefonoPKEditado
-     *
-     * @param telefonoPKEditado new value of telefonoPKEditado
-     * @throws java.beans.PropertyVetoException
-     */
-    public void setTelefonoPKEditado(TelefonoPK telefonoPKEditado) throws PropertyVetoException {
-        TelefonoPK oldTelefonoEditado = this.telefonoPKEditado;
-        vetoableChangeSupport.fireVetoableChange(PROP_TELEFONOPKEDITADO, oldTelefonoEditado, telefonoPKEditado);
-        this.telefonoPKEditado = telefonoPKEditado;
-        propertyChangeSupport.firePropertyChange(PROP_TELEFONOPKEDITADO, oldTelefonoEditado, telefonoPKEditado);
-    }
 
     public ContactosPanel()
     {
@@ -91,8 +40,6 @@ public class ContactosPanel extends JXPanel {
         tipoContacto="%";
         initComponents();
         
-
-        //contactoController=new ContactoJpaController(mainEntityManager.getEntityManagerFactory());
         propertyChangeSupport.addPropertyChangeListener(PROP_TIPOCONTACTO, new PropertyChangeListener() {
 
             @Override
@@ -121,6 +68,37 @@ public class ContactosPanel extends JXPanel {
                 });
         contactosTabla.getColumnExt (contactosTabla.getColumnModel().getColumn(0).getIdentifier()).setVisible(false);
         contactosTabla.packAll();
+        telefonosTabla.addPropertyChangeListener("model", new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                System.out.println("cambio la tabla+ "+evt.getPropertyName() + " : "+ evt.getSource());
+                if(telefonosTabla.equals(evt.getSource()))
+                    System.out.println("telefonos tabla");
+                 //To change body of generated methods, choose Tools | Templates.
+            }
+        } );
+        /*telefonosTabla.getModel().addTableModelListener(new TableModelListener() {
+
+            @Override
+            public void tableChanged(TableModelEvent e) {
+               Contacto x;
+                System.out.println("cambio la tabla");
+                
+                switch (e.getColumn()  ){
+                    case 1:{try {
+                        contactoActual.getTelefonoList().get(e.getFirstRow()-1).setTipo(telefonosTabla.getValueAt( telefonosTabla.convertRowIndexToModel(telefonosTabla.getSelectedRow()),0).toString());
+                    } catch (PropertyVetoException ex) {
+                        Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    }System.out.println(telefonosTabla.getValueAt( telefonosTabla.convertRowIndexToModel(telefonosTabla.getSelectedRow()),0).toString());
+                        }break;
+                    case 2:{}break;
+                    case 3:{}break;
+                    case 4:{}
+                    default:{new Exception("columna editada de telefonosTabla no encontrada");}break;
+                }
+            }
+        });*/
     }
 
     public List<Contacto> getOContactosList()
@@ -140,22 +118,6 @@ public class ContactosPanel extends JXPanel {
         propertyChangeSupport.firePropertyChange(PROP_OCONTACTOSLIST, oldList, listaContactos);
     }
 
-    public List<Telefono> getOTelefonosList(){
-        return this.oTelefonosList;
-    }
-    
- 
-    public void setOTelefonosList(List<Telefono> listaTelefonos){
-        List<Telefono> oldList=this.oTelefonosList;
-        try {
-            vetoableChangeSupport.fireVetoableChange(PROP_OTELEFONOSLIST, oldList, listaTelefonos);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.oTelefonosList=ObservableCollections.observableList(listaTelefonos);
-        propertyChangeSupport.firePropertyChange(PROP_OTELEFONOSLIST, oldList, this.oTelefonosList);
-    }
-    
     public Contacto getContactoActual(){
         return this.contactoActual;
     }
@@ -169,19 +131,8 @@ public class ContactosPanel extends JXPanel {
         }
         this.contactoActual = contactoNuevo;
         propertyChangeSupport.firePropertyChange(PROP_CONTACTOACTUAL, oldContactoActual, this.contactoActual);
-         setOTelefonosList(this.contactoActual.getTelefonoList());
     }
 
-    public void addPropertyChangeListener(java.beans.PropertyChangeListener listener )
-    {
-        propertyChangeSupport.addPropertyChangeListener( listener );
-    }
-
-    public void removePropertyChangeListener(java.beans.PropertyChangeListener listener )
-    {
-        propertyChangeSupport.removePropertyChangeListener( listener );
-    }
-    
     public String getTipoContacto(){
         return this.tipoContacto;
     }
@@ -190,14 +141,6 @@ public class ContactosPanel extends JXPanel {
         vetoableChangeSupport.fireVetoableChange(PROP_TIPOCONTACTO, oldType, tipo);
         this.tipoContacto = tipo;
         propertyChangeSupport.firePropertyChange(PROP_TIPOCONTACTO, oldType, tipo);
-        //System.out.println("el tipo ha cambiado de ["+oldType+"] a ["+this.tipoContacto+"]");
-        //queryContactos=mainEntityManager.createQuery("SELECT C FROM Contacto C WHERE C.tipo LIKE :tipo");
-        //queryContactos.setParameter("tipo", getTipoContacto());
-        //setOContactosList(queryContactos.getResultList());
-       // bindingGroup.unbind();
-       // bindingGroup.bind();
-       // System.out.println("el tipo ha cambiado de ["+oldType+"] a ["+this.tipoContacto+"]");
-        //contactosTabla.updateUI();
     }
 
     @SuppressWarnings("unchecked")
@@ -210,9 +153,7 @@ public class ContactosPanel extends JXPanel {
         queryContactos = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo").setParameter("tipo", tipoContacto);
         if (java.beans.Beans.isDesignTime())
         queryContactos.setParameter("tipo", tipoContacto);
-        queryTelefonos = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT C FROM Telefono C");
         oContactosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryContactos.getResultList());
-        oTelefonosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryTelefonos.getResultList());
         jPanel1 = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         labelImagen = new javax.swing.JLabel();
@@ -634,9 +575,13 @@ public class ContactosPanel extends JXPanel {
         try {
             mainEntityManager.getTransaction().begin();
  
-            oContactosList.set(oContactosList.indexOf(contactoActual), contactoActual);
-            mainEntityManager.merge(contactoActual);
-            //mainEntityManager.merge(contactoActual.getTelefonoList().get(0).getTelefonoPK());
+                oContactosList.set(oContactosList.indexOf(contactoActual), contactoActual);
+                for(int i=0;i<contactoActual.getTelefonoList().size();i++)
+                {
+                    mainEntityManager.merge(contactoActual.getTelefonoList().get(i));
+                }
+                mainEntityManager.merge(contactoActual);
+                //mainEntityManager.merge(contactoActual.getTelefonoList().get(0).getTelefonoPK());
             mainEntityManager.getTransaction().commit();
         } catch (RuntimeException e) {
             if(mainEntityManager.getTransaction().isActive())
@@ -686,11 +631,9 @@ public class ContactosPanel extends JXPanel {
     private javax.swing.JTextField municipioTF;
     private javax.swing.JTextField nombreTF;
     private java.util.List<Contacto> oContactosList;
-    private java.util.List<Telefono> oTelefonosList;
     private javax.swing.JTextField paisTF;
     private javax.swing.JTextField pseudonimoTF;
     private javax.persistence.Query queryContactos;
-    private javax.persistence.Query queryTelefonos;
     private javax.swing.JTextField referenciasDireccionTF;
     private org.jdesktop.swingx.JXTable telefonosTabla;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
@@ -778,6 +721,15 @@ public class ContactosPanel extends JXPanel {
         //contactosTabla.setEditable(false);
         contactosTabla.setEnabled(true);
         telefonosTabla.setEditable(false);
+    }
+    public void addPropertyChangeListener(java.beans.PropertyChangeListener listener )
+    {
+        propertyChangeSupport.addPropertyChangeListener( listener );
+    }
+
+    public void removePropertyChangeListener(java.beans.PropertyChangeListener listener )
+    {
+        propertyChangeSupport.removePropertyChangeListener( listener );
     }
 }
 /*          este codigo estaba en el evento del boton guardar. 

@@ -45,7 +45,7 @@ public class AgendaSCC {
         catch(Exception e){    }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Tries2().setVisible(true);
+                new Tries().setVisible(true);
             }
         });
         // TODO code application logic here

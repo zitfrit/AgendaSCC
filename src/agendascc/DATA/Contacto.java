@@ -228,7 +228,9 @@ public class Contacto implements Serializable {
         this.idContacto = idContacto;
         propertyChangeSupport.firePropertyChange(PROP_IDCONTACTO, oldIdContacto, idContacto);
     }
-
+    public void setTelefono(String tel){
+        
+    }
     /**
      * @return the tipo
      */

@@ -122,6 +122,7 @@ public class TelefonoPK implements Serializable {
      * @param telefono the telefono to set
      */
     public void setTelefono(String telefono) throws PropertyVetoException {
+    
         java.lang.String oldTelefono = this.telefono;
         this.vetoableChangeSupport.fireVetoableChange(getPROP_TELEFONO(), oldTelefono, telefono);
         this.telefono = telefono;

@@ -22,14 +22,6 @@
         <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="if (java.beans.Beans.isDesignTime())&#xa;    queryContactos.setParameter(&quot;tipo&quot;, tipoContacto);"/>
       </AuxValues>
     </Component>
-    <Component class="javax.persistence.Query" name="queryTelefonos">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT C FROM Telefono C"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="mainEntityManager"/>
-        </Property>
-      </Properties>
-    </Component>
     <Component class="java.util.List" name="oContactosList">
       <Properties>
         <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
@@ -40,17 +32,6 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="ContactosPanel_oContactosList"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Contacto&gt;"/>
-      </AuxValues>
-    </Component>
-    <Component class="java.util.List" name="oTelefonosList">
-      <Properties>
-        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="queryTelefonos"/>
-        </Property>
-        <Property name="observable" type="boolean" value="true"/>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Telefono&gt;"/>
       </AuxValues>
     </Component>
   </NonVisualComponents>

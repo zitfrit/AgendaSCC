@@ -16,9 +16,7 @@ public class ContactoBeanInfo extends SimpleBeanInfo {
     // Bean descriptor//GEN-FIRST:BeanDescriptor
     /*lazy BeanDescriptor*/
     private static BeanDescriptor getBdescriptor(){
-        BeanDescriptor beanDescriptor = new BeanDescriptor  ( agendascc.DATA.Contacto.class , null ); // NOI18N
-        beanDescriptor.setExpert ( true );
-        beanDescriptor.setPreferred ( true );//GEN-HEADEREND:BeanDescriptor
+        BeanDescriptor beanDescriptor = new BeanDescriptor  ( agendascc.DATA.Contacto.class , null ); // NOI18N//GEN-HEADEREND:BeanDescriptor
     // Here you can add code for customizing the BeanDescriptor.
 
         return beanDescriptor;     }//GEN-LAST:BeanDescriptor
@@ -38,80 +36,36 @@ public class ContactoBeanInfo extends SimpleBeanInfo {
     private static final int PROPERTY_municipio = 10;
     private static final int PROPERTY_nombre = 11;
     private static final int PROPERTY_pais = 12;
-    private static final int PROPERTY_pseudonimo = 13;
-    private static final int PROPERTY_telefonoList = 14;
-    private static final int PROPERTY_tipo = 15;
+    private static final int PROPERTY_propertyChangeSupport = 13;
+    private static final int PROPERTY_pseudonimo = 14;
+    private static final int PROPERTY_telefonoList = 15;
+    private static final int PROPERTY_tipo = 16;
+    private static final int PROPERTY_vetoableChangeSupport = 17;
 
     // Property array 
     /*lazy PropertyDescriptor*/
     private static PropertyDescriptor[] getPdescriptor(){
-        PropertyDescriptor[] properties = new PropertyDescriptor[16];
+        PropertyDescriptor[] properties = new PropertyDescriptor[18];
     
         try {
             properties[PROPERTY_codigoPostal] = new PropertyDescriptor ( "codigoPostal", agendascc.DATA.Contacto.class, "getCodigoPostal", "setCodigoPostal" ); // NOI18N
-            properties[PROPERTY_codigoPostal].setExpert ( true );
-            properties[PROPERTY_codigoPostal].setPreferred ( true );
-            properties[PROPERTY_codigoPostal].setBound ( true );
             properties[PROPERTY_colonia] = new PropertyDescriptor ( "colonia", agendascc.DATA.Contacto.class, "getColonia", "setColonia" ); // NOI18N
-            properties[PROPERTY_colonia].setExpert ( true );
-            properties[PROPERTY_colonia].setPreferred ( true );
-            properties[PROPERTY_colonia].setBound ( true );
             properties[PROPERTY_comentarios] = new PropertyDescriptor ( "comentarios", agendascc.DATA.Contacto.class, "getComentarios", "setComentarios" ); // NOI18N
-            properties[PROPERTY_comentarios].setExpert ( true );
-            properties[PROPERTY_comentarios].setPreferred ( true );
-            properties[PROPERTY_comentarios].setBound ( true );
             properties[PROPERTY_direccion] = new PropertyDescriptor ( "direccion", agendascc.DATA.Contacto.class, "getDireccion", "setDireccion" ); // NOI18N
-            properties[PROPERTY_direccion].setExpert ( true );
-            properties[PROPERTY_direccion].setPreferred ( true );
-            properties[PROPERTY_direccion].setBound ( true );
             properties[PROPERTY_direccionReferencias] = new PropertyDescriptor ( "direccionReferencias", agendascc.DATA.Contacto.class, "getDireccionReferencias", "setDireccionReferencias" ); // NOI18N
-            properties[PROPERTY_direccionReferencias].setExpert ( true );
-            properties[PROPERTY_direccionReferencias].setPreferred ( true );
-            properties[PROPERTY_direccionReferencias].setBound ( true );
             properties[PROPERTY_email] = new PropertyDescriptor ( "email", agendascc.DATA.Contacto.class, "getEmail", "setEmail" ); // NOI18N
-            properties[PROPERTY_email].setExpert ( true );
-            properties[PROPERTY_email].setPreferred ( true );
-            properties[PROPERTY_email].setBound ( true );
             properties[PROPERTY_estado] = new PropertyDescriptor ( "estado", agendascc.DATA.Contacto.class, "getEstado", "setEstado" ); // NOI18N
-            properties[PROPERTY_estado].setExpert ( true );
-            properties[PROPERTY_estado].setPreferred ( true );
-            properties[PROPERTY_estado].setBound ( true );
             properties[PROPERTY_idContacto] = new PropertyDescriptor ( "idContacto", agendascc.DATA.Contacto.class, "getIdContacto", "setIdContacto" ); // NOI18N
-            properties[PROPERTY_idContacto].setExpert ( true );
-            properties[PROPERTY_idContacto].setPreferred ( true );
-            properties[PROPERTY_idContacto].setBound ( true );
             properties[PROPERTY_imagen] = new PropertyDescriptor ( "imagen", agendascc.DATA.Contacto.class, "getImagen", "setImagen" ); // NOI18N
-            properties[PROPERTY_imagen].setExpert ( true );
-            properties[PROPERTY_imagen].setPreferred ( true );
-            properties[PROPERTY_imagen].setBound ( true );
             properties[PROPERTY_localidad] = new PropertyDescriptor ( "localidad", agendascc.DATA.Contacto.class, "getLocalidad", "setLocalidad" ); // NOI18N
-            properties[PROPERTY_localidad].setExpert ( true );
-            properties[PROPERTY_localidad].setPreferred ( true );
-            properties[PROPERTY_localidad].setBound ( true );
             properties[PROPERTY_municipio] = new PropertyDescriptor ( "municipio", agendascc.DATA.Contacto.class, "getMunicipio", "setMunicipio" ); // NOI18N
-            properties[PROPERTY_municipio].setExpert ( true );
-            properties[PROPERTY_municipio].setPreferred ( true );
-            properties[PROPERTY_municipio].setBound ( true );
             properties[PROPERTY_nombre] = new PropertyDescriptor ( "nombre", agendascc.DATA.Contacto.class, "getNombre", "setNombre" ); // NOI18N
-            properties[PROPERTY_nombre].setExpert ( true );
-            properties[PROPERTY_nombre].setPreferred ( true );
-            properties[PROPERTY_nombre].setBound ( true );
             properties[PROPERTY_pais] = new PropertyDescriptor ( "pais", agendascc.DATA.Contacto.class, "getPais", "setPais" ); // NOI18N
-            properties[PROPERTY_pais].setExpert ( true );
-            properties[PROPERTY_pais].setPreferred ( true );
-            properties[PROPERTY_pais].setBound ( true );
+            properties[PROPERTY_propertyChangeSupport] = new PropertyDescriptor ( "propertyChangeSupport", agendascc.DATA.Contacto.class, "getPropertyChangeSupport", null ); // NOI18N
             properties[PROPERTY_pseudonimo] = new PropertyDescriptor ( "pseudonimo", agendascc.DATA.Contacto.class, "getPseudonimo", "setPseudonimo" ); // NOI18N
-            properties[PROPERTY_pseudonimo].setExpert ( true );
-            properties[PROPERTY_pseudonimo].setPreferred ( true );
-            properties[PROPERTY_pseudonimo].setBound ( true );
             properties[PROPERTY_telefonoList] = new PropertyDescriptor ( "telefonoList", agendascc.DATA.Contacto.class, "getTelefonoList", "setTelefonoList" ); // NOI18N
-            properties[PROPERTY_telefonoList].setExpert ( true );
-            properties[PROPERTY_telefonoList].setPreferred ( true );
-            properties[PROPERTY_telefonoList].setBound ( true );
             properties[PROPERTY_tipo] = new PropertyDescriptor ( "tipo", agendascc.DATA.Contacto.class, "getTipo", "setTipo" ); // NOI18N
-            properties[PROPERTY_tipo].setExpert ( true );
-            properties[PROPERTY_tipo].setPreferred ( true );
-            properties[PROPERTY_tipo].setBound ( true );
+            properties[PROPERTY_vetoableChangeSupport] = new PropertyDescriptor ( "vetoableChangeSupport", agendascc.DATA.Contacto.class, "getVetoableChangeSupport", null ); // NOI18N
         }
         catch(IntrospectionException e) {
             e.printStackTrace();
@@ -121,18 +75,54 @@ public class ContactoBeanInfo extends SimpleBeanInfo {
         return properties;     }//GEN-LAST:Properties
 
     // EventSet identifiers//GEN-FIRST:Events
+    private static final int EVENT_propertyChangeListener = 0;
 
     // EventSet array
     /*lazy EventSetDescriptor*/
     private static EventSetDescriptor[] getEdescriptor(){
-        EventSetDescriptor[] eventSets = new EventSetDescriptor[0];//GEN-HEADEREND:Events
+        EventSetDescriptor[] eventSets = new EventSetDescriptor[1];
+    
+        try {
+            eventSets[EVENT_propertyChangeListener] = new EventSetDescriptor ( agendascc.DATA.Contacto.class, "propertyChangeListener", java.beans.PropertyChangeListener.class, new String[] {"propertyChange"}, "addPropertyChangeListener", "removePropertyChangeListener" ); // NOI18N
+        }
+        catch(IntrospectionException e) {
+            e.printStackTrace();
+        }//GEN-HEADEREND:Events
     // Here you can add code for customizing the event sets array.
 
         return eventSets;     }//GEN-LAST:Events
 
-    // Method information will be obtained from introspection.//GEN-FIRST:Methods
-    private static MethodDescriptor[] methods = null;
-    private static MethodDescriptor[] getMdescriptor(){//GEN-HEADEREND:Methods
+    // Method identifiers//GEN-FIRST:Methods
+    private static final int METHOD_cloneContacto0 = 0;
+    private static final int METHOD_copyFromDummy1 = 1;
+    private static final int METHOD_equals2 = 2;
+    private static final int METHOD_getSerialVersionUID3 = 3;
+    private static final int METHOD_hashCode4 = 4;
+    private static final int METHOD_makeContactoDummy5 = 5;
+    private static final int METHOD_toString6 = 6;
+
+    // Method array 
+    /*lazy MethodDescriptor*/
+    private static MethodDescriptor[] getMdescriptor(){
+        MethodDescriptor[] methods = new MethodDescriptor[7];
+    
+        try {
+            methods[METHOD_cloneContacto0] = new MethodDescriptor(agendascc.DATA.Contacto.class.getMethod("cloneContacto", new Class[] {agendascc.DATA.Contacto.class})); // NOI18N
+            methods[METHOD_cloneContacto0].setDisplayName ( "" );
+            methods[METHOD_copyFromDummy1] = new MethodDescriptor(agendascc.DATA.Contacto.class.getMethod("copyFromDummy", new Class[] {agendascc.DATA.Contacto.class})); // NOI18N
+            methods[METHOD_copyFromDummy1].setDisplayName ( "" );
+            methods[METHOD_equals2] = new MethodDescriptor(agendascc.DATA.Contacto.class.getMethod("equals", new Class[] {java.lang.Object.class})); // NOI18N
+            methods[METHOD_equals2].setDisplayName ( "" );
+            methods[METHOD_getSerialVersionUID3] = new MethodDescriptor(agendascc.DATA.Contacto.class.getMethod("getSerialVersionUID", new Class[] {})); // NOI18N
+            methods[METHOD_getSerialVersionUID3].setDisplayName ( "" );
+            methods[METHOD_hashCode4] = new MethodDescriptor(agendascc.DATA.Contacto.class.getMethod("hashCode", new Class[] {})); // NOI18N
+            methods[METHOD_hashCode4].setDisplayName ( "" );
+            methods[METHOD_makeContactoDummy5] = new MethodDescriptor(agendascc.DATA.Contacto.class.getMethod("makeContactoDummy", new Class[] {})); // NOI18N
+            methods[METHOD_makeContactoDummy5].setDisplayName ( "" );
+            methods[METHOD_toString6] = new MethodDescriptor(agendascc.DATA.Contacto.class.getMethod("toString", new Class[] {})); // NOI18N
+            methods[METHOD_toString6].setDisplayName ( "" );
+        }
+        catch( Exception e) {}//GEN-HEADEREND:Methods
     // Here you can add code for customizing the methods array.
 
         return methods;     }//GEN-LAST:Methods

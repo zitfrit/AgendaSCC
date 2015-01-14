@@ -16,9 +16,7 @@ public class ContactosPanelBeanInfo extends SimpleBeanInfo {
     // Bean descriptor//GEN-FIRST:BeanDescriptor
     /*lazy BeanDescriptor*/
     private static BeanDescriptor getBdescriptor(){
-        BeanDescriptor beanDescriptor = new BeanDescriptor  ( agendascc.UI.ContactosPanel.class , null ); // NOI18N
-        beanDescriptor.setExpert ( true );
-        beanDescriptor.setPreferred ( true );//GEN-HEADEREND:BeanDescriptor
+        BeanDescriptor beanDescriptor = new BeanDescriptor  ( agendascc.UI.ContactosPanel.class , null ); // NOI18N//GEN-HEADEREND:BeanDescriptor
     // Here you can add code for customizing the BeanDescriptor.
 
         return beanDescriptor;     }//GEN-LAST:BeanDescriptor
@@ -104,23 +102,23 @@ public class ContactosPanelBeanInfo extends SimpleBeanInfo {
     private static final int PROPERTY_OContactosList = 76;
     private static final int PROPERTY_opaque = 77;
     private static final int PROPERTY_optimizedDrawingEnabled = 78;
-    private static final int PROPERTY_OTelefonosList = 79;
-    private static final int PROPERTY_paintBorderInsets = 80;
-    private static final int PROPERTY_paintingForPrint = 81;
-    private static final int PROPERTY_paintingTile = 82;
-    private static final int PROPERTY_parent = 83;
-    private static final int PROPERTY_peer = 84;
-    private static final int PROPERTY_preferredScrollableViewportSize = 85;
-    private static final int PROPERTY_preferredSize = 86;
-    private static final int PROPERTY_preferredSizeSet = 87;
-    private static final int PROPERTY_propertyChangeListeners = 88;
-    private static final int PROPERTY_registeredKeyStrokes = 89;
-    private static final int PROPERTY_requestFocusEnabled = 90;
-    private static final int PROPERTY_rootPane = 91;
-    private static final int PROPERTY_scrollableHeightHint = 92;
-    private static final int PROPERTY_scrollableTracksViewportHeight = 93;
-    private static final int PROPERTY_scrollableTracksViewportWidth = 94;
-    private static final int PROPERTY_scrollableWidthHint = 95;
+    private static final int PROPERTY_paintBorderInsets = 79;
+    private static final int PROPERTY_paintingForPrint = 80;
+    private static final int PROPERTY_paintingTile = 81;
+    private static final int PROPERTY_parent = 82;
+    private static final int PROPERTY_peer = 83;
+    private static final int PROPERTY_preferredScrollableViewportSize = 84;
+    private static final int PROPERTY_preferredSize = 85;
+    private static final int PROPERTY_preferredSizeSet = 86;
+    private static final int PROPERTY_propertyChangeListeners = 87;
+    private static final int PROPERTY_registeredKeyStrokes = 88;
+    private static final int PROPERTY_requestFocusEnabled = 89;
+    private static final int PROPERTY_rootPane = 90;
+    private static final int PROPERTY_scrollableHeightHint = 91;
+    private static final int PROPERTY_scrollableTracksViewportHeight = 92;
+    private static final int PROPERTY_scrollableTracksViewportWidth = 93;
+    private static final int PROPERTY_scrollableWidthHint = 94;
+    private static final int PROPERTY_selectedElementIndex = 95;
     private static final int PROPERTY_showing = 96;
     private static final int PROPERTY_size = 97;
     private static final int PROPERTY_tipoContacto = 98;
@@ -168,10 +166,6 @@ public class ContactosPanelBeanInfo extends SimpleBeanInfo {
             properties[PROPERTY_componentPopupMenu] = new PropertyDescriptor ( "componentPopupMenu", agendascc.UI.ContactosPanel.class, "getComponentPopupMenu", "setComponentPopupMenu" ); // NOI18N
             properties[PROPERTY_components] = new PropertyDescriptor ( "components", agendascc.UI.ContactosPanel.class, "getComponents", null ); // NOI18N
             properties[PROPERTY_contactoActual] = new PropertyDescriptor ( "contactoActual", agendascc.UI.ContactosPanel.class, "getContactoActual", "setContactoActual" ); // NOI18N
-            properties[PROPERTY_contactoActual].setExpert ( true );
-            properties[PROPERTY_contactoActual].setPreferred ( true );
-            properties[PROPERTY_contactoActual].setBound ( true );
-            properties[PROPERTY_contactoActual].setConstrained ( true );
             properties[PROPERTY_containerListeners] = new PropertyDescriptor ( "containerListeners", agendascc.UI.ContactosPanel.class, "getContainerListeners", null ); // NOI18N
             properties[PROPERTY_cursor] = new PropertyDescriptor ( "cursor", agendascc.UI.ContactosPanel.class, "getCursor", "setCursor" ); // NOI18N
             properties[PROPERTY_cursorSet] = new PropertyDescriptor ( "cursorSet", agendascc.UI.ContactosPanel.class, "isCursorSet", null ); // NOI18N
@@ -228,17 +222,8 @@ public class ContactosPanelBeanInfo extends SimpleBeanInfo {
             properties[PROPERTY_name] = new PropertyDescriptor ( "name", agendascc.UI.ContactosPanel.class, "getName", "setName" ); // NOI18N
             properties[PROPERTY_nextFocusableComponent] = new PropertyDescriptor ( "nextFocusableComponent", agendascc.UI.ContactosPanel.class, "getNextFocusableComponent", "setNextFocusableComponent" ); // NOI18N
             properties[PROPERTY_OContactosList] = new PropertyDescriptor ( "OContactosList", agendascc.UI.ContactosPanel.class, "getOContactosList", "setOContactosList" ); // NOI18N
-            properties[PROPERTY_OContactosList].setExpert ( true );
-            properties[PROPERTY_OContactosList].setPreferred ( true );
-            properties[PROPERTY_OContactosList].setBound ( true );
-            properties[PROPERTY_OContactosList].setConstrained ( true );
             properties[PROPERTY_opaque] = new PropertyDescriptor ( "opaque", agendascc.UI.ContactosPanel.class, "isOpaque", "setOpaque" ); // NOI18N
             properties[PROPERTY_optimizedDrawingEnabled] = new PropertyDescriptor ( "optimizedDrawingEnabled", agendascc.UI.ContactosPanel.class, "isOptimizedDrawingEnabled", null ); // NOI18N
-            properties[PROPERTY_OTelefonosList] = new PropertyDescriptor ( "OTelefonosList", agendascc.UI.ContactosPanel.class, "getOTelefonosList", "setOTelefonosList" ); // NOI18N
-            properties[PROPERTY_OTelefonosList].setExpert ( true );
-            properties[PROPERTY_OTelefonosList].setPreferred ( true );
-            properties[PROPERTY_OTelefonosList].setBound ( true );
-            properties[PROPERTY_OTelefonosList].setConstrained ( true );
             properties[PROPERTY_paintBorderInsets] = new PropertyDescriptor ( "paintBorderInsets", agendascc.UI.ContactosPanel.class, "isPaintBorderInsets", "setPaintBorderInsets" ); // NOI18N
             properties[PROPERTY_paintingForPrint] = new PropertyDescriptor ( "paintingForPrint", agendascc.UI.ContactosPanel.class, "isPaintingForPrint", null ); // NOI18N
             properties[PROPERTY_paintingTile] = new PropertyDescriptor ( "paintingTile", agendascc.UI.ContactosPanel.class, "isPaintingTile", null ); // NOI18N
@@ -255,13 +240,10 @@ public class ContactosPanelBeanInfo extends SimpleBeanInfo {
             properties[PROPERTY_scrollableTracksViewportHeight] = new PropertyDescriptor ( "scrollableTracksViewportHeight", agendascc.UI.ContactosPanel.class, "getScrollableTracksViewportHeight", "setScrollableTracksViewportHeight" ); // NOI18N
             properties[PROPERTY_scrollableTracksViewportWidth] = new PropertyDescriptor ( "scrollableTracksViewportWidth", agendascc.UI.ContactosPanel.class, "getScrollableTracksViewportWidth", "setScrollableTracksViewportWidth" ); // NOI18N
             properties[PROPERTY_scrollableWidthHint] = new PropertyDescriptor ( "scrollableWidthHint", agendascc.UI.ContactosPanel.class, null, "setScrollableWidthHint" ); // NOI18N
+            properties[PROPERTY_selectedElementIndex] = new PropertyDescriptor ( "selectedElementIndex", agendascc.UI.ContactosPanel.class, "getSelectedElementIndex", null ); // NOI18N
             properties[PROPERTY_showing] = new PropertyDescriptor ( "showing", agendascc.UI.ContactosPanel.class, "isShowing", null ); // NOI18N
             properties[PROPERTY_size] = new PropertyDescriptor ( "size", agendascc.UI.ContactosPanel.class, "getSize", "setSize" ); // NOI18N
             properties[PROPERTY_tipoContacto] = new PropertyDescriptor ( "tipoContacto", agendascc.UI.ContactosPanel.class, "getTipoContacto", "setTipoContacto" ); // NOI18N
-            properties[PROPERTY_tipoContacto].setExpert ( true );
-            properties[PROPERTY_tipoContacto].setPreferred ( true );
-            properties[PROPERTY_tipoContacto].setBound ( true );
-            properties[PROPERTY_tipoContacto].setConstrained ( true );
             properties[PROPERTY_toolkit] = new PropertyDescriptor ( "toolkit", agendascc.UI.ContactosPanel.class, "getToolkit", null ); // NOI18N
             properties[PROPERTY_toolTipText] = new PropertyDescriptor ( "toolTipText", agendascc.UI.ContactosPanel.class, "getToolTipText", "setToolTipText" ); // NOI18N
             properties[PROPERTY_topLevelAncestor] = new PropertyDescriptor ( "topLevelAncestor", agendascc.UI.ContactosPanel.class, "getTopLevelAncestor", null ); // NOI18N
