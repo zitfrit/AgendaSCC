@@ -6,7 +6,6 @@
 package agendascc.DATA;
 
 import agendascc.DATA.exceptions.NonexistentEntityException;
-import agendascc.DATA.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -31,31 +30,22 @@ public class TelefonoJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Telefono telefono) throws PreexistingEntityException, Exception {
-        if (telefono.getTelefonoPK() == null) {
-            telefono.setTelefonoPK(new TelefonoPK());
-        }
-        telefono.getTelefonoPK().setIdContacto(telefono.getContacto().getIdContacto());
+    public void create(Telefono telefono) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Contacto contacto = telefono.getContacto();
-            if (contacto != null) {
-                contacto = em.getReference(contacto.getClass(), contacto.getIdContacto());
-                telefono.setContacto(contacto);
+            Contacto idContacto = telefono.getIdContacto();
+            if (idContacto != null) {
+                idContacto = em.getReference(idContacto.getClass(), idContacto.getIdContacto());
+                telefono.setIdContacto(idContacto);
             }
             em.persist(telefono);
-            if (contacto != null) {
-                contacto.getTelefonoList().add(telefono);
-                contacto = em.merge(contacto);
+            if (idContacto != null) {
+                idContacto.getTelefonoList().add(telefono);
+                idContacto = em.merge(idContacto);
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findTelefono(telefono.getTelefonoPK()) != null) {
-                throw new PreexistingEntityException("Telefono " + telefono + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -64,32 +54,31 @@ public class TelefonoJpaController implements Serializable {
     }
 
     public void edit(Telefono telefono) throws NonexistentEntityException, Exception {
-        telefono.getTelefonoPK().setIdContacto(telefono.getContacto().getIdContacto());
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Telefono persistentTelefono = em.find(Telefono.class, telefono.getTelefonoPK());
-            Contacto contactoOld = persistentTelefono.getContacto();
-            Contacto contactoNew = telefono.getContacto();
-            if (contactoNew != null) {
-                contactoNew = em.getReference(contactoNew.getClass(), contactoNew.getIdContacto());
-                telefono.setContacto(contactoNew);
+            Telefono persistentTelefono = em.find(Telefono.class, telefono.getIdTelefono());
+            Contacto idContactoOld = persistentTelefono.getIdContacto();
+            Contacto idContactoNew = telefono.getIdContacto();
+            if (idContactoNew != null) {
+                idContactoNew = em.getReference(idContactoNew.getClass(), idContactoNew.getIdContacto());
+                telefono.setIdContacto(idContactoNew);
             }
             telefono = em.merge(telefono);
-            if (contactoOld != null && !contactoOld.equals(contactoNew)) {
-                contactoOld.getTelefonoList().remove(telefono);
-                contactoOld = em.merge(contactoOld);
+            if (idContactoOld != null && !idContactoOld.equals(idContactoNew)) {
+                idContactoOld.getTelefonoList().remove(telefono);
+                idContactoOld = em.merge(idContactoOld);
             }
-            if (contactoNew != null && !contactoNew.equals(contactoOld)) {
-                contactoNew.getTelefonoList().add(telefono);
-                contactoNew = em.merge(contactoNew);
+            if (idContactoNew != null && !idContactoNew.equals(idContactoOld)) {
+                idContactoNew.getTelefonoList().add(telefono);
+                idContactoNew = em.merge(idContactoNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                TelefonoPK id = telefono.getTelefonoPK();
+                Integer id = telefono.getIdTelefono();
                 if (findTelefono(id) == null) {
                     throw new NonexistentEntityException("The telefono with id " + id + " no longer exists.");
                 }
@@ -102,7 +91,7 @@ public class TelefonoJpaController implements Serializable {
         }
     }
 
-    public void destroy(TelefonoPK id) throws NonexistentEntityException {
+    public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -110,14 +99,14 @@ public class TelefonoJpaController implements Serializable {
             Telefono telefono;
             try {
                 telefono = em.getReference(Telefono.class, id);
-                telefono.getTelefonoPK();
+                telefono.getIdTelefono();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The telefono with id " + id + " no longer exists.", enfe);
             }
-            Contacto contacto = telefono.getContacto();
-            if (contacto != null) {
-                contacto.getTelefonoList().remove(telefono);
-                contacto = em.merge(contacto);
+            Contacto idContacto = telefono.getIdContacto();
+            if (idContacto != null) {
+                idContacto.getTelefonoList().remove(telefono);
+                idContacto = em.merge(idContacto);
             }
             em.remove(telefono);
             em.getTransaction().commit();
@@ -152,7 +141,7 @@ public class TelefonoJpaController implements Serializable {
         }
     }
 
-    public Telefono findTelefono(TelefonoPK id) {
+    public Telefono findTelefono(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Telefono.class, id);

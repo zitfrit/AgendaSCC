@@ -9,139 +9,43 @@ import org.jdesktop.swingx.JXPanel;
 import agendascc.DATA.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyVetoException;
+import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.beansbinding.Binding;
+import org.jdesktop.beansbinding.Bindings;
+import org.jdesktop.beansbinding.ELProperty;
 import org.jdesktop.observablecollections.ObservableCollections;
 
 /**
  *
  * @author JTF
  */
-public class ContactosPanel extends JXPanel {
-    private Contacto contactoActual;
-    public static final String PROP_CONTACTOACTUAL = "contactoActual";
-    public static final String PROP_OCONTACTOSLIST = "OContactosList";
-    public static final String PROP_TIPOCONTACTO = "tipoContacto";
-    private String tipoContacto;
+public final class ContactosPanel extends JXPanel implements Serializable {
+    private String tipoContacto="%";
+    private Contacto selectedContacto;
     private Contacto unEditedContacto;
     private ContactoJpaController contactoController;
+    //private List<Contacto> contactosList;
+    public static final String PROP_SELECTEDCONTACTO = "selectedContacto";
+    public static final String PROP_CONTACTOSLIST = "contactosList";
+    public static final String PROP_TIPOCONTACTO = "tipoContacto";
+    
     private transient final java.beans.PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
-    private transient final java.beans.VetoableChangeSupport vetoableChangeSupport = new java.beans.VetoableChangeSupport(this);
 
     public ContactosPanel()
     {
         super();
-        tipoContacto="%";
         initComponents();
         
-        propertyChangeSupport.addPropertyChangeListener(PROP_TIPOCONTACTO, new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                queryContactos=mainEntityManager.createQuery("SELECT C FROM Contacto C WHERE C.tipo LIKE :tipo");
-                queryContactos.setParameter("tipo", getTipoContacto());
-                setOContactosList(queryContactos.getResultList());
-                System.out.println("YA BOTA EL EVENTO el tipo ha cambiado de ["+evt.getOldValue()+"] a ["+evt.getNewValue()+"]");
-            }
-        });
-
-        jScrollPane1.setViewportView(contactosTabla);
-        contactosTabla.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-                    @Override
-                    public void valueChanged(ListSelectionEvent e) {
-                        //setContactoActual(oContactosList.get((Integer)contactosTabla.getModel().getValueAt(contactosTabla.convertRowIndexToModel(contactosTabla.getSelectedRow()), 0)-1));
-                       // contactoActual=new Contacto(contactoActual.getIdContacto(), contactoActual.getTipo(), contactoActual.getNombre(), contactoActual.getDireccion(), contactoActual.getColonia(), contactoActual.getCodigoPostal(), contactoActual.getLocalidad(), contactoActual.getMunicipio(), contactoActual.getEstado(), contactoActual.getPais());
-
-                       //jXTable1.getSelectionModel().getLeadSelectionIndex();
-                        if(!contactosTabla.getSelectionModel().isSelectionEmpty())
-                        {
-                            setContactoActual(contactoController.findContacto((Integer)contactosTabla.getModel().getValueAt(contactosTabla.convertRowIndexToModel(contactosTabla.getSelectedRow()),0)));
-                            telefonosTabla.packAll();
-                        }
-                    }
-                });
-        contactosTabla.getColumnExt (contactosTabla.getColumnModel().getColumn(0).getIdentifier()).setVisible(false);
-        contactosTabla.packAll();
-        telefonosTabla.addPropertyChangeListener("model", new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                System.out.println("cambio la tabla+ "+evt.getPropertyName() + " : "+ evt.getSource());
-                if(telefonosTabla.equals(evt.getSource()))
-                    System.out.println("telefonos tabla");
-                 //To change body of generated methods, choose Tools | Templates.
-            }
-        } );
-        /*telefonosTabla.getModel().addTableModelListener(new TableModelListener() {
-
-            @Override
-            public void tableChanged(TableModelEvent e) {
-               Contacto x;
-                System.out.println("cambio la tabla");
-                
-                switch (e.getColumn()  ){
-                    case 1:{try {
-                        contactoActual.getTelefonoList().get(e.getFirstRow()-1).setTipo(telefonosTabla.getValueAt( telefonosTabla.convertRowIndexToModel(telefonosTabla.getSelectedRow()),0).toString());
-                    } catch (PropertyVetoException ex) {
-                        Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }System.out.println(telefonosTabla.getValueAt( telefonosTabla.convertRowIndexToModel(telefonosTabla.getSelectedRow()),0).toString());
-                        }break;
-                    case 2:{}break;
-                    case 3:{}break;
-                    case 4:{}
-                    default:{new Exception("columna editada de telefonosTabla no encontrada");}break;
-                }
-            }
-        });*/
+        BeanProperty selectedContactoProperty =BeanProperty.create(PROP_SELECTEDCONTACTO);
+        ELProperty selectedElementProperty=ELProperty.create("${selectedElement}");
+        Binding selectedContactoBinding=Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, selectedElementProperty, this, selectedContactoProperty);
+        bindingGroup.addBinding(selectedContactoBinding);
+        selectedContactoBinding.bind();
     }
 
-    public List<Contacto> getOContactosList()
-    {
-        return this.oContactosList;
-    }
-
-    public void setOContactosList(List<Contacto> listaContactos){
-        List<Contacto> oldList=this.oContactosList;
-        try {
-            vetoableChangeSupport.fireVetoableChange(PROP_OCONTACTOSLIST, oldList, listaContactos);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.oContactosList=ObservableCollections.observableList(listaContactos);
-        
-        propertyChangeSupport.firePropertyChange(PROP_OCONTACTOSLIST, oldList, listaContactos);
-    }
-
-    public Contacto getContactoActual(){
-        return this.contactoActual;
-    }
-    
-     public void setContactoActual(Contacto contactoNuevo){ //throws PropertyVetoException /*throws java.beans.PropertyVetoException*/ {
-        Contacto oldContactoActual = this.contactoActual;
-        try {
-            vetoableChangeSupport.fireVetoableChange(PROP_CONTACTOACTUAL, oldContactoActual, contactoActual);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.contactoActual = contactoNuevo;
-        propertyChangeSupport.firePropertyChange(PROP_CONTACTOACTUAL, oldContactoActual, this.contactoActual);
-    }
-
-    public String getTipoContacto(){
-        return this.tipoContacto;
-    }
-    public void setTipoContacto(String tipo) throws PropertyVetoException{
-        String oldType = this.tipoContacto;
-        vetoableChangeSupport.fireVetoableChange(PROP_TIPOCONTACTO, oldType, tipo);
-        this.tipoContacto = tipo;
-        propertyChangeSupport.firePropertyChange(PROP_TIPOCONTACTO, oldType, tipo);
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -150,10 +54,17 @@ public class ContactosPanel extends JXPanel {
 
         mainEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("AgendaSCCPU").createEntityManager();
         contactoController = java.beans.Beans.isDesignTime() ? null : new ContactoJpaController(mainEntityManager.getEntityManagerFactory());
-        queryContactos = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo").setParameter("tipo", tipoContacto);
-        if (java.beans.Beans.isDesignTime())
-        queryContactos.setParameter("tipo", tipoContacto);
-        oContactosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(queryContactos.getResultList());
+        contactosQuery = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo").setParameter("tipo", getTipoContacto());
+        this.addPropertyChangeListener("tipoContacto", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                contactosQuery=mainEntityManager.createQuery("SELECT C FROM Contacto C WHERE C.tipo LIKE :tipo");
+                contactosQuery.setParameter("tipo", evt.getNewValue().toString());
+                setContactosList(contactosQuery.getResultList());
+                System.out.println("YA BOTA EL EVENTO el tipo ha cambiado de ["+evt.getOldValue()+"] a ["+evt.getNewValue()+"]");
+            }
+        });
+        contactosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(contactosQuery.getResultList());
         jPanel1 = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         labelImagen = new javax.swing.JLabel();
@@ -196,17 +107,19 @@ public class ContactosPanel extends JXPanel {
         labelImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/agendascc/RESOURCES/grupo.png"))); // NOI18N
         labelImagen.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TODOS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
 
+        telefonosTabla.setColumnControlVisible(true);
         telefonosTabla.setEditable(false);
         telefonosTabla.setFont(new java.awt.Font("Calibri", 1, 13)); // NOI18N
         telefonosTabla.setMinimumSize(new java.awt.Dimension(300, 360));
         telefonosTabla.setPreferredSize(new java.awt.Dimension(300, 360));
+        telefonosTabla.setShowVerticalLines(false);
 
-        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${contactoActual.telefonoList}");
+        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedContacto.telefonoList}");
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, telefonosTabla);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tipo}"));
         columnBinding.setColumnName("Tipo");
         columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${telefonoPK.telefono}"));
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${telefono}"));
         columnBinding.setColumnName("Telefono");
         columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${lada}"));
@@ -225,7 +138,7 @@ public class ContactosPanel extends JXPanel {
         pseudonimoTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         pseudonimoTF.setEnabled(false);
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.pseudonimo}"), pseudonimoTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${selectedContacto.pseudonimo}"), pseudonimoTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         nombreTF.setFont(new java.awt.Font("Calibri", 1, 22)); // NOI18N
@@ -234,7 +147,7 @@ public class ContactosPanel extends JXPanel {
         nombreTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         nombreTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.nombre}"), nombreTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${selectedContacto.nombre}"), nombreTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -287,7 +200,7 @@ public class ContactosPanel extends JXPanel {
         comentariosTA.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         comentariosTA.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.comentarios}"), comentariosTA, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${selectedContacto.comentarios}"), comentariosTA, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         jScrollPane3.setViewportView(comentariosTA);
@@ -296,7 +209,7 @@ public class ContactosPanel extends JXPanel {
         paisTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         paisTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.pais}"), paisTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${selectedContacto.pais}"), paisTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         labelColonia.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -306,35 +219,35 @@ public class ContactosPanel extends JXPanel {
         codigoPostalTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         codigoPostalTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.codigoPostal}"), codigoPostalTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${selectedContacto.codigoPostal}"), codigoPostalTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         emailTF.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         emailTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         emailTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.email}"), emailTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${selectedContacto.email}"), emailTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         referenciasDireccionTF.setFont(new java.awt.Font("Calibri", 1, 13)); // NOI18N
         referenciasDireccionTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         referenciasDireccionTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.direccionReferencias}"), referenciasDireccionTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${selectedContacto.direccionReferencias}"), referenciasDireccionTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         coloniaTF.setFont(new java.awt.Font("Calibri", 1, 13)); // NOI18N
         coloniaTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         coloniaTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.colonia}"), coloniaTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${selectedContacto.colonia}"), coloniaTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         localidadTF.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         localidadTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         localidadTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.localidad}"), localidadTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${selectedContacto.localidad}"), localidadTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         labelEstado.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -344,7 +257,7 @@ public class ContactosPanel extends JXPanel {
         direccionTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         direccionTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.direccion}"), direccionTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${selectedContacto.direccion}"), direccionTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         labelComentarios.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -354,7 +267,7 @@ public class ContactosPanel extends JXPanel {
         estadoTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         estadoTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.estado}"), estadoTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${selectedContacto.estado}"), estadoTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         labelPais.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -364,7 +277,7 @@ public class ContactosPanel extends JXPanel {
         municipioTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         municipioTF.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.municipio}"), municipioTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${selectedContacto.municipio}"), municipioTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         labelCorreo.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -512,7 +425,7 @@ public class ContactosPanel extends JXPanel {
         contactosTabla.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         contactosTabla.setShowVerticalLines(false);
 
-        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, oContactosList, contactosTabla);
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactosList, contactosTabla);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idContacto}"));
         columnBinding.setColumnName("Id Contacto");
         columnBinding.setColumnClass(Integer.class);
@@ -534,6 +447,7 @@ public class ContactosPanel extends JXPanel {
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(contactosTabla);
+        contactosTabla.packAll();
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -564,24 +478,14 @@ public class ContactosPanel extends JXPanel {
 
     private void editarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarJBActionPerformed
         editarContacto();
-          
     }//GEN-LAST:event_editarJBActionPerformed
-
     private void cancelarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarJBActionPerformed
         cancelarEdicion();
     }//GEN-LAST:event_cancelarJBActionPerformed
-
     private void guardarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarJBActionPerformed
         try {
             mainEntityManager.getTransaction().begin();
- 
-                oContactosList.set(oContactosList.indexOf(contactoActual), contactoActual);
-                for(int i=0;i<contactoActual.getTelefonoList().size();i++)
-                {
-                    mainEntityManager.merge(contactoActual.getTelefonoList().get(i));
-                }
-                mainEntityManager.merge(contactoActual);
-                //mainEntityManager.merge(contactoActual.getTelefonoList().get(0).getTelefonoPK());
+            mainEntityManager.merge(selectedContacto);
             mainEntityManager.getTransaction().commit();
         } catch (RuntimeException e) {
             if(mainEntityManager.getTransaction().isActive())
@@ -590,20 +494,19 @@ public class ContactosPanel extends JXPanel {
             if(mainEntityManager.getTransaction().isActive())
                 mainEntityManager.getTransaction().commit();
         }
-        
         disableFields();
         editarJB.setEnabled(true);
         cancelarJB.setEnabled(false);
         guardarJB.setEnabled(false);
-       // setOContactosList(getOContactosList());
     }//GEN-LAST:event_guardarJBActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelarJB;
     private javax.swing.JTextField codigoPostalTF;
     private javax.swing.JTextField coloniaTF;
     private javax.swing.JTextArea comentariosTA;
+    private java.util.List<Contacto> contactosList;
+    private javax.persistence.Query contactosQuery;
     private org.jdesktop.swingx.JXTable contactosTabla;
     private javax.swing.JTextField direccionTF;
     private javax.swing.JButton editarJB;
@@ -630,64 +533,75 @@ public class ContactosPanel extends JXPanel {
     private javax.persistence.EntityManager mainEntityManager;
     private javax.swing.JTextField municipioTF;
     private javax.swing.JTextField nombreTF;
-    private java.util.List<Contacto> oContactosList;
     private javax.swing.JTextField paisTF;
     private javax.swing.JTextField pseudonimoTF;
-    private javax.persistence.Query queryContactos;
     private javax.swing.JTextField referenciasDireccionTF;
     private org.jdesktop.swingx.JXTable telefonosTabla;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
-    public int getSelectedElementIndex()
-    {
+/////////////// SETTERS ////////////////////
+    public void setContactosList(List<Contacto> listaContactos){
+        List<Contacto> oldList=this.contactosList;
+        this.contactosList=ObservableCollections.observableList(listaContactos);
+        propertyChangeSupport.firePropertyChange(PROP_CONTACTOSLIST, oldList, listaContactos);
+    }
+    public void setSelectedContacto(Contacto contactoNuevo){ 
+        Contacto oldSelectedContacto = this.selectedContacto;
+        this.selectedContacto = contactoNuevo;
+        propertyChangeSupport.firePropertyChange(PROP_SELECTEDCONTACTO, oldSelectedContacto, this.selectedContacto);
+    }
+    public void setTipoContacto(String tipo) {
+        String oldType = this.tipoContacto;
+        this.tipoContacto = tipo;
+        propertyChangeSupport.firePropertyChange(PROP_TIPOCONTACTO, oldType, tipo);
+        
+        System.out.println("oldType = " + oldType);
+        System.out.println("tipoContacto = " + getTipoContacto());
+        System.out.println("listener = " + propertyChangeSupport.getPropertyChangeListeners("tipoContacto").length);
+    }
+    
+    /////////////// GETTERS /////////////////
+    public List<Contacto> getContactosList(){
+        return this.contactosList;
+    }
+    public String getTipoContacto(){
+        return this.tipoContacto;
+    }
+    public Contacto getSelectedContacto(){
+        return this.selectedContacto;
+    }
+    
+    ///////METODOS UTILITARIOS/////////////
+    public int getSelectedElementIndex(){
        return (Integer) contactosTabla.getModel().getValueAt(contactosTabla.convertRowIndexToModel(contactosTabla.getSelectedRow()), contactosTabla.convertColumnIndexToModel(0));
     }
     private void editarContacto(){
-        try {
-            unEditedContacto=contactoActual.makeContactoDummy();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        unEditedContacto=getSelectedContacto().cloneMe();
         enableFields();
         guardarJB.setEnabled(true);
         cancelarJB.setEnabled(true);
         editarJB.setEnabled(false);
-        
-        
-                
     }
     /** SOSPECHO QUE EL PROBLEMA ESTA EN EL METODO DE CLONACION Y EL METODO EQUALS, AL CLONAR EL MISMO ID DEL CONTACTO EL METODO EQUALS VERIFICA QUE SI SON IGUALES COMPARANDO LOS ID **/
     /** HACER UN METODO EN LA CLASE CONTACTO QUE SOLO HAGA UNA COPIA FIEL DE TODOS LOS CAMPOS PARA ALMACENAR LOS CAMBIOS EN LOS TEXFIELDS TEMPORALMENTE Y AL CANCELAR ASIGNAR LOS DATOS**/
     /** ANTERIORES A LAS MODIFICACIONES DE NUEVO AL CONTACTO ACTUAL. ES DECIR NO SE CLONA UN OBJETO, SE CREA UNO NUEVO CON INDICE DIFERENTE USANDO CONTACTPJPACONTROLLER Y COPIANDO LAS PROPIEDADES**/
     private void cancelarEdicion(){
-        Contacto old=getContactoActual();;
-        try {
-            
-            contactoActual.copyFromDummy(unEditedContacto);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        propertyChangeSupport.firePropertyChange(PROP_CONTACTOACTUAL, old, unEditedContacto);
+       // Contacto old=getSelectedContacto();;
+        setSelectedContacto(unEditedContacto);
         disableFields();
         guardarJB.setEnabled(false);
         cancelarJB.setEnabled(false);
         editarJB.setEnabled(true);
-        
-        
     }
     private void limparCamposContacto(){
-
     }
     private void guardarEdicionContacto(){
-        
     }
     private void updateListaContactos(){
-        
-        queryContactos=mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo");
-        queryContactos.setParameter("tipo", "trabajador");
-
-        setOContactosList(((List<Contacto>) queryContactos.getResultList()));
+//        queryContactos=mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo");
+//        queryContactos.setParameter("tipo", "trabajador");
+//        setContactosList(((List<Contacto>) queryContactos.getResultList()));
     }
     private void enableFields(){
         nombreTF.setEnabled(true);
@@ -722,26 +636,16 @@ public class ContactosPanel extends JXPanel {
         contactosTabla.setEnabled(true);
         telefonosTabla.setEditable(false);
     }
-    public void addPropertyChangeListener(java.beans.PropertyChangeListener listener )
-    {
+    public void addPropertyChangeListener(java.beans.PropertyChangeListener listener ){
         propertyChangeSupport.addPropertyChangeListener( listener );
     }
-
-    public void removePropertyChangeListener(java.beans.PropertyChangeListener listener )
-    {
+    public void addPropertyChangeListener(String propName, java.beans.PropertyChangeListener listener ){
+        propertyChangeSupport.addPropertyChangeListener(propName, listener );
+    }
+    public void removePropertyChangeListener(java.beans.PropertyChangeListener listener ){
         propertyChangeSupport.removePropertyChangeListener( listener );
     }
+    public void removePropertyChangeListener(String propName,java.beans.PropertyChangeListener listener ){
+        propertyChangeSupport.removePropertyChangeListener(propName,listener );
+    }
 }
-/*          este codigo estaba en el evento del boton guardar. 
-           //System.out.println(contactoActual.getPseudonimo());
-            System.out.println("contains :"+oContactosList.contains(contactoActual));
-            for(int i=0;i<oContactosList.size();i++)
-                {
-//                   if((oContactosList.get(i)).getIdContacto()==getSelectedElementIndex())
-//                   {
-                       System.out.println("One by One: "+contactoActual.equals(oContactosList.get(i)));
-                       System.out.println("oContactosList.Pseudonimo :"+ oContactosList.get(i).getPseudonimo());
-//                   }
-                   
-                }
-*/

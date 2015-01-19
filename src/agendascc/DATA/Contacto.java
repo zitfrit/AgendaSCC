@@ -5,9 +5,8 @@
  */
 package agendascc.DATA;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeSupport;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -30,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author JTF
  */
 @Entity
-@Table(name = "contactos", uniqueConstraints = {
+@Table(name = "contactos", catalog = "agendascc", schema = "", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"id_contacto"})})
 @XmlRootElement
 @NamedQueries({
@@ -50,11 +49,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Contacto.findByComentarios", query = "SELECT c FROM Contacto c WHERE c.comentarios = :comentarios"),
     @NamedQuery(name = "Contacto.findByEmail", query = "SELECT c FROM Contacto c WHERE c.email = :email"),
     @NamedQuery(name = "Contacto.findByImagen", query = "SELECT c FROM Contacto c WHERE c.imagen = :imagen")})
-
 public class Contacto implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-    public static final String PROP_SERIALVERSIONUID = "serialVersionUID";
+    
     public static final String PROP_IDCONTACTO = "idContacto";
     public static final String PROP_TIPO = "tipo";
     public static final String PROP_NOMBRE = "nombre";
@@ -71,64 +67,55 @@ public class Contacto implements Serializable {
     public static final String PROP_EMAIL = "email";
     public static final String PROP_IMAGEN = "imagen";
     public static final String PROP_TELEFONOLIST = "telefonoList";
-    public static final String PROP_PROPERTYCHANGESUPPORT = "propertyChangeSupport";
-    public static final String PROP_VETOABLECHANGESUPPORT = "vetoableChangeSupport";
-
-    /**
-     * @return the serialVersionUID
-     */
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_contacto", nullable = false)
     private Integer idContacto;
     @Basic(optional = false)
-    @Column(name = "tipo", nullable = false, length = 35)
+    @Column(nullable = false, length = 35)
     private String tipo;
     @Basic(optional = false)
-    @Column(name = "nombre", nullable = false, length = 55)
+    @Column(nullable = false, length = 55)
     private String nombre;
-    @Column(name = "pseudonimo", length = 25)
+    @Column(length = 25)
     private String pseudonimo;
     @Basic(optional = false)
-    @Column(name = "direccion", nullable = false, length = 40)
+    @Column(nullable = false, length = 40)
     private String direccion;
     @Column(name = "direccion_referencias", length = 55)
     private String direccionReferencias;
     @Basic(optional = false)
-    @Column(name = "colonia", nullable = false, length = 45)
+    @Column(nullable = false, length = 45)
     private String colonia;
     @Basic(optional = false)
     @Column(name = "codigo_postal", nullable = false, length = 10)
     private String codigoPostal;
     @Basic(optional = false)
-    @Column(name = "localidad", nullable = false, length = 40)
+    @Column(nullable = false, length = 40)
     private String localidad;
     @Basic(optional = false)
-    @Column(name = "municipio", nullable = false, length = 40)
+    @Column(nullable = false, length = 40)
     private String municipio;
     @Basic(optional = false)
-    @Column(name = "estado", nullable = false, length = 25)
+    @Column(nullable = false, length = 25)
     private String estado;
     @Basic(optional = false)
-    @Column(name = "pais", nullable = false, length = 25)
+    @Column(nullable = false, length = 25)
     private String pais;
-    @Column(name = "comentarios", length = 50)
+    @Column(length = 50)
     private String comentarios;
-    @Basic(optional = false)
-    @Column(name = "email", nullable = false, length = 55)
+    @Column(length = 55)
     private String email;
-    @Basic(optional = false)
-    @Column(name = "imagen", nullable = false, length = 45)
+    @Column(length = 45)
     private String imagen;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contacto")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idContacto")
     private List<Telefono> telefonoList;
-    private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
-    private final transient VetoableChangeSupport vetoableChangeSupport = new java.beans.VetoableChangeSupport(this);
 
+    private transient final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+    
     public Contacto() {
     }
 
@@ -149,365 +136,53 @@ public class Contacto implements Serializable {
         this.pais = pais;
     }
     
-    public Contacto(Contacto c){
-        this.idContacto = c.idContacto;
-        this.tipo = c.tipo;
-        this.nombre = c.nombre;
-        this.pseudonimo=c.pseudonimo;
-        this.direccion = c.direccion;
-        this.direccionReferencias=c.direccionReferencias;
-        this.colonia = c.colonia;
-        this.codigoPostal = c.codigoPostal;
-        this.localidad = c.localidad;
-        this.municipio = c.municipio;
-        this.estado = c.estado;
-        this.pais = c.pais;
-        this.comentarios=c.comentarios;
-        this.email=c.email;
-        this.imagen=c.imagen;
-        this.telefonoList=c.telefonoList;
+    public Contacto (Contacto c){
+        this.idContacto = c.getIdContacto();
+        this.tipo = c.getTipo();
+        this.nombre = c.getNombre();
+        this.direccion = c.getDireccion();
+        this.direccionReferencias=c.getDireccionReferencias();
+        this.colonia = c.getColonia();
+        this.codigoPostal = c.getCodigoPostal();
+        this.localidad = c.getLocalidad();
+        this.municipio = c.getMunicipio();
+        this.estado = c.getEstado();
+        this.pais = c.getPais();
+        this.comentarios=c.getComentarios();
+        this.email=c.getEmail();
+        this.imagen=c.getImagen();
+        this.telefonoList=c.getTelefonoList();
+    }
+        /*
+    private Integer idContacto;
+    private String tipo;
+    private String nombre;
+    private String pseudonimo;
+    private String direccion;
+    private String direccionReferencias;
+    private String colonia;
+    private String codigoPostal;
+    private String localidad;
+    private String municipio;
+    private String estado;
+    private String pais;
+    private String comentarios;
+    private String email;
+    private String imagen;
+    private List<Telefono> telefonoList;
+    */
+    public Contacto cloneMe(){
+        Contacto clonned= new Contacto(this);
         
-    }
-    /**
-     * @return the idContacto
-     */
-    public static Contacto cloneContacto(Contacto c){
-        return new Contacto(c);
-    }
-    
-    public Integer getIdContacto() {
-        return idContacto;
-    }
-    
-    public Contacto makeContactoDummy() throws PropertyVetoException{
-        Contacto dummy=new Contacto();
-        dummy.setIdContacto(0);
-        dummy.setTipo(this.tipo);
-        dummy.setNombre(this.nombre);
-        dummy.setPseudonimo(this.pseudonimo);
-        dummy.setDireccion(this.direccion);
-        dummy.setDireccionReferencias(this.direccionReferencias);
-        dummy.setColonia(this.colonia);
-        dummy.setCodigoPostal(this.codigoPostal);
-        dummy.setLocalidad(this.localidad);
-        dummy.setMunicipio(this.municipio);
-        dummy.setEstado(this.estado);
-        dummy.setPais(this.pais);
-        dummy.setComentarios(this.comentarios);
-        dummy.setEmail(this.email);
-        dummy.setImagen(this.imagen);
-        dummy.setTelefonoList(this.telefonoList);
-        return dummy;
-    }
-    
-    public void copyFromDummy(Contacto c) throws PropertyVetoException{
-        //this.setIdContacto(0);
-        this.setTipo(c.tipo);
-        this.setNombre(c.nombre);
-        this.setPseudonimo(c.pseudonimo);
-        this.setDireccion(c.direccion);
-        this.setDireccionReferencias(c.direccionReferencias);
-        this.setColonia(c.colonia);
-        this.setCodigoPostal(c.codigoPostal);
-        this.setLocalidad(c.localidad);
-        this.setMunicipio(c.municipio);
-        this.setEstado(c.estado);
-        this.setPais(c.pais);
-        this.setComentarios(c.comentarios);
-        this.setEmail(c.email);
-        this.setImagen(c.imagen);
-        this.setTelefonoList(c.telefonoList);
-    }
-
-    /**
-     * @param idContacto the idContacto to set
-     */
-    public void setIdContacto(Integer idContacto) throws PropertyVetoException {
-        java.lang.Integer oldIdContacto = this.idContacto;
-        vetoableChangeSupport.fireVetoableChange(PROP_IDCONTACTO, oldIdContacto, idContacto);
-        this.idContacto = idContacto;
-        propertyChangeSupport.firePropertyChange(PROP_IDCONTACTO, oldIdContacto, idContacto);
-    }
-    public void setTelefono(String tel){
-        
-    }
-    /**
-     * @return the tipo
-     */
-    public String getTipo() {
-        return tipo;
-    }
-
-    /**
-     * @param tipo the tipo to set
-     */
-    public void setTipo(String tipo) throws PropertyVetoException {
-        java.lang.String oldTipo = this.tipo;
-        vetoableChangeSupport.fireVetoableChange(PROP_TIPO, oldTipo, tipo);
-        this.tipo = tipo;
-        propertyChangeSupport.firePropertyChange(PROP_TIPO, oldTipo, tipo);
-    }
-
-    /**
-     * @return the nombre
-     */
-    public String getNombre() {
-        return nombre;
-    }
-
-    /**
-     * @param nombre the nombre to set
-     */
-    public void setNombre(String nombre) throws PropertyVetoException {
-        java.lang.String oldNombre = this.nombre;
-        vetoableChangeSupport.fireVetoableChange(PROP_NOMBRE, oldNombre, nombre);
-        this.nombre = nombre;
-        propertyChangeSupport.firePropertyChange(PROP_NOMBRE, oldNombre, nombre);
-    }
-
-    /**
-     * @return the pseudonimo
-     */
-    public String getPseudonimo() {
-        return pseudonimo;
-    }
-
-    /**
-     * @param pseudonimo the pseudonimo to set
-     */
-    public void setPseudonimo(String pseudonimo) throws PropertyVetoException {
-        java.lang.String oldPseudonimo = this.pseudonimo;
-        vetoableChangeSupport.fireVetoableChange(PROP_PSEUDONIMO, oldPseudonimo, pseudonimo);
-        this.pseudonimo = pseudonimo;
-        propertyChangeSupport.firePropertyChange(PROP_PSEUDONIMO, oldPseudonimo, pseudonimo);
-    }
-
-    /**
-     * @return the direccion
-     */
-    public String getDireccion() {
-        return direccion;
-    }
-
-    /**
-     * @param direccion the direccion to set
-     */
-    public void setDireccion(String direccion) throws PropertyVetoException {
-        java.lang.String oldDireccion = this.direccion;
-        vetoableChangeSupport.fireVetoableChange(PROP_DIRECCION, oldDireccion, direccion);
-        this.direccion = direccion;
-        propertyChangeSupport.firePropertyChange(PROP_DIRECCION, oldDireccion, direccion);
-    }
-
-    /**
-     * @return the direccionReferencias
-     */
-    public String getDireccionReferencias() {
-        return direccionReferencias;
-    }
-
-    /**
-     * @param direccionReferencias the direccionReferencias to set
-     */
-    public void setDireccionReferencias(String direccionReferencias) throws PropertyVetoException {
-        java.lang.String oldDireccionReferencias = this.direccionReferencias;
-        vetoableChangeSupport.fireVetoableChange(PROP_DIRECCIONREFERENCIAS, oldDireccionReferencias, direccionReferencias);
-        this.direccionReferencias = direccionReferencias;
-        propertyChangeSupport.firePropertyChange(PROP_DIRECCIONREFERENCIAS, oldDireccionReferencias, direccionReferencias);
-    }
-
-    /**
-     * @return the colonia
-     */
-    public String getColonia() {
-        return colonia;
-    }
-
-    /**
-     * @param colonia the colonia to set
-     */
-    public void setColonia(String colonia) throws PropertyVetoException {
-        java.lang.String oldColonia = this.colonia;
-        vetoableChangeSupport.fireVetoableChange(PROP_COLONIA, oldColonia, colonia);
-        this.colonia = colonia;
-        propertyChangeSupport.firePropertyChange(PROP_COLONIA, oldColonia, colonia);
-    }
-
-    /**
-     * @return the codigoPostal
-     */
-    public String getCodigoPostal() {
-        return codigoPostal;
-    }
-
-    /**
-     * @param codigoPostal the codigoPostal to set
-     */
-    public void setCodigoPostal(String codigoPostal) throws PropertyVetoException {
-        java.lang.String oldCodigoPostal = this.codigoPostal;
-        vetoableChangeSupport.fireVetoableChange(PROP_CODIGOPOSTAL, oldCodigoPostal, codigoPostal);
-        this.codigoPostal = codigoPostal;
-        propertyChangeSupport.firePropertyChange(PROP_CODIGOPOSTAL, oldCodigoPostal, codigoPostal);
-    }
-
-    /**
-     * @return the localidad
-     */
-    public String getLocalidad() {
-        return localidad;
-    }
-
-    /**
-     * @param localidad the localidad to set
-     */
-    public void setLocalidad(String localidad) throws PropertyVetoException {
-        java.lang.String oldLocalidad = this.localidad;
-        vetoableChangeSupport.fireVetoableChange(PROP_LOCALIDAD, oldLocalidad, localidad);
-        this.localidad = localidad;
-        propertyChangeSupport.firePropertyChange(PROP_LOCALIDAD, oldLocalidad, localidad);
-    }
-
-    /**
-     * @return the municipio
-     */
-    public String getMunicipio() {
-        return municipio;
-    }
-
-    /**
-     * @param municipio the municipio to set
-     */
-    public void setMunicipio(String municipio) throws PropertyVetoException {
-        java.lang.String oldMunicipio = this.municipio;
-        vetoableChangeSupport.fireVetoableChange(PROP_MUNICIPIO, oldMunicipio, municipio);
-        this.municipio = municipio;
-        propertyChangeSupport.firePropertyChange(PROP_MUNICIPIO, oldMunicipio, municipio);
-    }
-
-    /**
-     * @return the estado
-     */
-    public String getEstado() {
-        return estado;
-    }
-
-    /**
-     * @param estado the estado to set
-     */
-    public void setEstado(String estado) throws PropertyVetoException {
-        java.lang.String oldEstado = this.estado;
-        vetoableChangeSupport.fireVetoableChange(PROP_ESTADO, oldEstado, estado);
-        this.estado = estado;
-        propertyChangeSupport.firePropertyChange(PROP_ESTADO, oldEstado, estado);
-    }
-
-    /**
-     * @return the pais
-     */
-    public String getPais() {
-        return pais;
-    }
-
-    /**
-     * @param pais the pais to set
-     */
-    public void setPais(String pais) throws PropertyVetoException {
-        java.lang.String oldPais = this.pais;
-        vetoableChangeSupport.fireVetoableChange(PROP_PAIS, oldPais, pais);
-        this.pais = pais;
-        propertyChangeSupport.firePropertyChange(PROP_PAIS, oldPais, pais);
-    }
-
-    /**
-     * @return the comentarios
-     */
-    public String getComentarios() {
-        return comentarios;
-    }
-
-    /**
-     * @param comentarios the comentarios to set
-     */
-    public void setComentarios(String comentarios) throws PropertyVetoException {
-        java.lang.String oldComentarios = this.comentarios;
-        vetoableChangeSupport.fireVetoableChange(PROP_COMENTARIOS, oldComentarios, comentarios);
-        this.comentarios = comentarios;
-        propertyChangeSupport.firePropertyChange(PROP_COMENTARIOS, oldComentarios, comentarios);
-    }
-
-    /**
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * @param email the email to set
-     */
-    public void setEmail(String email) throws PropertyVetoException {
-        java.lang.String oldEmail = this.email;
-        vetoableChangeSupport.fireVetoableChange(PROP_EMAIL, oldEmail, email);
-        this.email = email;
-        propertyChangeSupport.firePropertyChange(PROP_EMAIL, oldEmail, email);
-    }
-
-    /**
-     * @return the imagen
-     */
-    public String getImagen() {
-        return imagen;
-    }
-
-    /**
-     * @param imagen the imagen to set
-     */
-    public void setImagen(String imagen) throws PropertyVetoException {
-        java.lang.String oldImagen = this.imagen;
-        vetoableChangeSupport.fireVetoableChange(PROP_IMAGEN, oldImagen, imagen);
-        this.imagen = imagen;
-        propertyChangeSupport.firePropertyChange(PROP_IMAGEN, oldImagen, imagen);
-    }
-
-    /**
-     * @return the telefonoList
-     */
-    @XmlTransient
-    public List<Telefono> getTelefonoList() {
-        return telefonoList;
-    }
-
-    /**
-     * @param telefonoList the telefonoList to set
-     */
-    public void setTelefonoList(List<Telefono> telefonoList) throws PropertyVetoException {
-        java.util.List<agendascc.DATA.Telefono> oldTelefonoList = this.telefonoList;
-        vetoableChangeSupport.fireVetoableChange(PROP_TELEFONOLIST, oldTelefonoList, telefonoList);
-        this.telefonoList = telefonoList;
-        propertyChangeSupport.firePropertyChange(PROP_TELEFONOLIST, oldTelefonoList, telefonoList);
-    }
-
-    /**
-     * @return the propertyChangeSupport
-     */
-    public PropertyChangeSupport getPropertyChangeSupport() {
-        return propertyChangeSupport;
-    }
-
-    /**
-     * @return the vetoableChangeSupport
-     */
-    public VetoableChangeSupport getVetoableChangeSupport() {
-        return vetoableChangeSupport;
+        return clonned;
     }
     
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (getIdContacto() != null ? getIdContacto().hashCode() : 0);
+        hash += (idContacto != null ? idContacto.hashCode() : 0);
         return hash;
     }
-
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -515,31 +190,167 @@ public class Contacto implements Serializable {
             return false;
         }
         Contacto other = (Contacto) object;
-        if ((this.getIdContacto() == null && other.getIdContacto() != null) || (this.getIdContacto() != null && !this.idContacto.equals(other.idContacto))) {
+        if ((this.idContacto == null && other.idContacto != null) || (this.idContacto != null && !this.idContacto.equals(other.idContacto))) {
             return false;
         }
         return true;
     }
-
     @Override
     public String toString() {
-        return "agendascc.DATA.Contacto[ idContacto=" + getIdContacto() + " ]";
+        return "agendascc.DATA.Contacto[ idContacto=" + idContacto + " ]";
+    }
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(listener);
+    }
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+ //////////SETTERS & GETTERS/////////////////////
+    public Integer getIdContacto() {
+        return idContacto;
+    }
+    public void setIdContacto(Integer idContacto) {
+        Integer oldIdContacto=this.idContacto;
+        this.idContacto = idContacto;
+        this.propertyChangeSupport.firePropertyChange(PROP_IDCONTACTO, oldIdContacto, idContacto);
     }
     
-    public void addPropertyChangeListener(java.beans.PropertyChangeListener listener )
-    {
-        propertyChangeSupport.addPropertyChangeListener( listener );
+    public String getTipo() {
+        return tipo;
     }
-
-    public void removePropertyChangeListener(java.beans.PropertyChangeListener listener )
-    {
-        propertyChangeSupport.removePropertyChangeListener( listener );
+    public void setTipo(String tipo) {
+        java.lang.String oldTipo = this.tipo;
+        this.tipo = tipo;
+        propertyChangeSupport.firePropertyChange(PROP_TIPO, oldTipo, tipo);
     }
     
-}
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+        java.lang.String oldNombre = this.nombre;
+        this.nombre = nombre;
+        propertyChangeSupport.firePropertyChange(PROP_NOMBRE, oldNombre, nombre);
+    }
 
+    public String getPseudonimo() {
+        return pseudonimo;
+    }
+    public void setPseudonimo(String pseudonimo) {
+        java.lang.String oldPseudonimo = this.pseudonimo;
+        this.pseudonimo = pseudonimo;
+        propertyChangeSupport.firePropertyChange(PROP_PSEUDONIMO, oldPseudonimo, pseudonimo);
+    }
 
- //  @XmlTransient
- /*     public List<Telefono> getTelefonoList() {
+    public String getDireccion() {
+        return direccion;
+    }
+    public void setDireccion(String direccion) {
+        java.lang.String oldDireccion = this.direccion;
+        this.direccion = direccion;
+        propertyChangeSupport.firePropertyChange(PROP_DIRECCION, oldDireccion, direccion);
+    }
+
+    public String getDireccionReferencias() {
+        return direccionReferencias;
+    }
+    public void setDireccionReferencias(String direccionReferencias) {
+        java.lang.String oldDireccionReferencias = this.direccionReferencias;
+        this.direccionReferencias = direccionReferencias;
+        propertyChangeSupport.firePropertyChange(PROP_DIRECCIONREFERENCIAS, oldDireccionReferencias, direccionReferencias);
+    }
+
+    public String getColonia() {
+        return colonia;
+    }
+    public void setColonia(String colonia) {
+        java.lang.String oldColonia = this.colonia;
+        this.colonia = colonia;
+        propertyChangeSupport.firePropertyChange(PROP_COLONIA, oldColonia, colonia);
+    }
+
+    public String getCodigoPostal() {
+        return codigoPostal;
+    }
+    public void setCodigoPostal(String codigoPostal) {
+        java.lang.String oldCodigoPostal = this.codigoPostal;
+        this.codigoPostal = codigoPostal;
+        propertyChangeSupport.firePropertyChange(PROP_CODIGOPOSTAL, oldCodigoPostal, codigoPostal);
+    }
+
+    public String getLocalidad() {
+        return localidad;
+    }
+    public void setLocalidad(String localidad) {
+        java.lang.String oldLocalidad = this.localidad;
+        this.localidad = localidad;
+        propertyChangeSupport.firePropertyChange(PROP_LOCALIDAD, oldLocalidad, localidad);
+    }
+
+    public String getMunicipio() {
+        return municipio;
+    }
+    public void setMunicipio(String municipio) {
+        java.lang.String oldMunicipio = this.municipio;
+        this.municipio = municipio;
+        propertyChangeSupport.firePropertyChange(PROP_MUNICIPIO, oldMunicipio, municipio);
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+    public void setEstado(String estado) {
+        java.lang.String oldEstado = this.estado;
+        this.estado = estado;
+        propertyChangeSupport.firePropertyChange(PROP_ESTADO, oldEstado, estado);
+    }
+
+    public String getPais() {
+        return pais;
+    }
+    public void setPais(String pais) {
+        java.lang.String oldPais = this.pais;
+        this.pais = pais;
+        propertyChangeSupport.firePropertyChange(PROP_PAIS, oldPais, pais);
+    }
+
+    public String getComentarios() {
+        return comentarios;
+    }
+    public void setComentarios(String comentarios) {
+        java.lang.String oldComentarios = this.comentarios;
+        this.comentarios = comentarios;
+        propertyChangeSupport.firePropertyChange(PROP_COMENTARIOS, oldComentarios, comentarios);
+    }
+
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        java.lang.String oldEmail = this.email;
+        this.email = email;
+        propertyChangeSupport.firePropertyChange(PROP_EMAIL, oldEmail, email);
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+    public void setImagen(String imagen) {
+        java.lang.String oldImagen = this.imagen;
+        this.imagen = imagen;
+        propertyChangeSupport.firePropertyChange(PROP_IMAGEN, oldImagen, imagen);
+    }
+
+    @XmlTransient
+    public List<Telefono> getTelefonoList() {
         return telefonoList;
-    }*/
+    }
+    public void setTelefonoList(List<Telefono> telefonoList) {
+        List<Telefono> oldTelefonoList=this.telefonoList;
+        this.telefonoList = telefonoList;
+        this.propertyChangeSupport.firePropertyChange(PROP_TELEFONOLIST, oldTelefonoList, telefonoList);
+    }
+}

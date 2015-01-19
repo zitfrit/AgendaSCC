@@ -6,18 +6,19 @@
 package agendascc.DATA;
 
 import java.beans.PropertyChangeSupport;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeSupport;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -25,67 +26,63 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author JTF
  */
 @Entity
-@Table(name = "telefonos")
+@Table(name = "telefonos", catalog = "agendascc", schema = "", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"telefono"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Telefono.findAll", query = "SELECT t FROM Telefono t"),
-    @NamedQuery(name = "Telefono.findByIdContacto", query = "SELECT t FROM Telefono t WHERE t.telefonoPK.idContacto = :idContacto"),
-    @NamedQuery(name = "Telefono.findByTelefono", query = "SELECT t FROM Telefono t WHERE t.telefonoPK.telefono = :telefono"),
+    @NamedQuery(name = "Telefono.findByIdTelefono", query = "SELECT t FROM Telefono t WHERE t.idTelefono = :idTelefono"),
+    @NamedQuery(name = "Telefono.findByTelefono", query = "SELECT t FROM Telefono t WHERE t.telefono = :telefono"),
     @NamedQuery(name = "Telefono.findByTipo", query = "SELECT t FROM Telefono t WHERE t.tipo = :tipo"),
     @NamedQuery(name = "Telefono.findByLada", query = "SELECT t FROM Telefono t WHERE t.lada = :lada"),
     @NamedQuery(name = "Telefono.findByExtension", query = "SELECT t FROM Telefono t WHERE t.extension = :extension")})
 public class Telefono implements Serializable {
     private static final long serialVersionUID = 1L;
-    public static final String PROP_SERIALVERSIONUID = "serialVersionUID";
-    public static final String PROP_TELEFONOPK = "telefonoPK";
+    public static final String PROP_IDTELEFONO = "idTelefono";
+    public static final String PROP_TELEFONO = "telefono";
     public static final String PROP_TIPO = "tipo";
     public static final String PROP_LADA = "lada";
     public static final String PROP_EXTENSION = "extension";
-    public static final String PROP_CONTACTO = "contacto";
-
-    /**
-     * @return the serialVersionUID
-     */
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-    @EmbeddedId
-    private TelefonoPK telefonoPK;
+    public static final String PROP_IDCONTACTO = "idContacto";
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "tipo", nullable = false, length = 55)
+    @Column(name = "id_telefono", nullable = false)
+    private Integer idTelefono;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 11)
+    private String telefono;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 55)
     private String tipo;
-    @Column(name = "lada", length = 11)
+    @Column(length = 11)
     private String lada;
-    @Column(name = "extension", length = 5)
+    @Column(length = 5)
     private String extension;
-    @JoinColumn(name = "id_contacto", referencedColumnName = "id_contacto", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "id_contacto", referencedColumnName = "id_contacto", nullable = false)
     @ManyToOne(optional = false)
-    private Contacto contacto;
+    private Contacto idContacto;
+    
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
-    private final transient VetoableChangeSupport vetoableChangeSupport = new java.beans.VetoableChangeSupport(this);
 
     public Telefono() {
     }
 
-    public Telefono(TelefonoPK telefonoPK) {
-        this.telefonoPK = telefonoPK;
+    public Telefono(Integer idTelefono) {
+        this.idTelefono = idTelefono;
     }
 
-    public Telefono(TelefonoPK telefonoPK, String tipo) {
-        this.telefonoPK = telefonoPK;
+    public Telefono(Integer idTelefono, String telefono, String tipo) {
+        this.idTelefono = idTelefono;
+        this.telefono = telefono;
         this.tipo = tipo;
     }
 
-    public Telefono(int idContacto, String telefono) {
-        this.telefonoPK = new TelefonoPK(idContacto, telefono);
-    }
-
-
-
+   
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (getTelefonoPK() != null ? getTelefonoPK().hashCode() : 0);
+        hash += (idTelefono != null ? idTelefono.hashCode() : 0);
         return hash;
     }
 
@@ -96,7 +93,7 @@ public class Telefono implements Serializable {
             return false;
         }
         Telefono other = (Telefono) object;
-        if ((this.getTelefonoPK() == null && other.getTelefonoPK() != null) || (this.getTelefonoPK() != null && !this.telefonoPK.equals(other.telefonoPK))) {
+        if ((this.idTelefono == null && other.idTelefono != null) || (this.idTelefono != null && !this.idTelefono.equals(other.idTelefono))) {
             return false;
         }
         return true;
@@ -104,24 +101,39 @@ public class Telefono implements Serializable {
 
     @Override
     public String toString() {
-        return "agendascc.DATA.Telefono[ telefonoPK=" + getTelefonoPK() + " ]";
+        return "agendascc.DATA.Telefono[ idTelefono=" + idTelefono + " ]";
     }
 
     /**
-     * @return the telefonoPK
+     * @return the idTelefono
      */
-    public TelefonoPK getTelefonoPK() {
-        return telefonoPK;
+    public Integer getIdTelefono() {
+        return idTelefono;
     }
 
     /**
-     * @param telefonoPK the telefonoPK to set
+     * @param idTelefono the idTelefono to set
      */
-    public void setTelefonoPK(TelefonoPK telefonoPK) throws PropertyVetoException {
-        agendascc.DATA.TelefonoPK oldTelefonoPK = this.telefonoPK;
-        vetoableChangeSupport.fireVetoableChange(PROP_TELEFONOPK, oldTelefonoPK, telefonoPK);
-        this.telefonoPK = telefonoPK;
-        propertyChangeSupport.firePropertyChange(PROP_TELEFONOPK, oldTelefonoPK, telefonoPK);
+    public void setIdTelefono(Integer idTelefono) {
+        java.lang.Integer oldIdTelefono = this.idTelefono;
+        this.idTelefono = idTelefono;
+        propertyChangeSupport.firePropertyChange(PROP_IDTELEFONO, oldIdTelefono, idTelefono);
+    }
+
+    /**
+     * @return the telefono
+     */
+    public String getTelefono() {
+        return telefono;
+    }
+
+    /**
+     * @param telefono the telefono to set
+     */
+    public void setTelefono(String telefono) {
+        java.lang.String oldTelefono = this.telefono;
+        this.telefono = telefono;
+        propertyChangeSupport.firePropertyChange(PROP_TELEFONO, oldTelefono, telefono);
     }
 
     /**
@@ -134,9 +146,8 @@ public class Telefono implements Serializable {
     /**
      * @param tipo the tipo to set
      */
-    public void setTipo(String tipo) throws PropertyVetoException {
+    public void setTipo(String tipo) {
         java.lang.String oldTipo = this.tipo;
-        vetoableChangeSupport.fireVetoableChange(PROP_TIPO, oldTipo, tipo);
         this.tipo = tipo;
         propertyChangeSupport.firePropertyChange(PROP_TIPO, oldTipo, tipo);
     }
@@ -151,9 +162,8 @@ public class Telefono implements Serializable {
     /**
      * @param lada the lada to set
      */
-    public void setLada(String lada) throws PropertyVetoException {
+    public void setLada(String lada) {
         java.lang.String oldLada = this.lada;
-        vetoableChangeSupport.fireVetoableChange(PROP_LADA, oldLada, lada);
         this.lada = lada;
         propertyChangeSupport.firePropertyChange(PROP_LADA, oldLada, lada);
     }
@@ -168,38 +178,26 @@ public class Telefono implements Serializable {
     /**
      * @param extension the extension to set
      */
-    public void setExtension(String extension) throws PropertyVetoException {
+    public void setExtension(String extension) {
         java.lang.String oldExtension = this.extension;
-        vetoableChangeSupport.fireVetoableChange(PROP_EXTENSION, oldExtension, extension);
         this.extension = extension;
         propertyChangeSupport.firePropertyChange(PROP_EXTENSION, oldExtension, extension);
     }
 
     /**
-     * @return the contacto
+     * @return the idContacto
      */
-    public Contacto getContacto() {
-        return contacto;
+    public Contacto getIdContacto() {
+        return idContacto;
     }
 
     /**
-     * @param contacto the contacto to set
+     * @param idContacto the idContacto to set
      */
-    public void setContacto(Contacto contacto) throws PropertyVetoException {
-        agendascc.DATA.Contacto oldContacto = this.contacto;
-        vetoableChangeSupport.fireVetoableChange(PROP_CONTACTO, oldContacto, contacto);
-        this.contacto = contacto;
-        propertyChangeSupport.firePropertyChange(PROP_CONTACTO, oldContacto, contacto);
-        
+    public void setIdContacto(Contacto idContacto) {
+        agendascc.DATA.Contacto oldIdContacto = this.idContacto;
+        this.idContacto = idContacto;
+        propertyChangeSupport.firePropertyChange(PROP_IDCONTACTO, oldIdContacto, idContacto);
     }
     
-    public void addPropertyChangeListener(java.beans.PropertyChangeListener listener )
-    {
-        propertyChangeSupport.addPropertyChangeListener( listener );
-    }
-
-    public void removePropertyChangeListener(java.beans.PropertyChangeListener listener )
-    {
-        propertyChangeSupport.removePropertyChangeListener( listener );
-    }
 }

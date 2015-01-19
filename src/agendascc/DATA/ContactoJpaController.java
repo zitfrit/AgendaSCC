@@ -7,7 +7,6 @@ package agendascc.DATA;
 
 import agendascc.DATA.exceptions.IllegalOrphanException;
 import agendascc.DATA.exceptions.NonexistentEntityException;
-import java.beans.PropertyVetoException;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -15,8 +14,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -37,11 +34,7 @@ public class ContactoJpaController implements Serializable {
 
     public void create(Contacto contacto) {
         if (contacto.getTelefonoList() == null) {
-            try {
-                contacto.setTelefonoList(new ArrayList<Telefono>());
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(ContactoJpaController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            contacto.setTelefonoList(new ArrayList<Telefono>());
         }
         EntityManager em = null;
         try {
@@ -49,23 +42,21 @@ public class ContactoJpaController implements Serializable {
             em.getTransaction().begin();
             List<Telefono> attachedTelefonoList = new ArrayList<Telefono>();
             for (Telefono telefonoListTelefonoToAttach : contacto.getTelefonoList()) {
-                telefonoListTelefonoToAttach = em.getReference(telefonoListTelefonoToAttach.getClass(), telefonoListTelefonoToAttach.getTelefonoPK());
+                telefonoListTelefonoToAttach = em.getReference(telefonoListTelefonoToAttach.getClass(), telefonoListTelefonoToAttach.getIdTelefono());
                 attachedTelefonoList.add(telefonoListTelefonoToAttach);
             }
             contacto.setTelefonoList(attachedTelefonoList);
             em.persist(contacto);
             for (Telefono telefonoListTelefono : contacto.getTelefonoList()) {
-                Contacto oldContactoOfTelefonoListTelefono = telefonoListTelefono.getContacto();
-                telefonoListTelefono.setContacto(contacto);
+                Contacto oldIdContactoOfTelefonoListTelefono = telefonoListTelefono.getIdContacto();
+                telefonoListTelefono.setIdContacto(contacto);
                 telefonoListTelefono = em.merge(telefonoListTelefono);
-                if (oldContactoOfTelefonoListTelefono != null) {
-                    oldContactoOfTelefonoListTelefono.getTelefonoList().remove(telefonoListTelefono);
-                    oldContactoOfTelefonoListTelefono = em.merge(oldContactoOfTelefonoListTelefono);
+                if (oldIdContactoOfTelefonoListTelefono != null) {
+                    oldIdContactoOfTelefonoListTelefono.getTelefonoList().remove(telefonoListTelefono);
+                    oldIdContactoOfTelefonoListTelefono = em.merge(oldIdContactoOfTelefonoListTelefono);
                 }
             }
             em.getTransaction().commit();
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(ContactoJpaController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (em != null) {
                 em.close();
@@ -87,7 +78,7 @@ public class ContactoJpaController implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Telefono " + telefonoListOldTelefono + " since its contacto field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Telefono " + telefonoListOldTelefono + " since its idContacto field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -95,7 +86,7 @@ public class ContactoJpaController implements Serializable {
             }
             List<Telefono> attachedTelefonoListNew = new ArrayList<Telefono>();
             for (Telefono telefonoListNewTelefonoToAttach : telefonoListNew) {
-                telefonoListNewTelefonoToAttach = em.getReference(telefonoListNewTelefonoToAttach.getClass(), telefonoListNewTelefonoToAttach.getTelefonoPK());
+                telefonoListNewTelefonoToAttach = em.getReference(telefonoListNewTelefonoToAttach.getClass(), telefonoListNewTelefonoToAttach.getIdTelefono());
                 attachedTelefonoListNew.add(telefonoListNewTelefonoToAttach);
             }
             telefonoListNew = attachedTelefonoListNew;
@@ -103,12 +94,12 @@ public class ContactoJpaController implements Serializable {
             contacto = em.merge(contacto);
             for (Telefono telefonoListNewTelefono : telefonoListNew) {
                 if (!telefonoListOld.contains(telefonoListNewTelefono)) {
-                    Contacto oldContactoOfTelefonoListNewTelefono = telefonoListNewTelefono.getContacto();
-                    telefonoListNewTelefono.setContacto(contacto);
+                    Contacto oldIdContactoOfTelefonoListNewTelefono = telefonoListNewTelefono.getIdContacto();
+                    telefonoListNewTelefono.setIdContacto(contacto);
                     telefonoListNewTelefono = em.merge(telefonoListNewTelefono);
-                    if (oldContactoOfTelefonoListNewTelefono != null && !oldContactoOfTelefonoListNewTelefono.equals(contacto)) {
-                        oldContactoOfTelefonoListNewTelefono.getTelefonoList().remove(telefonoListNewTelefono);
-                        oldContactoOfTelefonoListNewTelefono = em.merge(oldContactoOfTelefonoListNewTelefono);
+                    if (oldIdContactoOfTelefonoListNewTelefono != null && !oldIdContactoOfTelefonoListNewTelefono.equals(contacto)) {
+                        oldIdContactoOfTelefonoListNewTelefono.getTelefonoList().remove(telefonoListNewTelefono);
+                        oldIdContactoOfTelefonoListNewTelefono = em.merge(oldIdContactoOfTelefonoListNewTelefono);
                     }
                 }
             }
@@ -147,7 +138,7 @@ public class ContactoJpaController implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Contacto (" + contacto + ") cannot be destroyed since the Telefono " + telefonoListOrphanCheckTelefono + " in its telefonoList field has a non-nullable contacto field.");
+                illegalOrphanMessages.add("This Contacto (" + contacto + ") cannot be destroyed since the Telefono " + telefonoListOrphanCheckTelefono + " in its telefonoList field has a non-nullable idContacto field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
