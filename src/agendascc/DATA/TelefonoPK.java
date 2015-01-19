@@ -22,18 +22,8 @@ public class TelefonoPK implements Serializable {
     public static final String PROP_SERIALVERSIONUID = "serialVersionUID";
     private static final String PROP_IDCONTACTO = "idContacto";
     private static final String PROP_TELEFONO = "telefono";
-    /**
-     * @return the PROP_IDCONTACTO
-     */
-    public static String getPROP_IDCONTACTO() {
-        return PROP_IDCONTACTO;
-    }
-    /**
-     * @return the PROP_TELEFONO
-     */
-    public static String getPROP_TELEFONO() {
-        return PROP_TELEFONO;
-    }
+
+
     @Basic(optional = false)
     @Column(name = "id_contacto", nullable = false)
     private int idContacto;
@@ -106,9 +96,9 @@ public class TelefonoPK implements Serializable {
      */
     public void setIdContacto(int idContacto) throws PropertyVetoException {
         int oldIdContacto = this.idContacto;
-        this.vetoableChangeSupport.fireVetoableChange(getPROP_IDCONTACTO(), oldIdContacto, idContacto);
+        this.vetoableChangeSupport.fireVetoableChange(PROP_IDCONTACTO, oldIdContacto, idContacto);
         this.idContacto = idContacto;
-       this.propertyChangeSupport.firePropertyChange(getPROP_IDCONTACTO(), oldIdContacto, idContacto);
+       this.propertyChangeSupport.firePropertyChange(PROP_IDCONTACTO, oldIdContacto, idContacto);
     }
 
     /**
@@ -124,9 +114,9 @@ public class TelefonoPK implements Serializable {
     public void setTelefono(String telefono) throws PropertyVetoException {
     
         java.lang.String oldTelefono = this.telefono;
-        this.vetoableChangeSupport.fireVetoableChange(getPROP_TELEFONO(), oldTelefono, telefono);
+        this.vetoableChangeSupport.fireVetoableChange(PROP_TELEFONO, oldTelefono, telefono);
         this.telefono = telefono;
-        this.propertyChangeSupport.firePropertyChange(getPROP_TELEFONO(), oldTelefono, telefono);
+        this.propertyChangeSupport.firePropertyChange(PROP_TELEFONO, oldTelefono, telefono);
     }
 
     /**

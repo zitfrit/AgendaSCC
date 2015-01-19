@@ -21,6 +21,8 @@
         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="oContactosList= java.beans.Beans.isDesignTime() ? null : ObservableCollections.observableList((List&lt;Contacto&gt;) query1.getResultList());"/>
       </AuxValues>
     </Component>
+    <Component class="agendascc.DATA.Contacto" name="contactoSeleccionado">
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
@@ -49,7 +51,7 @@
                   <Group type="102" attributes="0">
                       <Component id="jButton1" linkSize="4" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jLabel1" linkSize="3" min="-2" pref="142" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jButton2" linkSize="4" min="-2" max="-2" attributes="0"/>
@@ -86,7 +88,7 @@
                   <Component id="jButton5" min="-2" max="-2" attributes="0"/>
                   <Component id="jButton6" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="98" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
@@ -257,7 +259,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="ContactoActual Pseudonimo"/>
+        <Property name="text" type="java.lang.String" value="ContactoActual.Telefono(0).TelefonoPK"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="contactoActualJL">
@@ -274,12 +276,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
-        <Property name="text" type="java.lang.String" value="SelectedElement"/>
+        <Property name="text" type="java.lang.String" value="contactoSeleccionado"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="selectedElementJL">
       <BindingProperties>
-        <BindingProperty name="text" source="jXTable1" sourcePath="${selectedElement.pseudonimo}" target="selectedElementJL" targetPath="text" updateStrategy="0" immediately="false"/>
+        <BindingProperty name="text" source="contactoSeleccionado" sourcePath="${nombre}" target="selectedElementJL" targetPath="text" updateStrategy="0" immediately="false"/>
       </BindingProperties>
     </Component>
     <Component class="javax.swing.JTextField" name="contactoActualTF">
@@ -296,9 +298,11 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="oContactosListCTF">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jTextField2"/>
-      </Properties>
+      <BindingProperties>
+        <BindingProperty name="text" source="jXTable1" sourcePath="${selectedElement.nombre}" target="oContactosListCTF" targetPath="text" updateStrategy="0" immediately="false">
+          <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
+        </BindingProperty>
+      </BindingProperties>
     </Component>
     <Component class="javax.swing.JButton" name="jButton5">
       <Properties>
@@ -349,6 +353,11 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
               </TableColumnModel>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
@@ -356,7 +365,11 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="Form" sourcePath="${contactoActual.telefonoList}" target="jXTable2" targetPath="elements" updateStrategy="0" immediately="true">
+            <BindingProperty name="elements" source="jXTable1" sourcePath="${selectedElement.telefonoList}" target="jXTable2" targetPath="elements" updateStrategy="0" immediately="true">
+              <Subbinding sourcePath="${contacto}">
+                <BindingParameter name="NAME" value="Contacto"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="agendascc.DATA.Contacto.class"/>
+              </Subbinding>
               <Subbinding sourcePath="${tipo}">
                 <BindingParameter name="NAME" value="Tipo"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
@@ -422,13 +435,24 @@
           </Properties>
           <BindingProperties>
             <BindingProperty name="elements" source="Form" sourcePath="${contactoActual.telefonoList}" target="jXTable3" targetPath="elements" updateStrategy="0" immediately="true">
+              <Subbinding sourcePath="${contacto}">
+                <BindingParameter name="NAME" value="Contacto"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="agendascc.DATA.Contacto.class"/>
+              </Subbinding>
               <Subbinding sourcePath="${tipo}">
+                <BindingParameter name="NAME" value="Tipo"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${telefonoPK.telefono}">
+                <BindingParameter name="NAME" value="Telefono PK"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${lada}">
+                <BindingParameter name="NAME" value="Lada"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${extension}">
+                <BindingParameter name="NAME" value="Extension"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
             </BindingProperty>

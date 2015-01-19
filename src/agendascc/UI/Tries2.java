@@ -5,6 +5,7 @@
  */
 package agendascc.UI;
 import agendascc.DATA.*;
+import agendascc.DATA.exceptions.NonexistentEntityException;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyVetoException;
@@ -26,6 +27,7 @@ public class Tries2 extends javax.swing.JFrame {
 
     private agendascc.DATA.Contacto contactoActual;
     public static final String PROP_CONTACTOACTUAL = "contactoActual";
+    public static final String PROP_CONTACTOSELECCIONADO = "contactoSeleccionado";
     private transient final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private transient final VetoableChangeSupport vetoableChangeSupport = new VetoableChangeSupport(this);
     private List<Contacto> oContactosList;
@@ -68,6 +70,18 @@ public class Tries2 extends javax.swing.JFrame {
                         }
                     }
                 });
+          //      org.jdesktop.beansbinding.BeanProperty.create("text")
+    }
+
+    public Contacto getContactoSeleccionado() {
+        return contactoSeleccionado;
+    }
+
+    public void setContactoSeleccionado(Contacto contactoSeleccionado) throws PropertyVetoException {
+        Contacto oldContactoSeleccionado = this.contactoSeleccionado;
+        vetoableChangeSupport.fireVetoableChange(PROP_CONTACTOSELECCIONADO, oldContactoSeleccionado, contactoSeleccionado);
+        this.contactoSeleccionado = contactoSeleccionado;
+        propertyChangeSupport.firePropertyChange(PROP_CONTACTOSELECCIONADO, oldContactoSeleccionado, contactoSeleccionado);
     }
     
     public int getSelectedElementIndex()
@@ -88,6 +102,7 @@ public class Tries2 extends javax.swing.JFrame {
         entityManager1 = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("AgendaSCCPU").createEntityManager();
         contactoController = java.beans.Beans.isDesignTime() ? null : new ContactoJpaController(entityManager1.getEntityManagerFactory());
         query1 = java.beans.Beans.isDesignTime() ? null : entityManager1.createQuery("SELECT C FROM Contacto C");
+        contactoSeleccionado = new agendascc.DATA.Contacto();
         jScrollPane1 = new javax.swing.JScrollPane();
         jXTable1 = new org.jdesktop.swingx.JXTable();
         jButton1 = new javax.swing.JButton();
@@ -154,16 +169,16 @@ public class Tries2 extends javax.swing.JFrame {
 
         jButton3.setText("Show");
 
-        jLabel1.setText("ContactoActual Pseudonimo");
+        jLabel1.setText("ContactoActual.Telefono(0).TelefonoPK");
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${contactoActual.telefonoList.telefonoPK.telefono}"), contactoActualJL, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         jLabel3.setText("OcontactosList.C.Pseudonimo");
 
-        jLabel5.setText("SelectedElement");
+        jLabel5.setText("contactoSeleccionado");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jXTable1, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.pseudonimo}"), selectedElementJL, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, contactoSeleccionado, org.jdesktop.beansbinding.ELProperty.create("${nombre}"), selectedElementJL, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         contactoActualTF.setText("jTextField1");
@@ -175,7 +190,8 @@ public class Tries2 extends javax.swing.JFrame {
             }
         });
 
-        oContactosListCTF.setText("jTextField2");
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jXTable1, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nombre}"), oContactosListCTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
 
         jButton5.setText("set");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -188,8 +204,11 @@ public class Tries2 extends javax.swing.JFrame {
 
         jButton6.setText("set");
 
-        eLProperty = org.jdesktop.beansbinding.ELProperty.create("${contactoActual.telefonoList}");
-        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, jXTable2);
+        eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.telefonoList}");
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jXTable1, eLProperty, jXTable2);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${contacto}"));
+        columnBinding.setColumnName("Contacto");
+        columnBinding.setColumnClass(agendascc.DATA.Contacto.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tipo}"));
         columnBinding.setColumnName("Tipo");
         columnBinding.setColumnClass(String.class);
@@ -208,8 +227,14 @@ public class Tries2 extends javax.swing.JFrame {
 
         eLProperty = org.jdesktop.beansbinding.ELProperty.create("${contactoActual.telefonoList}");
         jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, jXTable3);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${contacto}"));
+        columnBinding.setColumnName("Contacto");
+        columnBinding.setColumnClass(agendascc.DATA.Contacto.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tipo}"));
         columnBinding.setColumnName("Tipo");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${telefonoPK.telefono}"));
+        columnBinding.setColumnName("Telefono PK");
         columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${lada}"));
         columnBinding.setColumnName("Lada");
@@ -230,7 +255,7 @@ public class Tries2 extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2)
                         .addGap(18, 18, 18)
@@ -258,7 +283,7 @@ public class Tries2 extends javax.swing.JFrame {
                     .addComponent(jButton4)
                     .addComponent(jButton5)
                     .addComponent(jButton6))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 98, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -268,7 +293,7 @@ public class Tries2 extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel3, jLabel5});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel3, jLabel5});
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3});
 
@@ -325,10 +350,18 @@ public class Tries2 extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         try {
+            //List<Telefono> oldTelefonoList=contactoActual.getTelefonoList();
+            String oldTelefono = contactoActual.getTelefonoList().get(0).getTelefonoPK().getTelefono();
             contactoActual.getTelefonoList().get(0).getTelefonoPK().setTelefono(contactoActualTF.getText());
+            propertyChangeSupport.firePropertyChange("contactoActual.telefonoList.telefonoPK.telefono", oldTelefono, contactoActual.getTelefonoList().get(0).getTelefonoPK().getTelefono());
+            // contactoController.edit(contactoActual);
+            
         } catch (PropertyVetoException ex) {
             Logger.getLogger(Tries2.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(Tries2.class.getName()).log(Level.SEVERE, null, ex);
         }
+ 
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -436,6 +469,7 @@ public class Tries2 extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel contactoActualJL;
     private javax.swing.JTextField contactoActualTF;
+    private agendascc.DATA.Contacto contactoSeleccionado;
     private javax.persistence.EntityManager entityManager1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

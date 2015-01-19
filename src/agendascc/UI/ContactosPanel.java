@@ -39,9 +39,7 @@ public class ContactosPanel extends JXPanel {
         super();
         tipoContacto="%";
         initComponents();
-        
         propertyChangeSupport.addPropertyChangeListener(PROP_TIPOCONTACTO, new PropertyChangeListener() {
-
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 queryContactos=mainEntityManager.createQuery("SELECT C FROM Contacto C WHERE C.tipo LIKE :tipo");
@@ -50,98 +48,21 @@ public class ContactosPanel extends JXPanel {
                 System.out.println("YA BOTA EL EVENTO el tipo ha cambiado de ["+evt.getOldValue()+"] a ["+evt.getNewValue()+"]");
             }
         });
-
         jScrollPane1.setViewportView(contactosTabla);
         contactosTabla.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
                     @Override
                     public void valueChanged(ListSelectionEvent e) {
-                        //setContactoActual(oContactosList.get((Integer)contactosTabla.getModel().getValueAt(contactosTabla.convertRowIndexToModel(contactosTabla.getSelectedRow()), 0)-1));
-                       // contactoActual=new Contacto(contactoActual.getIdContacto(), contactoActual.getTipo(), contactoActual.getNombre(), contactoActual.getDireccion(), contactoActual.getColonia(), contactoActual.getCodigoPostal(), contactoActual.getLocalidad(), contactoActual.getMunicipio(), contactoActual.getEstado(), contactoActual.getPais());
-
-                       //jXTable1.getSelectionModel().getLeadSelectionIndex();
                         if(!contactosTabla.getSelectionModel().isSelectionEmpty())
                         {
                             setContactoActual(contactoController.findContacto((Integer)contactosTabla.getModel().getValueAt(contactosTabla.convertRowIndexToModel(contactosTabla.getSelectedRow()),0)));
                             telefonosTabla.packAll();
                         }
                     }
-                });
+        });
         contactosTabla.getColumnExt (contactosTabla.getColumnModel().getColumn(0).getIdentifier()).setVisible(false);
         contactosTabla.packAll();
-        telefonosTabla.addPropertyChangeListener("model", new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                System.out.println("cambio la tabla+ "+evt.getPropertyName() + " : "+ evt.getSource());
-                if(telefonosTabla.equals(evt.getSource()))
-                    System.out.println("telefonos tabla");
-                 //To change body of generated methods, choose Tools | Templates.
-            }
-        } );
-        /*telefonosTabla.getModel().addTableModelListener(new TableModelListener() {
-
-            @Override
-            public void tableChanged(TableModelEvent e) {
-               Contacto x;
-                System.out.println("cambio la tabla");
-                
-                switch (e.getColumn()  ){
-                    case 1:{try {
-                        contactoActual.getTelefonoList().get(e.getFirstRow()-1).setTipo(telefonosTabla.getValueAt( telefonosTabla.convertRowIndexToModel(telefonosTabla.getSelectedRow()),0).toString());
-                    } catch (PropertyVetoException ex) {
-                        Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }System.out.println(telefonosTabla.getValueAt( telefonosTabla.convertRowIndexToModel(telefonosTabla.getSelectedRow()),0).toString());
-                        }break;
-                    case 2:{}break;
-                    case 3:{}break;
-                    case 4:{}
-                    default:{new Exception("columna editada de telefonosTabla no encontrada");}break;
-                }
-            }
-        });*/
     }
 
-    public List<Contacto> getOContactosList()
-    {
-        return this.oContactosList;
-    }
-
-    public void setOContactosList(List<Contacto> listaContactos){
-        List<Contacto> oldList=this.oContactosList;
-        try {
-            vetoableChangeSupport.fireVetoableChange(PROP_OCONTACTOSLIST, oldList, listaContactos);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.oContactosList=ObservableCollections.observableList(listaContactos);
-        
-        propertyChangeSupport.firePropertyChange(PROP_OCONTACTOSLIST, oldList, listaContactos);
-    }
-
-    public Contacto getContactoActual(){
-        return this.contactoActual;
-    }
-    
-     public void setContactoActual(Contacto contactoNuevo){ //throws PropertyVetoException /*throws java.beans.PropertyVetoException*/ {
-        Contacto oldContactoActual = this.contactoActual;
-        try {
-            vetoableChangeSupport.fireVetoableChange(PROP_CONTACTOACTUAL, oldContactoActual, contactoActual);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.contactoActual = contactoNuevo;
-        propertyChangeSupport.firePropertyChange(PROP_CONTACTOACTUAL, oldContactoActual, this.contactoActual);
-    }
-
-    public String getTipoContacto(){
-        return this.tipoContacto;
-    }
-    public void setTipoContacto(String tipo) throws PropertyVetoException{
-        String oldType = this.tipoContacto;
-        vetoableChangeSupport.fireVetoableChange(PROP_TIPOCONTACTO, oldType, tipo);
-        this.tipoContacto = tipo;
-        propertyChangeSupport.firePropertyChange(PROP_TIPOCONTACTO, oldType, tipo);
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -564,20 +485,15 @@ public class ContactosPanel extends JXPanel {
 
     private void editarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarJBActionPerformed
         editarContacto();
-          
     }//GEN-LAST:event_editarJBActionPerformed
-
     private void cancelarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarJBActionPerformed
         cancelarEdicion();
     }//GEN-LAST:event_cancelarJBActionPerformed
-
     private void guardarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarJBActionPerformed
         try {
             mainEntityManager.getTransaction().begin();
- 
                 oContactosList.set(oContactosList.indexOf(contactoActual), contactoActual);
-                for(int i=0;i<contactoActual.getTelefonoList().size();i++)
-                {
+                for(int i=0;i<contactoActual.getTelefonoList().size();i++){
                     mainEntityManager.merge(contactoActual.getTelefonoList().get(i));
                 }
                 mainEntityManager.merge(contactoActual);
@@ -590,14 +506,11 @@ public class ContactosPanel extends JXPanel {
             if(mainEntityManager.getTransaction().isActive())
                 mainEntityManager.getTransaction().commit();
         }
-        
         disableFields();
         editarJB.setEnabled(true);
         cancelarJB.setEnabled(false);
         guardarJB.setEnabled(false);
-       // setOContactosList(getOContactosList());
     }//GEN-LAST:event_guardarJBActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelarJB;
@@ -639,23 +552,59 @@ public class ContactosPanel extends JXPanel {
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
-    public int getSelectedElementIndex()
-    {
+/////////////// SETTERS ////////////////////
+    public void setOContactosList(List<Contacto> listaContactos){
+        List<Contacto> oldList=this.oContactosList;
+        try {
+            vetoableChangeSupport.fireVetoableChange(PROP_OCONTACTOSLIST, oldList, listaContactos);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.oContactosList=ObservableCollections.observableList(listaContactos);
+        propertyChangeSupport.firePropertyChange(PROP_OCONTACTOSLIST, oldList, listaContactos);
+    }
+    public void setContactoActual(Contacto contactoNuevo){ //throws PropertyVetoException /*throws java.beans.PropertyVetoException*/ {
+        Contacto oldContactoActual = this.contactoActual;
+        try {
+            vetoableChangeSupport.fireVetoableChange(PROP_CONTACTOACTUAL, oldContactoActual, contactoActual);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.contactoActual = contactoNuevo;
+        propertyChangeSupport.firePropertyChange(PROP_CONTACTOACTUAL, oldContactoActual, this.contactoActual);
+    }
+    public void setTipoContacto(String tipo) throws PropertyVetoException{
+        String oldType = this.tipoContacto;
+        vetoableChangeSupport.fireVetoableChange(PROP_TIPOCONTACTO, oldType, tipo);
+        this.tipoContacto = tipo;
+        propertyChangeSupport.firePropertyChange(PROP_TIPOCONTACTO, oldType, tipo);
+    }
+    
+    /////////////// GETTERS /////////////////
+    public List<Contacto> getOContactosList(){
+        return this.oContactosList;
+    }
+    public String getTipoContacto(){
+        return this.tipoContacto;
+    }
+    public Contacto getContactoActual(){
+        return this.contactoActual;
+    }
+    
+    ///////METODOS UTILITARIOS/////////////
+    public int getSelectedElementIndex(){
        return (Integer) contactosTabla.getModel().getValueAt(contactosTabla.convertRowIndexToModel(contactosTabla.getSelectedRow()), contactosTabla.convertColumnIndexToModel(0));
     }
     private void editarContacto(){
         try {
             unEditedContacto=contactoActual.makeContactoDummy();
-        } catch (PropertyVetoException ex) {
+        }catch (PropertyVetoException ex) {
             Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
         enableFields();
         guardarJB.setEnabled(true);
         cancelarJB.setEnabled(true);
         editarJB.setEnabled(false);
-        
-        
-                
     }
     /** SOSPECHO QUE EL PROBLEMA ESTA EN EL METODO DE CLONACION Y EL METODO EQUALS, AL CLONAR EL MISMO ID DEL CONTACTO EL METODO EQUALS VERIFICA QUE SI SON IGUALES COMPARANDO LOS ID **/
     /** HACER UN METODO EN LA CLASE CONTACTO QUE SOLO HAGA UNA COPIA FIEL DE TODOS LOS CAMPOS PARA ALMACENAR LOS CAMBIOS EN LOS TEXFIELDS TEMPORALMENTE Y AL CANCELAR ASIGNAR LOS DATOS**/
@@ -663,7 +612,6 @@ public class ContactosPanel extends JXPanel {
     private void cancelarEdicion(){
         Contacto old=getContactoActual();;
         try {
-            
             contactoActual.copyFromDummy(unEditedContacto);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(ContactosPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -673,20 +621,14 @@ public class ContactosPanel extends JXPanel {
         guardarJB.setEnabled(false);
         cancelarJB.setEnabled(false);
         editarJB.setEnabled(true);
-        
-        
     }
     private void limparCamposContacto(){
-
     }
     private void guardarEdicionContacto(){
-        
     }
     private void updateListaContactos(){
-        
         queryContactos=mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo");
         queryContactos.setParameter("tipo", "trabajador");
-
         setOContactosList(((List<Contacto>) queryContactos.getResultList()));
     }
     private void enableFields(){
@@ -722,26 +664,10 @@ public class ContactosPanel extends JXPanel {
         contactosTabla.setEnabled(true);
         telefonosTabla.setEditable(false);
     }
-    public void addPropertyChangeListener(java.beans.PropertyChangeListener listener )
-    {
+    public void addPropertyChangeListener(java.beans.PropertyChangeListener listener ){
         propertyChangeSupport.addPropertyChangeListener( listener );
     }
-
-    public void removePropertyChangeListener(java.beans.PropertyChangeListener listener )
-    {
+    public void removePropertyChangeListener(java.beans.PropertyChangeListener listener ){
         propertyChangeSupport.removePropertyChangeListener( listener );
     }
 }
-/*          este codigo estaba en el evento del boton guardar. 
-           //System.out.println(contactoActual.getPseudonimo());
-            System.out.println("contains :"+oContactosList.contains(contactoActual));
-            for(int i=0;i<oContactosList.size();i++)
-                {
-//                   if((oContactosList.get(i)).getIdContacto()==getSelectedElementIndex())
-//                   {
-                       System.out.println("One by One: "+contactoActual.equals(oContactosList.get(i)));
-                       System.out.println("oContactosList.Pseudonimo :"+ oContactosList.get(i).getPseudonimo());
-//                   }
-                   
-                }
-*/

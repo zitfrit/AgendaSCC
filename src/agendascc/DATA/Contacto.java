@@ -24,6 +24,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.jdesktop.observablecollections.ObservableCollections;
 
 /**
  *
@@ -165,7 +166,7 @@ public class Contacto implements Serializable {
         this.comentarios=c.comentarios;
         this.email=c.email;
         this.imagen=c.imagen;
-        this.telefonoList=c.telefonoList;
+        this.telefonoList=ObservableCollections.observableList(c.telefonoList);
         
     }
     /**
@@ -227,9 +228,6 @@ public class Contacto implements Serializable {
         vetoableChangeSupport.fireVetoableChange(PROP_IDCONTACTO, oldIdContacto, idContacto);
         this.idContacto = idContacto;
         propertyChangeSupport.firePropertyChange(PROP_IDCONTACTO, oldIdContacto, idContacto);
-    }
-    public void setTelefono(String tel){
-        
     }
     /**
      * @return the tipo
@@ -483,7 +481,7 @@ public class Contacto implements Serializable {
     public void setTelefonoList(List<Telefono> telefonoList) throws PropertyVetoException {
         java.util.List<agendascc.DATA.Telefono> oldTelefonoList = this.telefonoList;
         vetoableChangeSupport.fireVetoableChange(PROP_TELEFONOLIST, oldTelefonoList, telefonoList);
-        this.telefonoList = telefonoList;
+        this.telefonoList = ObservableCollections.observableList(telefonoList);
         propertyChangeSupport.firePropertyChange(PROP_TELEFONOLIST, oldTelefonoList, telefonoList);
     }
 
@@ -528,12 +526,12 @@ public class Contacto implements Serializable {
     
     public void addPropertyChangeListener(java.beans.PropertyChangeListener listener )
     {
-        propertyChangeSupport.addPropertyChangeListener( listener );
+        this.propertyChangeSupport.addPropertyChangeListener( listener );
     }
 
     public void removePropertyChangeListener(java.beans.PropertyChangeListener listener )
     {
-        propertyChangeSupport.removePropertyChangeListener( listener );
+        this.propertyChangeSupport.removePropertyChangeListener( listener );
     }
     
 }
