@@ -36,8 +36,7 @@ public class AgendaSCC {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }*/
-        
-                try 
+        try 
         { 
             UIManager.setLookAndFeel(new WindowsLookAndFeel()); 
             UIManager.put("Button.font",new Font("Verdana", Font.PLAIN, 14));
@@ -45,7 +44,7 @@ public class AgendaSCC {
         catch(Exception e){    }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Tries().setVisible(true);
+                new MainViewTest().setVisible(true);
             }
         });
         // TODO code application logic here

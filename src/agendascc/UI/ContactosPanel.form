@@ -18,11 +18,11 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery(&quot;SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo&quot;).setParameter(&quot;tipo&quot;, tipoContacto)"/>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="if (java.beans.Beans.isDesignTime())&#xa;    queryContactos.setParameter(&quot;tipo&quot;, tipoContacto);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery(&quot;SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo&quot;).setParameter(&quot;tipo&quot;, getTipoContacto())"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="this.addPropertyChangeListener(&quot;tipoContacto&quot;, new PropertyChangeListener() {&#xa;            @Override&#xa;            public void propertyChange(PropertyChangeEvent evt) {&#xa;                queryContactos=mainEntityManager.createQuery(&quot;SELECT C FROM Contacto C WHERE C.tipo LIKE :tipo&quot;);&#xa;                queryContactos.setParameter(&quot;tipo&quot;, evt.getNewValue().toString());&#xa;                setContactosList(queryContactos.getResultList());&#xa;                System.out.println(&quot;YA BOTA EL EVENTO el tipo ha cambiado de [&quot;+evt.getOldValue()+&quot;] a [&quot;+evt.getNewValue()+&quot;]&quot;);&#xa;            }&#xa;});"/>
       </AuxValues>
     </Component>
-    <Component class="java.util.List" name="oContactosList">
+    <Component class="java.util.List" name="contactosList">
       <Properties>
         <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
           <ComponentRef name="queryContactos"/>
@@ -30,7 +30,6 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="ContactosPanel_oContactosList"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Contacto&gt;"/>
       </AuxValues>
     </Component>
@@ -693,8 +692,34 @@
         <Component class="org.jdesktop.swingx.JXTable" name="contactosTabla">
           <Properties>
             <Property name="columnControlVisible" type="boolean" value="true"/>
-            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-              <TableColumnModel selectionModel="0"/>
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" preCode="contactosTabla.packAll();">
+              <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+              </TableColumnModel>
             </Property>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -706,23 +731,25 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="oContactosList" target="contactosTabla" targetPath="elements" updateStrategy="0" immediately="true">
-              <Subbinding sourcePath="${idContacto}">
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
-              </Subbinding>
+            <BindingProperty name="elements" source="contactosList" target="contactosTabla" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${nombre}">
+                <BindingParameter name="NAME" value="Nombre"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${pseudonimo}">
+                <BindingParameter name="NAME" value="Pseudonimo"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${direccion}">
+                <BindingParameter name="NAME" value="Direccion"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${direccionReferencias}">
+                <BindingParameter name="NAME" value="Direccion Referencias"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${colonia}">
+                <BindingParameter name="NAME" value="Colonia"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
             </BindingProperty>

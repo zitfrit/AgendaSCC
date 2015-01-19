@@ -7,7 +7,6 @@ package agendascc.DATA;
 
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeSupport;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -62,7 +61,6 @@ public class Telefono implements Serializable {
     @ManyToOne(optional = false)
     private Contacto contacto;
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
-    private final transient VetoableChangeSupport vetoableChangeSupport = new java.beans.VetoableChangeSupport(this);
 
     public Telefono() {
     }
@@ -117,9 +115,8 @@ public class Telefono implements Serializable {
     /**
      * @param telefonoPK the telefonoPK to set
      */
-    public void setTelefonoPK(TelefonoPK telefonoPK) throws PropertyVetoException {
+    public void setTelefonoPK(TelefonoPK telefonoPK){
         agendascc.DATA.TelefonoPK oldTelefonoPK = this.telefonoPK;
-        vetoableChangeSupport.fireVetoableChange(PROP_TELEFONOPK, oldTelefonoPK, telefonoPK);
         this.telefonoPK = telefonoPK;
         propertyChangeSupport.firePropertyChange(PROP_TELEFONOPK, oldTelefonoPK, telefonoPK);
     }
@@ -134,9 +131,8 @@ public class Telefono implements Serializable {
     /**
      * @param tipo the tipo to set
      */
-    public void setTipo(String tipo) throws PropertyVetoException {
+    public void setTipo(String tipo){
         java.lang.String oldTipo = this.tipo;
-        vetoableChangeSupport.fireVetoableChange(PROP_TIPO, oldTipo, tipo);
         this.tipo = tipo;
         propertyChangeSupport.firePropertyChange(PROP_TIPO, oldTipo, tipo);
     }
@@ -151,9 +147,8 @@ public class Telefono implements Serializable {
     /**
      * @param lada the lada to set
      */
-    public void setLada(String lada) throws PropertyVetoException {
+    public void setLada(String lada){
         java.lang.String oldLada = this.lada;
-        vetoableChangeSupport.fireVetoableChange(PROP_LADA, oldLada, lada);
         this.lada = lada;
         propertyChangeSupport.firePropertyChange(PROP_LADA, oldLada, lada);
     }
@@ -168,9 +163,8 @@ public class Telefono implements Serializable {
     /**
      * @param extension the extension to set
      */
-    public void setExtension(String extension) throws PropertyVetoException {
+    public void setExtension(String extension){
         java.lang.String oldExtension = this.extension;
-        vetoableChangeSupport.fireVetoableChange(PROP_EXTENSION, oldExtension, extension);
         this.extension = extension;
         propertyChangeSupport.firePropertyChange(PROP_EXTENSION, oldExtension, extension);
     }
@@ -185,9 +179,8 @@ public class Telefono implements Serializable {
     /**
      * @param contacto the contacto to set
      */
-    public void setContacto(Contacto contacto) throws PropertyVetoException {
+    public void setContacto(Contacto contacto){
         agendascc.DATA.Contacto oldContacto = this.contacto;
-        vetoableChangeSupport.fireVetoableChange(PROP_CONTACTO, oldContacto, contacto);
         this.contacto = contacto;
         propertyChangeSupport.firePropertyChange(PROP_CONTACTO, oldContacto, contacto);
         
