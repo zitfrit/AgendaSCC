@@ -136,23 +136,23 @@ public class Contacto implements Serializable {
         this.pais = pais;
     }
     
-    public Contacto (Contacto c){
-        this.idContacto = c.getIdContacto();
-        this.tipo = c.getTipo();
-        this.nombre = c.getNombre();
-        this.direccion = c.getDireccion();
-        this.direccionReferencias=c.getDireccionReferencias();
-        this.colonia = c.getColonia();
-        this.codigoPostal = c.getCodigoPostal();
-        this.localidad = c.getLocalidad();
-        this.municipio = c.getMunicipio();
-        this.estado = c.getEstado();
-        this.pais = c.getPais();
-        this.comentarios=c.getComentarios();
-        this.email=c.getEmail();
-        this.imagen=c.getImagen();
-        this.telefonoList=c.getTelefonoList();
-    }
+ /*   public Contacto (Contacto c){
+        this.setIdContacto(c.getIdContacto());
+        this.setTipo(c.getTipo());
+        this.setNombre(c.getNombre());
+        this.setDireccion(c.getDireccion());
+        this.setDireccionReferencias(c.getDireccionReferencias());
+        this.setColonia(c.getColonia());
+        this.setCodigoPostal(c.getCodigoPostal());
+        this.setLocalidad(c.getLocalidad());
+        this.setMunicipio(c.getMunicipio());
+        this.setEstado(c.getEstado());
+        this.setPais(c.getPais());
+        this.setComentarios(c.getComentarios());
+        this.setEmail(c.getEmail());
+        this.setImagen(c.getImagen());
+        this.setTelefonoList(c.getTelefonoList());
+    }/*
         /*
     private Integer idContacto;
     private String tipo;
@@ -172,7 +172,22 @@ public class Contacto implements Serializable {
     private List<Telefono> telefonoList;
     */
     public Contacto cloneMe(){
-        Contacto clonned= new Contacto(this);
+        Contacto clonned= new Contacto();
+        clonned.setIdContacto(this.getIdContacto());
+        clonned.setTipo(this.getTipo());
+        clonned.setNombre(this.getNombre());
+        clonned.setDireccion(this.getDireccion());
+        clonned.setDireccionReferencias(this.getDireccionReferencias());
+        clonned.setColonia(this.getColonia());
+        clonned.setCodigoPostal(this.getCodigoPostal());
+        clonned.setLocalidad(this.getLocalidad());
+        clonned.setMunicipio(this.getMunicipio());
+        clonned.setEstado(this.getEstado());
+        clonned.setPais(this.getPais());
+        clonned.setComentarios(this.getComentarios());
+        clonned.setEmail(this.getEmail());
+        clonned.setImagen(this.getImagen());
+        clonned.setTelefonoList(this.getTelefonoList());
         
         return clonned;
     }
