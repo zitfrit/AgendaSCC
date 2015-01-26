@@ -577,7 +577,7 @@ public final class ContactosPanel extends JXPanel implements Serializable {
        return (Integer) contactosTabla.getModel().getValueAt(contactosTabla.convertRowIndexToModel(contactosTabla.getSelectedRow()), contactosTabla.convertColumnIndexToModel(0));
     }
     private void editarContacto(){
-        unEditedContacto=getSelectedContacto().cloneMe();
+        unEditedContacto=getSelectedContacto().cloneIntoDummy();
         enableFields();
         guardarJB.setEnabled(true);
         cancelarJB.setEnabled(true);
@@ -587,9 +587,9 @@ public final class ContactosPanel extends JXPanel implements Serializable {
     /** HACER UN METODO EN LA CLASE CONTACTO QUE SOLO HAGA UNA COPIA FIEL DE TODOS LOS CAMPOS PARA ALMACENAR LOS CAMBIOS EN LOS TEXFIELDS TEMPORALMENTE Y AL CANCELAR ASIGNAR LOS DATOS**/
     /** ANTERIORES A LAS MODIFICACIONES DE NUEVO AL CONTACTO ACTUAL. ES DECIR NO SE CLONA UN OBJETO, SE CREA UNO NUEVO CON INDICE DIFERENTE USANDO CONTACTPJPACONTROLLER Y COPIANDO LAS PROPIEDADES**/
     private void cancelarEdicion(){
-        Contacto old=getSelectedContacto();;
-        setSelectedContacto(unEditedContacto.cloneMe());
-        firePropertyChange(PROP_SELECTEDCONTACTO, old, unEditedContacto);
+        Contacto old=getSelectedContacto();
+        setSelectedContacto(unEditedContacto);
+        propertyChangeSupport.firePropertyChange(PROP_SELECTEDCONTACTO, old, selectedContacto);
         disableFields();
         guardarJB.setEnabled(false);
         cancelarJB.setEnabled(false);

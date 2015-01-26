@@ -136,7 +136,7 @@ public class Contacto implements Serializable {
         this.pais = pais;
     }
     
- /*   public Contacto (Contacto c){
+    public Contacto (Contacto c){
         this.setIdContacto(c.getIdContacto());
         this.setTipo(c.getTipo());
         this.setNombre(c.getNombre());
@@ -152,7 +152,7 @@ public class Contacto implements Serializable {
         this.setEmail(c.getEmail());
         this.setImagen(c.getImagen());
         this.setTelefonoList(c.getTelefonoList());
-    }/*
+    }
         /*
     private Integer idContacto;
     private String tipo;
@@ -171,25 +171,42 @@ public class Contacto implements Serializable {
     private String imagen;
     private List<Telefono> telefonoList;
     */
-    public Contacto cloneMe(){
-        Contacto clonned= new Contacto();
-        clonned.setIdContacto(this.getIdContacto());
-        clonned.setTipo(this.getTipo());
-        clonned.setNombre(this.getNombre());
-        clonned.setDireccion(this.getDireccion());
-        clonned.setDireccionReferencias(this.getDireccionReferencias());
-        clonned.setColonia(this.getColonia());
-        clonned.setCodigoPostal(this.getCodigoPostal());
-        clonned.setLocalidad(this.getLocalidad());
-        clonned.setMunicipio(this.getMunicipio());
-        clonned.setEstado(this.getEstado());
-        clonned.setPais(this.getPais());
-        clonned.setComentarios(this.getComentarios());
-        clonned.setEmail(this.getEmail());
-        clonned.setImagen(this.getImagen());
-        clonned.setTelefonoList(this.getTelefonoList());
+    public Contacto cloneIntoDummy(){
+        Contacto dummy= new Contacto(this);
+        //dummy.setIdContacto(0);
+       /* dummy.setTipo(this.getTipo());
+        dummy.setNombre(this.getNombre());
+        dummy.setDireccion(this.getDireccion());
+        dummy.setDireccionReferencias(this.getDireccionReferencias());
+        dummy.setColonia(this.getColonia());
+        dummy.setCodigoPostal(this.getCodigoPostal());
+        dummy.setLocalidad(this.getLocalidad());
+        dummy.setMunicipio(this.getMunicipio());
+        dummy.setEstado(this.getEstado());
+        dummy.setPais(this.getPais());
+        dummy.setComentarios(this.getComentarios());
+        dummy.setEmail(this.getEmail());
+        dummy.setImagen(this.getImagen());
+        dummy.setTelefonoList(this.getTelefonoList());*/
         
-        return clonned;
+        return dummy;
+    }
+    public void copyFromDummy(Contacto dummy){
+        this.setIdContacto(dummy.getIdContacto());
+        this.setTipo(dummy.getTipo());
+        this.setNombre(dummy.getNombre());
+        this.setDireccion(dummy.getDireccion());
+        this.setDireccionReferencias(dummy.getDireccionReferencias());
+        this.setColonia(dummy.getColonia());
+        this.setCodigoPostal(dummy.getCodigoPostal());
+        this.setLocalidad(dummy.getLocalidad());
+        this.setMunicipio(dummy.getMunicipio());
+        this.setEstado(dummy.getEstado());
+        this.setPais(dummy.getPais());
+        this.setComentarios(dummy.getComentarios());
+        this.setEmail(dummy.getEmail());
+        this.setImagen(dummy.getImagen());
+        this.setTelefonoList(dummy.getTelefonoList());
     }
     
     @Override
