@@ -577,9 +577,7 @@ public final class ContactosPanel extends JXPanel implements Serializable {
        return (Integer) contactosTabla.getModel().getValueAt(contactosTabla.convertRowIndexToModel(contactosTabla.getSelectedRow()), contactosTabla.convertColumnIndexToModel(0));
     }
     private void editarContacto(){
-        System.out.println("selectedContacto = " + selectedContacto);
         unEditedContacto=Contacto.cloneIntoDummy(selectedContacto);
-        System.out.println("unEditedContacto = " + unEditedContacto);
         enableFields();
         guardarJB.setEnabled(true);
         cancelarJB.setEnabled(true);
@@ -590,10 +588,7 @@ public final class ContactosPanel extends JXPanel implements Serializable {
     /** ANTERIORES A LAS MODIFICACIONES DE NUEVO AL CONTACTO ACTUAL. ES DECIR NO SE CLONA UN OBJETO, SE CREA UNO NUEVO CON INDICE DIFERENTE USANDO CONTACTPJPACONTROLLER Y COPIANDO LAS PROPIEDADES**/
     private void cancelarEdicion(){
         Contacto old=selectedContacto;
-        System.out.println("old = " + old);
         selectedContacto.copyFromDummy(unEditedContacto);
-        System.out.println("unEditedContacto = " + unEditedContacto);
-        System.out.println("selectedContacto = " + selectedContacto);
         propertyChangeSupport.firePropertyChange(PROP_SELECTEDCONTACTO, old, unEditedContacto);
         disableFields();
         guardarJB.setEnabled(false);

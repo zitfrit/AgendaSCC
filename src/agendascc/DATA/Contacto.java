@@ -8,6 +8,7 @@ package agendascc.DATA;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -213,6 +214,7 @@ public class Contacto implements Serializable {
         this.setEmail(dummy.getEmail());
         this.setImagen(dummy.getImagen());
         this.setTelefonoList(dummy.getTelefonoList());
+        
     }
     
     @Override
