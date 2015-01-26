@@ -137,21 +137,22 @@ public class Contacto implements Serializable {
     }
     
     public Contacto (Contacto c){
-        this.setIdContacto(c.getIdContacto());
-        this.setTipo(c.getTipo());
-        this.setNombre(c.getNombre());
-        this.setDireccion(c.getDireccion());
-        this.setDireccionReferencias(c.getDireccionReferencias());
-        this.setColonia(c.getColonia());
-        this.setCodigoPostal(c.getCodigoPostal());
-        this.setLocalidad(c.getLocalidad());
-        this.setMunicipio(c.getMunicipio());
-        this.setEstado(c.getEstado());
-        this.setPais(c.getPais());
-        this.setComentarios(c.getComentarios());
-        this.setEmail(c.getEmail());
-        this.setImagen(c.getImagen());
-        this.setTelefonoList(c.getTelefonoList());
+        this.idContacto=c.getIdContacto();
+        this.tipo=c.getTipo();
+        this.nombre=c.getNombre();
+        this.pseudonimo=c.getPseudonimo();
+        this.direccion=c.getDireccion();
+        this.direccionReferencias=c.getDireccionReferencias();
+        this.colonia=c.getColonia();
+        this.codigoPostal=c.getCodigoPostal();
+        this.localidad=c.getLocalidad();
+        this.municipio=c.getMunicipio();
+        this.estado=c.getEstado();
+        this.pais=c.getPais();
+        this.comentarios=c.getComentarios();
+        this.email=c.getEmail();
+        this.imagen=c.getImagen();
+        this.telefonoList=c.getTelefonoList();
     }
         /*
     private Integer idContacto;
@@ -171,10 +172,11 @@ public class Contacto implements Serializable {
     private String imagen;
     private List<Telefono> telefonoList;
     */
-    public Contacto cloneIntoDummy(){
-        Contacto dummy= new Contacto(this);
-        //dummy.setIdContacto(0);
-       /* dummy.setTipo(this.getTipo());
+    public static Contacto cloneIntoDummy(Contacto c){
+        
+    /*    Contacto dummy= new Contacto();
+        dummy.setIdContacto(0);
+        dummy.setTipo(this.getTipo());
         dummy.setNombre(this.getNombre());
         dummy.setDireccion(this.getDireccion());
         dummy.setDireccionReferencias(this.getDireccionReferencias());
@@ -187,14 +189,18 @@ public class Contacto implements Serializable {
         dummy.setComentarios(this.getComentarios());
         dummy.setEmail(this.getEmail());
         dummy.setImagen(this.getImagen());
-        dummy.setTelefonoList(this.getTelefonoList());*/
-        
+        dummy.setTelefonoList(this.getTelefonoList());
         return dummy;
+    */  Contacto dummy=new Contacto(c);
+       // dummy.setIdContacto(0);
+        return dummy;
+        
     }
     public void copyFromDummy(Contacto dummy){
         this.setIdContacto(dummy.getIdContacto());
         this.setTipo(dummy.getTipo());
         this.setNombre(dummy.getNombre());
+        this.setPseudonimo(dummy.getPseudonimo());
         this.setDireccion(dummy.getDireccion());
         this.setDireccionReferencias(dummy.getDireccionReferencias());
         this.setColonia(dummy.getColonia());
@@ -229,7 +235,7 @@ public class Contacto implements Serializable {
     }
     @Override
     public String toString() {
-        return "agendascc.DATA.Contacto[ idContacto=" + idContacto + " ]";
+        return "agendascc.DATA.Contacto[ idContacto=" + idContacto + " ]"+ " : "+pseudonimo+ " : "+nombre;
     }
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);

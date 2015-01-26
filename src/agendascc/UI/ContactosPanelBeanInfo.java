@@ -241,7 +241,9 @@ public class ContactosPanelBeanInfo extends SimpleBeanInfo {
             properties[PROPERTY_scrollableTracksViewportWidth] = new PropertyDescriptor ( "scrollableTracksViewportWidth", agendascc.UI.ContactosPanel.class, "getScrollableTracksViewportWidth", "setScrollableTracksViewportWidth" ); // NOI18N
             properties[PROPERTY_scrollableWidthHint] = new PropertyDescriptor ( "scrollableWidthHint", agendascc.UI.ContactosPanel.class, null, "setScrollableWidthHint" ); // NOI18N
             properties[PROPERTY_selectedContacto] = new PropertyDescriptor ( "selectedContacto", agendascc.UI.ContactosPanel.class, "getSelectedContacto", "setSelectedContacto" ); // NOI18N
+            properties[PROPERTY_selectedContacto].setPreferred ( true );
             properties[PROPERTY_selectedContacto].setBound ( true );
+            properties[PROPERTY_selectedContacto].setConstrained ( true );
             properties[PROPERTY_selectedElementIndex] = new PropertyDescriptor ( "selectedElementIndex", agendascc.UI.ContactosPanel.class, "getSelectedElementIndex", null ); // NOI18N
             properties[PROPERTY_showing] = new PropertyDescriptor ( "showing", agendascc.UI.ContactosPanel.class, "isShowing", null ); // NOI18N
             properties[PROPERTY_size] = new PropertyDescriptor ( "size", agendascc.UI.ContactosPanel.class, "getSize", "setSize" ); // NOI18N
