@@ -217,13 +217,14 @@ public class Contacto implements Serializable {
         
     }
     
-    @Override
+  /*  @Override
     public int hashCode() {
         int hash = 0;
         hash += (idContacto != null ? idContacto.hashCode() : 0);
         return hash;
-    }
-    @Override
+    }*/
+    
+   /* @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Contacto)) {
@@ -234,7 +235,7 @@ public class Contacto implements Serializable {
             return false;
         }
         return true;
-    }
+    }*/
     @Override
     public String toString() {
         return "agendascc.DATA.Contacto[ idContacto=" + idContacto + " ]"+ " : "+pseudonimo+ " : "+nombre;
@@ -390,7 +391,7 @@ public class Contacto implements Serializable {
     }
     public void setTelefonoList(List<Telefono> telefonoList) {
         List<Telefono> oldTelefonoList=this.telefonoList;
-        this.telefonoList = telefonoList;
+        this.telefonoList = org.jdesktop.observablecollections.ObservableCollections.observableList(telefonoList);
         this.propertyChangeSupport.firePropertyChange(PROP_TELEFONOLIST, oldTelefonoList, telefonoList);
     }
 }

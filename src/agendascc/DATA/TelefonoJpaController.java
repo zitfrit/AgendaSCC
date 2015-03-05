@@ -140,7 +140,16 @@ public class TelefonoJpaController implements Serializable {
             em.close();
         }
     }
-
+    public List<Telefono> findTelefonosListFromContacto(Contacto c) {
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("SELECT t FROM Telefono t where t.idContacto=:cID");
+            q.setParameter("cID", c);
+            return (List<Telefono>)q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
     public Telefono findTelefono(Integer id) {
         EntityManager em = getEntityManager();
         try {

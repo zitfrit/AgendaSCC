@@ -10,6 +10,7 @@ import agendascc.DATA.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BeanProperty;
@@ -27,23 +28,55 @@ public final class ContactosPanel extends JXPanel implements Serializable {
     private Contacto selectedContacto;
     private Contacto unEditedContacto;
     private ContactoJpaController contactoController;
-    //private List<Contacto> contactosList;
+    private List<Telefono> unEdittedTelefonoList;
+    
     public static final String PROP_SELECTEDCONTACTO = "selectedContacto";
     public static final String PROP_CONTACTOSLIST = "contactosList";
     public static final String PROP_TIPOCONTACTO = "tipoContacto";
+    //public static final String PROP_TELEFONOSSELECTEDCONTACTO = "telefonosSelectedContacto";
     
     private transient final java.beans.PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
 
     public ContactosPanel()
     {
         super();
-        initComponents();
         
+        
+        initComponents();
         BeanProperty selectedContactoProperty =BeanProperty.create(PROP_SELECTEDCONTACTO);
         ELProperty selectedElementProperty=ELProperty.create("${selectedElement}");
         Binding selectedContactoBinding=Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, contactosTabla, selectedElementProperty, this, selectedContactoProperty);
         bindingGroup.addBinding(selectedContactoBinding);
         selectedContactoBinding.bind();
+        
+     /*   BeanProperty telefonosSelectedContactoProperty =BeanProperty.create(PROP_TELEFONOSSELECTEDCONTACTO);
+        selectedElementProperty=ELProperty.create("${selectedElement}");
+        Binding telefonosSelectedContactoBinding=Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, telefonosTabla, selectedElementProperty, this, telefonosSelectedContactoProperty);
+        bindingGroup.addBinding(telefonosSelectedContactoBinding);
+        telefonosSelectedContactoBinding.bind();
+        */
+        /*BeanProperty telefonosSelectedContactoProperty =BeanProperty.create(PROP_TELEFONOSSELECTEDCONTACTO);
+        ELProperty selectedContactoTelefonosProperty=ELProperty.create("${selectedContacto.telefonoList}");
+        Binding telefonosSelectedContactoBinding=Bindings.createAutoBinding(AutoBinding.UpdateStrategy.READ_WRITE, selectedContacto, selectedContactoTelefonosProperty, this, telefonosSelectedContactoProperty);
+        bindingGroup.addBinding(telefonosSelectedContactoBinding);
+        telefonosSelectedContactoBinding.bind();
+        
+        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${telefonosSelectedContacto}");
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, telefonosTabla);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tipo}"));
+        columnBinding.setColumnName("Tipo");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${telefono}"));
+        columnBinding.setColumnName("Telefono");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${lada}"));
+        columnBinding.setColumnName("Lada");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${extension}"));
+        columnBinding.setColumnName("Extension");
+        columnBinding.setColumnClass(String.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();*/
     }
 
 
@@ -477,6 +510,8 @@ public final class ContactosPanel extends JXPanel implements Serializable {
     }// </editor-fold>//GEN-END:initComponents
 
     private void editarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarJBActionPerformed
+        unEdittedTelefonoList= org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<Telefono>());
+       
         editarContacto();
     }//GEN-LAST:event_editarJBActionPerformed
     private void cancelarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarJBActionPerformed
@@ -560,7 +595,16 @@ public final class ContactosPanel extends JXPanel implements Serializable {
         System.out.println("tipoContacto = " + getTipoContacto());
         System.out.println("listener = " + propertyChangeSupport.getPropertyChangeListeners("tipoContacto").length);
     }
-    
+   /* public void setTelefonosSelectedContacto(List<Telefono> tel){
+        List<Telefono> oldTelefonosList=this.selectedContacto.getTelefonoList();
+        ArrayList<Telefono> temp=new ArrayList<Telefono>();
+        for(Telefono t:tel){
+            temp.add(new Telefono(t));
+        }
+        selectedContacto.setTelefonoList(temp);
+        //propertyChangeSupport.firePropertyChange(PROP_SELECTEDCONTACTO, oldTelefonosList, temp);
+    }*/
+
     /////////////// GETTERS /////////////////
     public List<Contacto> getContactosList(){
         return this.contactosList;
@@ -571,13 +615,25 @@ public final class ContactosPanel extends JXPanel implements Serializable {
     public Contacto getSelectedContacto(){
         return this.selectedContacto;
     }
-    
+    public List<Telefono> getTelefonosSelectedContacto(){
+        return this.selectedContacto.getTelefonoList();
+    }
     ///////METODOS UTILITARIOS/////////////
     public int getSelectedElementIndex(){
        return (Integer) contactosTabla.getModel().getValueAt(contactosTabla.convertRowIndexToModel(contactosTabla.getSelectedRow()), contactosTabla.convertColumnIndexToModel(0));
     }
     private void editarContacto(){
+    /*    for(Telefono t:selectedContacto.getTelefonoList()){
+            unEdittedTelefonoList.add(new Telefono(t));
+        }*/
+        Telefono tempT;
         unEditedContacto=Contacto.cloneIntoDummy(selectedContacto);
+        for(Telefono t:unEditedContacto.getTelefonoList()){
+            tempT=new Telefono(t);
+            unEdittedTelefonoList.add(tempT);
+            System.out.println("selContacto: "+t.getSerialVersionUID()+" - newTel: "+tempT.getSerialVersionUID());
+        }
+       // unEditedContacto.setTelefonoList(unEdittedTelefonoList);
         enableFields();
         guardarJB.setEnabled(true);
         cancelarJB.setEnabled(true);
@@ -588,8 +644,11 @@ public final class ContactosPanel extends JXPanel implements Serializable {
     /** ANTERIORES A LAS MODIFICACIONES DE NUEVO AL CONTACTO ACTUAL. ES DECIR NO SE CLONA UN OBJETO, SE CREA UNO NUEVO CON INDICE DIFERENTE USANDO CONTACTPJPACONTROLLER Y COPIANDO LAS PROPIEDADES**/
     private void cancelarEdicion(){
         Contacto old=selectedContacto;
+        List<Telefono> lt=selectedContacto.getTelefonoList();
         selectedContacto.copyFromDummy(unEditedContacto);
+        selectedContacto.setTelefonoList(unEdittedTelefonoList);
         propertyChangeSupport.firePropertyChange(PROP_SELECTEDCONTACTO, old, unEditedContacto);
+        propertyChangeSupport.firePropertyChange("selectedContacto.telefonoList", lt, unEdittedTelefonoList);
         disableFields();
         guardarJB.setEnabled(false);
         cancelarJB.setEnabled(false);
@@ -633,7 +692,6 @@ public final class ContactosPanel extends JXPanel implements Serializable {
         localidadTF.setEnabled(false);
         municipioTF.setEnabled(false);
         estadoTF.setEnabled(false);
-        //contactosTabla.setEditable(false);
         contactosTabla.setEnabled(true);
         telefonosTabla.setEditable(false);
     }
