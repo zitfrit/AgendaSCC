@@ -174,28 +174,8 @@ public class Contacto implements Serializable {
     private List<Telefono> telefonoList;
     */
     public static Contacto cloneIntoDummy(Contacto c){
-        
-    /*    Contacto dummy= new Contacto();
-        dummy.setIdContacto(0);
-        dummy.setTipo(this.getTipo());
-        dummy.setNombre(this.getNombre());
-        dummy.setDireccion(this.getDireccion());
-        dummy.setDireccionReferencias(this.getDireccionReferencias());
-        dummy.setColonia(this.getColonia());
-        dummy.setCodigoPostal(this.getCodigoPostal());
-        dummy.setLocalidad(this.getLocalidad());
-        dummy.setMunicipio(this.getMunicipio());
-        dummy.setEstado(this.getEstado());
-        dummy.setPais(this.getPais());
-        dummy.setComentarios(this.getComentarios());
-        dummy.setEmail(this.getEmail());
-        dummy.setImagen(this.getImagen());
-        dummy.setTelefonoList(this.getTelefonoList());
+        Contacto dummy=new Contacto(c);
         return dummy;
-    */  Contacto dummy=new Contacto(c);
-       // dummy.setIdContacto(0);
-        return dummy;
-        
     }
     public void copyFromDummy(Contacto dummy){
         this.setIdContacto(dummy.getIdContacto());
@@ -236,6 +216,7 @@ public class Contacto implements Serializable {
         }
         return true;
     }*/
+    
     @Override
     public String toString() {
         return "agendascc.DATA.Contacto[ idContacto=" + idContacto + " ]"+ " : "+pseudonimo+ " : "+nombre;

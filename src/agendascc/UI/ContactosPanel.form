@@ -7,7 +7,8 @@
         <Property name="persistenceUnit" type="java.lang.String" value="AgendaSCCPU"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="contactoController = java.beans.Beans.isDesignTime() ? null : new ContactoJpaController(mainEntityManager.getEntityManagerFactory());"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory(&quot;AgendaSCCPU&quot;).createEntityManager()"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="//tipoContacto= java.beans.Beans.isDesignTime() ? &quot;%&quot; : getTipoContacto();"/>
       </AuxValues>
     </Component>
     <Component class="javax.persistence.Query" name="contactosQuery">
@@ -18,8 +19,8 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery(&quot;SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo&quot;).setParameter(&quot;tipo&quot;, getTipoContacto())"/>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="this.addPropertyChangeListener(&quot;tipoContacto&quot;, new PropertyChangeListener() {&#xa;            @Override&#xa;            public void propertyChange(PropertyChangeEvent evt) {&#xa;                contactosQuery=mainEntityManager.createQuery(&quot;SELECT C FROM Contacto C WHERE C.tipo LIKE :tipo&quot;);&#xa;                contactosQuery.setParameter(&quot;tipo&quot;, evt.getNewValue().toString());&#xa;                setContactosList(contactosQuery.getResultList());&#xa;                System.out.println(&quot;YA BOTA EL EVENTO el tipo ha cambiado de [&quot;+evt.getOldValue()+&quot;] a [&quot;+evt.getNewValue()+&quot;]&quot;);&#xa;            }&#xa;});"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery(&quot;SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo&quot;).setParameter(&quot;tipo&quot;, this.tipoContacto)"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
       </AuxValues>
     </Component>
     <Component class="java.util.List" name="contactosList">
@@ -722,6 +723,11 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
               </TableColumnModel>
             </Property>
             <Property name="editable" type="boolean" value="false"/>
@@ -734,23 +740,29 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="contactosList" target="contactosTabla" targetPath="elements" updateStrategy="0" immediately="true">
-              <Subbinding sourcePath="${idContacto}">
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+            <BindingProperty name="elements" source="Form" sourcePath="${contactosList}" target="contactosTabla" targetPath="elements" updateStrategy="0" immediately="true">
+              <Subbinding sourcePath="${tipo}">
+                <BindingParameter name="NAME" value="Tipo"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${nombre}">
+                <BindingParameter name="NAME" value="Nombre"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${pseudonimo}">
+                <BindingParameter name="NAME" value="Pseudonimo"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${direccion}">
+                <BindingParameter name="NAME" value="Direccion"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${direccionReferencias}">
+                <BindingParameter name="NAME" value="Direccion Referencias"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${colonia}">
+                <BindingParameter name="NAME" value="Colonia"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
             </BindingProperty>

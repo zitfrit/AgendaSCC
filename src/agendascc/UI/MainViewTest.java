@@ -43,6 +43,7 @@ public class MainViewTest extends javax.swing.JFrame {
         tabbedPaneContactos.setIconAt(0, icon);    */  
         initComponents();
         getContentPane().setBackground(Color.white);
+        contactosPanel1.setTipoContacto("%");
     }
 
     /**
