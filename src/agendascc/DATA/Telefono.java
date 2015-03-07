@@ -111,7 +111,7 @@ public class Telefono implements Serializable {
 
     @Override
     public String toString() {
-        return (Object)this+ "agendascc.DATA.Telefono[ idTelefono=" + idTelefono + " ]";
+        return "agendascc.DATA.Telefono[ idTelefono=" + idTelefono + " ]:"+telefono;
     }
 
     /**

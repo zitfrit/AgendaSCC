@@ -8,7 +8,6 @@
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory(&quot;AgendaSCCPU&quot;).createEntityManager()"/>
-        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="//tipoContacto= java.beans.Beans.isDesignTime() ? &quot;%&quot; : getTipoContacto();"/>
       </AuxValues>
     </Component>
     <Component class="javax.persistence.Query" name="contactosQuery">
@@ -97,7 +96,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="labelImagen" min="-2" pref="95" max="-2" attributes="0"/>
+                  <Component id="imagenTipoContacto" min="-2" pref="95" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jSeparator1" pref="273" max="32767" attributes="0"/>
@@ -124,7 +123,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="pseudonimoTF" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="labelImagen" min="-2" pref="95" max="-2" attributes="0"/>
+                          <Component id="imagenTipoContacto" min="-2" pref="95" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
@@ -135,11 +134,11 @@
       <SubComponents>
         <Component class="javax.swing.JSeparator" name="jSeparator1">
         </Component>
-        <Component class="javax.swing.JLabel" name="labelImagen">
+        <Component class="javax.swing.JLabel" name="imagenTipoContacto">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/agendascc/RESOURCES/grupo.png"/>
+              <Image iconType="3" name="/agendascc/RESOURCES/todos80.png"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -741,28 +740,19 @@
           </Properties>
           <BindingProperties>
             <BindingProperty name="elements" source="Form" sourcePath="${contactosList}" target="contactosTabla" targetPath="elements" updateStrategy="0" immediately="true">
-              <Subbinding sourcePath="${tipo}">
-                <BindingParameter name="NAME" value="Tipo"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
-              </Subbinding>
               <Subbinding sourcePath="${nombre}">
-                <BindingParameter name="NAME" value="Nombre"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${pseudonimo}">
-                <BindingParameter name="NAME" value="Pseudonimo"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${direccion}">
-                <BindingParameter name="NAME" value="Direccion"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${direccionReferencias}">
-                <BindingParameter name="NAME" value="Direccion Referencias"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${colonia}">
-                <BindingParameter name="NAME" value="Colonia"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
             </BindingProperty>

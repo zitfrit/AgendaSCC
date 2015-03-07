@@ -25,7 +25,7 @@ import org.jdesktop.observablecollections.ObservableCollections;
  * @author JTF
  */
 public final class ContactosPanel extends JXPanel implements Serializable {
-    private String tipoContacto="personal";
+    private String tipoContacto="%";
     private Contacto selectedContacto;
     private Contacto unEditedContacto;
     private List<Telefono> unEdittedTelefonoList;
@@ -39,10 +39,7 @@ public final class ContactosPanel extends JXPanel implements Serializable {
     public ContactosPanel()
     {
         super();
-        //tipoC="%";
-        //setTipoC("%");
         initComponents();
-        
         
         BeanProperty selectedContactoProperty =BeanProperty.create(PROP_SELECTEDCONTACTO);
         ELProperty selectedElementProperty=ELProperty.create("${selectedElement}");
@@ -52,33 +49,25 @@ public final class ContactosPanel extends JXPanel implements Serializable {
         this.propertyChangeSupport.addPropertyChangeListener(PROP_TIPOCONTACTO, new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                List<Contacto> oldList=getContactosList();
-                Query query= mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo").setParameter("tipo", tipoContacto);
-                //mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo").setParameter("tipo", this.tipoC);
-                //contactosQuery=mainEntityManager.createQuery("SELECT C FROM Contacto C WHERE C.tipo LIKE :tipo");
-                //contactosQuery=mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo").setParameter("tipo", tipoContacto);
+                contactosQuery=mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo").setParameter("tipo", getTipoContacto());
                 //contactosQuery.setParameter("tipo", evt.getNewValue().toString());
-                setContactosList(ObservableCollections.observableList(query.getResultList()));
-                propertyChangeSupport.firePropertyChange(PROP_CONTACTOSLIST, oldList,contactosList);
-                System.out.println("YA BOTA EL EVENTO el tipo ha cambiado de ["+evt.getOldValue()+"] a ["+evt.getNewValue()+"]");
+                setContactosList(ObservableCollections.observableList(contactosQuery.getResultList()));
+//                System.out.println("YA BOTA EL EVENTO el tipo ha cambiado de ["+evt.getOldValue()+"] a ["+evt.getNewValue()+"]");
             }
         });
-        setTipoContacto("cliente");
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        //tipoContacto= java.beans.Beans.isDesignTime() ? "%" : getTipoContacto();
         mainEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("AgendaSCCPU").createEntityManager();
         contactosQuery = java.beans.Beans.isDesignTime() ? null : mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo").setParameter("tipo", this.tipoContacto);
         contactosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(contactosQuery.getResultList());
         jPanel1 = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
-        labelImagen = new javax.swing.JLabel();
+        imagenTipoContacto = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         telefonosTabla = new org.jdesktop.swingx.JXTable();
         pseudonimoTF = new javax.swing.JTextField();
@@ -114,9 +103,9 @@ public final class ContactosPanel extends JXPanel implements Serializable {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        labelImagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/agendascc/RESOURCES/grupo.png"))); // NOI18N
-        labelImagen.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TODOS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
+        imagenTipoContacto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imagenTipoContacto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/agendascc/RESOURCES/todos80.png"))); // NOI18N
+        imagenTipoContacto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TODOS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
 
         telefonosTabla.setColumnControlVisible(true);
         telefonosTabla.setEditable(false);
@@ -167,7 +156,7 @@ public final class ContactosPanel extends JXPanel implements Serializable {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(labelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(imagenTipoContacto, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
@@ -190,7 +179,7 @@ public final class ContactosPanel extends JXPanel implements Serializable {
                             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(pseudonimoTF))
-                        .addComponent(labelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(imagenTipoContacto, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -438,9 +427,6 @@ public final class ContactosPanel extends JXPanel implements Serializable {
 
         eLProperty = org.jdesktop.beansbinding.ELProperty.create("${contactosList}");
         jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, eLProperty, contactosTabla);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tipo}"));
-        columnBinding.setColumnName("Tipo");
-        columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nombre}"));
         columnBinding.setColumnName("Nombre");
         columnBinding.setColumnClass(String.class);
@@ -526,6 +512,7 @@ public final class ContactosPanel extends JXPanel implements Serializable {
     private javax.swing.JTextField emailTF;
     private javax.swing.JTextField estadoTF;
     private javax.swing.JButton guardarJB;
+    private javax.swing.JLabel imagenTipoContacto;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -538,7 +525,6 @@ public final class ContactosPanel extends JXPanel implements Serializable {
     private javax.swing.JLabel labelCorreo;
     private javax.swing.JLabel labelDireccion;
     private javax.swing.JLabel labelEstado;
-    private javax.swing.JLabel labelImagen;
     private javax.swing.JLabel labelLocalidad;
     private javax.swing.JLabel labelMunicipio;
     private javax.swing.JLabel labelPais;
@@ -556,9 +542,8 @@ public final class ContactosPanel extends JXPanel implements Serializable {
 /////////////// SETTERS ////////////////////
     public void setContactosList(List<Contacto> listaContactos){
         List<Contacto> oldList=getContactosList();
-        this.contactosList=ObservableCollections.observableList(listaContactos);
-        //this.contactosList=listaContactos;
-        System.out.println("old: "+ oldList+" vs "+"new: "+this.contactosList);
+        this.contactosList=listaContactos;
+//        System.out.println("old: "+ oldList+" vs "+"new: "+this.contactosList);
         propertyChangeSupport.firePropertyChange(PROP_CONTACTOSLIST, oldList, this.contactosList);
     }
     public void setSelectedContacto(Contacto contactoNuevo){ 
@@ -569,11 +554,18 @@ public final class ContactosPanel extends JXPanel implements Serializable {
     public void setTipoContacto(String tipo) {
         String oldType = this.tipoContacto;
         this.tipoContacto = tipo;
-        propertyChangeSupport.firePropertyChange(PROP_TIPOCONTACTO, oldType, tipo);
-        
-        System.out.println("oldType = " + oldType);
-        System.out.println("tipoContacto = " + getTipoContacto());
-        System.out.println("listener = " + propertyChangeSupport.getPropertyChangeListeners("tipoContacto").length);
+        propertyChangeSupport.firePropertyChange(PROP_TIPOCONTACTO, oldType, this.tipoContacto);
+        if(tipoContacto.equals("%")){
+            imagenTipoContacto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/agendascc/RESOURCES/todos80.png"))); // NOI18N
+            imagenTipoContacto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TODOS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
+        }
+        else{
+            imagenTipoContacto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/agendascc/RESOURCES/"+tipoContacto+"80.png"))); // NOI18N
+            imagenTipoContacto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, tipoContacto.toUpperCase(), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
+        }
+//        System.out.println("oldType = " + oldType);
+//        System.out.println("tipoContacto = " + getTipoContacto());
+//        System.out.println("listener = " + propertyChangeSupport.getPropertyChangeListeners("tipoContacto").length);
     }
     
     /////////////// GETTERS /////////////////
@@ -601,9 +593,7 @@ public final class ContactosPanel extends JXPanel implements Serializable {
         cancelarJB.setEnabled(true);
         editarJB.setEnabled(false);
     }
-    /** SOSPECHO QUE EL PROBLEMA ESTA EN EL METODO DE CLONACION Y EL METODO EQUALS, AL CLONAR EL MISMO ID DEL CONTACTO EL METODO EQUALS VERIFICA QUE SI SON IGUALES COMPARANDO LOS ID **/
-    /** HACER UN METODO EN LA CLASE CONTACTO QUE SOLO HAGA UNA COPIA FIEL DE TODOS LOS CAMPOS PARA ALMACENAR LOS CAMBIOS EN LOS TEXFIELDS TEMPORALMENTE Y AL CANCELAR ASIGNAR LOS DATOS**/
-    /** ANTERIORES A LAS MODIFICACIONES DE NUEVO AL CONTACTO ACTUAL. ES DECIR NO SE CLONA UN OBJETO, SE CREA UNO NUEVO CON INDICE DIFERENTE USANDO CONTACTPJPACONTROLLER Y COPIANDO LAS PROPIEDADES**/
+   
     private void cancelarEdicion(){
         Contacto old=selectedContacto;
         List<Telefono> lt=selectedContacto.getTelefonoList();
