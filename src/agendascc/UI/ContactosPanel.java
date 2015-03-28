@@ -13,6 +13,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Query;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.Binding;
@@ -29,16 +31,19 @@ public final class ContactosPanel extends JXPanel implements Serializable {
     private Contacto selectedContacto;
     private Contacto unEditedContacto;
     private List<Telefono> unEdittedTelefonoList;
+    private ImageIcon tipoContactoImagen;
     
     public static final String PROP_SELECTEDCONTACTO = "selectedContacto";
     public static final String PROP_CONTACTOSLIST = "contactosList";
     public static final String PROP_TIPOCONTACTO = "tipoContacto";
+    public static final String PROP_TIPOCONTACTOIMAGEN = "tipoContactoImagen";
     
     private transient final java.beans.PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
 
     public ContactosPanel()
     {
         super();
+        tipoContactoImagen=new ImageIcon(getClass().getResource("/agendascc/RESOURCES/todos80.png"));
         initComponents();
         
         BeanProperty selectedContactoProperty =BeanProperty.create(PROP_SELECTEDCONTACTO);
@@ -50,9 +55,17 @@ public final class ContactosPanel extends JXPanel implements Serializable {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 contactosQuery=mainEntityManager.createQuery("SELECT c FROM Contacto c WHERE c.tipo LIKE :tipo").setParameter("tipo", getTipoContacto());
-                //contactosQuery.setParameter("tipo", evt.getNewValue().toString());
                 setContactosList(ObservableCollections.observableList(contactosQuery.getResultList()));
-//                System.out.println("YA BOTA EL EVENTO el tipo ha cambiado de ["+evt.getOldValue()+"] a ["+evt.getNewValue()+"]");
+                String url="/agendascc/RESOURCES/todos80.png";
+                if("%".equals(tipoContacto)){
+                    setTipoConTactoImagen(new ImageIcon(url));
+                    imagenTipoContacto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TODOS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
+                }
+                else{
+                    url="/agendascc/RESOURCES/"+tipoContacto+"80.png";
+                    setTipoConTactoImagen(new ImageIcon(url)); // NOI18N
+                    imagenTipoContacto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, tipoContacto.toUpperCase(), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
+                }
             }
         });
     }
@@ -104,8 +117,10 @@ public final class ContactosPanel extends JXPanel implements Serializable {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         imagenTipoContacto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        imagenTipoContacto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/agendascc/RESOURCES/todos80.png"))); // NOI18N
         imagenTipoContacto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TODOS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${tipoContactoImagen.accessibleContext.accessibleIcon}"), imagenTipoContacto, org.jdesktop.beansbinding.BeanProperty.create("icon"));
+        bindingGroup.addBinding(binding);
 
         telefonosTabla.setColumnControlVisible(true);
         telefonosTabla.setEditable(false);
@@ -138,7 +153,7 @@ public final class ContactosPanel extends JXPanel implements Serializable {
         pseudonimoTF.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         pseudonimoTF.setEnabled(false);
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${selectedContacto.pseudonimo}"), pseudonimoTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${selectedContacto.pseudonimo}"), pseudonimoTF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         nombreTF.setFont(new java.awt.Font("Calibri", 1, 22)); // NOI18N
@@ -543,7 +558,6 @@ public final class ContactosPanel extends JXPanel implements Serializable {
     public void setContactosList(List<Contacto> listaContactos){
         List<Contacto> oldList=getContactosList();
         this.contactosList=listaContactos;
-//        System.out.println("old: "+ oldList+" vs "+"new: "+this.contactosList);
         propertyChangeSupport.firePropertyChange(PROP_CONTACTOSLIST, oldList, this.contactosList);
     }
     public void setSelectedContacto(Contacto contactoNuevo){ 
@@ -555,17 +569,11 @@ public final class ContactosPanel extends JXPanel implements Serializable {
         String oldType = this.tipoContacto;
         this.tipoContacto = tipo;
         propertyChangeSupport.firePropertyChange(PROP_TIPOCONTACTO, oldType, this.tipoContacto);
-        if(tipoContacto.equals("%")){
-            imagenTipoContacto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/agendascc/RESOURCES/todos80.png"))); // NOI18N
-            imagenTipoContacto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TODOS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
-        }
-        else{
-            imagenTipoContacto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/agendascc/RESOURCES/"+tipoContacto+"80.png"))); // NOI18N
-            imagenTipoContacto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, tipoContacto.toUpperCase(), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
-        }
-//        System.out.println("oldType = " + oldType);
-//        System.out.println("tipoContacto = " + getTipoContacto());
-//        System.out.println("listener = " + propertyChangeSupport.getPropertyChangeListeners("tipoContacto").length);
+    }
+    public void setTipoConTactoImagen(ImageIcon icono){
+        ImageIcon old= this.tipoContactoImagen;
+        this.tipoContactoImagen=icono;
+        propertyChangeSupport.firePropertyChange(PROP_TIPOCONTACTOIMAGEN, old, this.tipoContactoImagen);
     }
     
     /////////////// GETTERS /////////////////
@@ -577,6 +585,9 @@ public final class ContactosPanel extends JXPanel implements Serializable {
     }
     public Contacto getSelectedContacto(){
         return this.selectedContacto;
+    }
+    public ImageIcon getTipoContactoImagen(){
+        return this.tipoContactoImagen;
     }
     
       ///////METODOS UTILITARIOS/////////////
