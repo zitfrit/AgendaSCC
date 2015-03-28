@@ -43,11 +43,11 @@ public class MainViewTest extends javax.swing.JFrame {
         tabbedPaneContactos.setIconAt(0, icon);    */  
         initComponents();
         getContentPane().setBackground(Color.white);
-        CP_Clientes.setTipoContacto("cliente");
-        CP_General.setTipoContacto("general");
-        CP_Personal.setTipoContacto("personal");
-        CP_Todos.setTipoContacto("%");
-        CP_Trabajador.setTipoContacto("trabajador");
+//        CP_Clientes.setTipoContacto("cliente");
+//        CP_General.setTipoContacto("general");
+//        CP_Personal.setTipoContacto("personal");
+//        CP_Todos.setTipoContacto("%");
+//        CP_Trabajador.setTipoContacto("trabajador");
     }
 
     /**
@@ -65,15 +65,12 @@ public class MainViewTest extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jXStatusBar1 = new org.jdesktop.swingx.JXStatusBar();
         tabbedPaneContactos = new javax.swing.JTabbedPane();
+        jXPanel1 = new org.jdesktop.swingx.JXPanel();
+        contactosPanel1 = new agendascc.UI.ContactosPanel();
         jXPanel3 = new org.jdesktop.swingx.JXPanel();
-        CP_Trabajador = new agendascc.UI.ContactosPanel();
         jXPanel4 = new org.jdesktop.swingx.JXPanel();
-        CP_Personal = new agendascc.UI.ContactosPanel();
         jXPanel5 = new org.jdesktop.swingx.JXPanel();
-        CP_General = new agendascc.UI.ContactosPanel();
         jXPanel6 = new org.jdesktop.swingx.JXPanel();
-        CP_Clientes = new agendascc.UI.ContactosPanel();
-        CP_Todos = new agendascc.UI.ContactosPanel();
         menuBarPrincipal = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -106,20 +103,38 @@ public class MainViewTest extends javax.swing.JFrame {
         tabbedPaneContactos.setTabPlacement(javax.swing.JTabbedPane.LEFT);
         tabbedPaneContactos.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
 
+        javax.swing.GroupLayout jXPanel1Layout = new javax.swing.GroupLayout(jXPanel1);
+        jXPanel1.setLayout(jXPanel1Layout);
+        jXPanel1Layout.setHorizontalGroup(
+            jXPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 736, Short.MAX_VALUE)
+            .addGroup(jXPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jXPanel1Layout.createSequentialGroup()
+                    .addGap(1, 1, 1)
+                    .addComponent(contactosPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(1, 1, 1)))
+        );
+        jXPanel1Layout.setVerticalGroup(
+            jXPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 560, Short.MAX_VALUE)
+            .addGroup(jXPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jXPanel1Layout.createSequentialGroup()
+                    .addGap(1, 1, 1)
+                    .addComponent(contactosPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(1, 1, 1)))
+        );
+
+        tabbedPaneContactos.addTab("TODOS", jXPanel1);
+
         javax.swing.GroupLayout jXPanel3Layout = new javax.swing.GroupLayout(jXPanel3);
         jXPanel3.setLayout(jXPanel3Layout);
         jXPanel3Layout.setHorizontalGroup(
             jXPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jXPanel3Layout.createSequentialGroup()
-                .addComponent(CP_Trabajador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 20, Short.MAX_VALUE))
+            .addGap(0, 736, Short.MAX_VALUE)
         );
         jXPanel3Layout.setVerticalGroup(
             jXPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jXPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(CP_Trabajador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 560, Short.MAX_VALUE)
         );
 
         tabbedPaneContactos.addTab("EMPLEADOS", jXPanel3);
@@ -129,20 +144,10 @@ public class MainViewTest extends javax.swing.JFrame {
         jXPanel4Layout.setHorizontalGroup(
             jXPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 736, Short.MAX_VALUE)
-            .addGroup(jXPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jXPanel4Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(CP_Personal, javax.swing.GroupLayout.PREFERRED_SIZE, 736, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         jXPanel4Layout.setVerticalGroup(
             jXPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 560, Short.MAX_VALUE)
-            .addGroup(jXPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jXPanel4Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(CP_Personal, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         tabbedPaneContactos.addTab("PERSONALES", jXPanel4);
@@ -152,20 +157,10 @@ public class MainViewTest extends javax.swing.JFrame {
         jXPanel5Layout.setHorizontalGroup(
             jXPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 736, Short.MAX_VALUE)
-            .addGroup(jXPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jXPanel5Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(CP_General, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         jXPanel5Layout.setVerticalGroup(
             jXPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 560, Short.MAX_VALUE)
-            .addGroup(jXPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jXPanel5Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(CP_General, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         tabbedPaneContactos.addTab("GENERAL", jXPanel5);
@@ -177,24 +172,13 @@ public class MainViewTest extends javax.swing.JFrame {
         jXPanel6Layout.setHorizontalGroup(
             jXPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 736, Short.MAX_VALUE)
-            .addGroup(jXPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jXPanel6Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(CP_Clientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         jXPanel6Layout.setVerticalGroup(
             jXPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 560, Short.MAX_VALUE)
-            .addGroup(jXPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jXPanel6Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(CP_Clientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         tabbedPaneContactos.addTab("PROVEEDORES", jXPanel6);
-        tabbedPaneContactos.addTab("TODOS", CP_Todos);
 
         jMenu1.setText("File");
         menuBarPrincipal.add(jMenu1);
@@ -228,16 +212,13 @@ public class MainViewTest extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private agendascc.UI.ContactosPanel CP_Clientes;
-    private agendascc.UI.ContactosPanel CP_General;
-    private agendascc.UI.ContactosPanel CP_Personal;
-    private agendascc.UI.ContactosPanel CP_Todos;
-    private agendascc.UI.ContactosPanel CP_Trabajador;
+    private agendascc.UI.ContactosPanel contactosPanel1;
     private javax.persistence.EntityManager entityManager1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private org.jdesktop.swingx.JXPanel jXPanel1;
     private org.jdesktop.swingx.JXPanel jXPanel3;
     private org.jdesktop.swingx.JXPanel jXPanel4;
     private org.jdesktop.swingx.JXPanel jXPanel5;
